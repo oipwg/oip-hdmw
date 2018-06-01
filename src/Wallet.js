@@ -14,7 +14,7 @@ class Wallet {
 				this.mnemonic = seed;
 				this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
 				this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
-			} else if (seed.length === 32) {
+			} else if (seed.length >= 16 && seed.length <= 32) {
 				this.entropy = seed;
 				this.mnemonic = bip39.entropyToMnemonic(this.entropy);
 				this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
