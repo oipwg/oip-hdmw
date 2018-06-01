@@ -1,4 +1,4 @@
-import InsightExplorer from 'insight-explorer'
+import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
 
 var bitcoinFeePerKb = 100000
@@ -17,7 +17,7 @@ exports = {
 	txVersion: 1,
 
 	explorers: [
-		new InsightExplorer('https://insight.bitpay.io')
+		new Insight('https://insight.bitpay.io')
 	],
 
 	network: networks.bitcoin

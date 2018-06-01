@@ -1,4 +1,4 @@
-import InsightExplorer from 'insight-explorer'
+import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
 
 var litecoinFeePerKb = 100000
@@ -17,7 +17,7 @@ exports = {
 	txVersion: 1,
 
 	explorers: [
-		new InsightExplorer('https://insight.litecore.io')
+		new Insight('https://insight.litecore.io')
 	],
 
 	network: networks.litecoin

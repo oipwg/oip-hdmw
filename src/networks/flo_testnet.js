@@ -1,4 +1,4 @@
-import InsightExplorer from 'insight-explorer'
+import { Insight } from 'insight-explorer'
 
 var floFeePerKb = 100000
 
@@ -16,7 +16,7 @@ exports = {
 	txVersion: 2,
 
 	explorers: [
-		new InsightExplorer('https://testnet.flocha.in')
+		new Insight('https://testnet.flocha.in')
 	],
 
 	network: {

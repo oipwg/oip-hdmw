@@ -32,7 +32,8 @@
     "bip32": "^0.1.0",
     "bip32-utils": "^0.11.1",
     "bip39": "^2.5.0",
-    "bitcoinjs-lib": "^3.3.2"
+    "bitcoinjs-lib": "^3.3.2",
+    "insight-explorer": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
