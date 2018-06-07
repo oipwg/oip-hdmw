@@ -67,4 +67,9 @@ class TransactionBuilder {
 			}
 		}
 	}
+	getUnspents(){
+		var addresses = this.from.map((address) => { return address.toBase58() });
+
+		return this.coin.explorer.getAddressesUtxo(addresses)
+	}
 }
