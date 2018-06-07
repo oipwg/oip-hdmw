@@ -21,14 +21,19 @@ class Address {
 
 		this.lastUpdated = 0;
 		
-		if (state || state === false)
+		if (state || state === false){
 			this.fromJSON(state)
-		else
+		} else {
 			this.updateState()
+		}
+	}
+	getBase58(){
+		return this.address
 	}
 	updateState(){
 		return this.coin.explorer.getAddress(this.address).then((state) => {
 			this.fromJSON(state)
+			return this
 		})
 	}
 	fromJSON(newState){

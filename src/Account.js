@@ -83,14 +83,16 @@ class Account {
 				}
 			}
 
-			for (var address of addresses){
-				self.coin.explorer.getAddress(address, {noTxList: true}).then(function(addr) {
-					if (addr.totalReceived > 0){
-						results[addr.addrStr] = true
+			for (var addr of addresses){
+				var address = new Address(addr, self.coin, false);
 
-						self.addresses[addr.addrStr] = new Address(addr.addrStr, self.coin, addr);
+				address.updateState().then((ad) => {
+					if (ad.getTotalReceived() > 0){
+						results[ad.getBase58()] = true
+
+						self.addresses[ad.getBase58()] = ad;
 					} else {
-						results[addr.addrStr] = false
+						results[ad.getBase58()] = false
 					}
 
 					checkComplete()
