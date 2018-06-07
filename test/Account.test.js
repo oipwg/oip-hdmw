@@ -16,11 +16,11 @@ test('Discover Chain on Account', (done) => {
 	
 	var account = new Account(accountMaster, networks.flo);
 
-	account.discoverChain(0, function(success){
-		expect(account.getChain(0).addresses.length).toBe(25)
-		expect(account.addresses.F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp.getTotalReceived()).toBeGreaterThan(0.0001)
-		expect(account.addresses.FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu.getTotalReceived()).toBeGreaterThan(0.0001)
-		expect(account.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)
+	account.discoverChain(0).then(function(acc){
+		expect(acc.getChain(0).addresses.length).toBe(25)
+		expect(acc.addresses.F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp.getTotalReceived()).toBeGreaterThan(0.0001)
+		expect(acc.addresses.FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu.getTotalReceived()).toBeGreaterThan(0.0001)
+		expect(acc.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)
 		done();
 	})
 })

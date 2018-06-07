@@ -62,48 +62,46 @@ class Account {
 	getChain(chainNumber){
 		return this.account.getChain(chainNumber)
 	}
-	discoverChain(chainNumber, onSuccess){
-		if (onSuccess === undefined || typeof onSuccess !== 'function')
-			onSuccess = function(){}
+	discoverChain(chainNumber){
+		return new Promise((resolve, reject) => {
+			this.account.discoverChain(chainNumber, GAP_LIMIT, (addresses, callback) => {
+				var results = {};
 
-		var self = this;
-		this.account.discoverChain(0, GAP_LIMIT, function(addresses, callback) {
-			var results = {};
+				var checkComplete = () => {
+					var done = true;
+					for (var add of addresses){
+						if (results[add] === undefined){
+							done = false
+						}
+					}
 
-			var checkComplete = () => {
-				var done = true;
-				for (var add of addresses){
-					if (results[add] === undefined){
-						done = false
+					if (done){
+						callback(null, results);
 					}
 				}
 
-				if (done){
-					callback(null, results);
+				for (var addr of addresses){
+					var address = new Address(addr, this.coin, false);
+
+					address.updateState().then((ad) => {
+						if (ad.getTotalReceived() > 0){
+							results[ad.getBase58()] = true
+
+							this.addresses[ad.getBase58()] = ad;
+						} else {
+							results[ad.getBase58()] = false
+						}
+
+						checkComplete()
+					}).catch(function(e) {
+						callback(e)
+					})
 				}
-			}
+			}, (err, used, checked) => {
+				if (err) throw err
 
-			for (var addr of addresses){
-				var address = new Address(addr, self.coin, false);
-
-				address.updateState().then((ad) => {
-					if (ad.getTotalReceived() > 0){
-						results[ad.getBase58()] = true
-
-						self.addresses[ad.getBase58()] = ad;
-					} else {
-						results[ad.getBase58()] = false
-					}
-
-					checkComplete()
-				}).catch(function(e) {
-					callback(e)
-				})
-			}
-		}, function(err, used, checked) {
-			if (err) throw err
-
-			onSuccess(self.addresses)
+				resolve(this)
+			})
 		})
 	}
 }
