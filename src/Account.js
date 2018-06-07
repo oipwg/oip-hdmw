@@ -4,7 +4,7 @@ import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
 
 import Address from './Address'
-import { isValidAddress } from './util'
+import { toBase58, isValidAddress, discovery } from './util'
 
 // Helper CONSTS (used in other consts)
 const SECOND = 1000;
@@ -13,6 +13,10 @@ const MINUTE = 60 * SECOND;
 // Class Constants
 const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE;
 const GAP_LIMIT = 20;
+
+const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
+	return { address: node, network: network }
+}
 
 module.exports =
 class Account {
@@ -24,17 +28,19 @@ class Account {
 		var internal = this.accountMaster.derive(1)
 
 		this.account = new bip32utils.Account([
-			new bip32utils.Chain(external.neutered()),
-			new bip32utils.Chain(internal.neutered())
+			new bip32utils.Chain(external, undefined, CUSTOM_ADDRESS_FUNCTION),
+			new bip32utils.Chain(internal, undefined, CUSTOM_ADDRESS_FUNCTION)
 		])
 
 		this.addresses = {}
 
 		this.discovery = {
 			0: {
+				index: 0,
 				lastUpdate: 0
 			},
 			1: {
+				index: 1,
 				lastUpdate: 0
 			}
 		}
@@ -90,15 +96,32 @@ class Account {
 	getChain(chainNumber){
 		return this.account.getChain(chainNumber)
 	}
+	_discoverChain(chainNumber, gapLimit, queryCallback, callback) {
+		var chains = this.account.getChains()
+		var chain = chains[chainNumber].clone()
+
+		discovery(chain, gapLimit, queryCallback, chainNumber, (err, used, checked, chainIndex) => {
+			if (err) return callback(err)
+
+			// throw away EACH unused address AFTER the last unused address
+			var unused = checked - used
+			for (var j = 1; j < unused; ++j) chain.pop()
+
+			// override the internal chain
+			this.account.chains[chainIndex] = chain
+
+			callback(err, used, checked)
+		})
+	}
 	discoverChain(chainNumber){
 		return new Promise((resolve, reject) => {
-			this.account.discoverChain(chainNumber, GAP_LIMIT, (addresses, callback) => {
+			this._discoverChain(chainNumber, GAP_LIMIT, (addresses, callback) => {
 				var results = {};
 
 				var checkComplete = () => {
 					var done = true;
-					for (var add of addresses){
-						if (results[add] === undefined){
+					for (var a of addresses){
+						if (results[toBase58(a.address.publicKey, this.coin.network)] === undefined){
 							done = false
 						}
 					}
@@ -113,11 +136,11 @@ class Account {
 
 					address.updateState().then((ad) => {
 						if (ad.getTotalReceived() > 0){
-							results[ad.getBase58()] = true
+							results[ad.toBase58()] = true
 
-							this.addresses[ad.getBase58()] = ad;
+							this.addresses[ad.toBase58()] = ad;
 						} else {
-							results[ad.getBase58()] = false
+							results[ad.toBase58()] = false
 						}
 
 						checkComplete()
@@ -136,9 +159,9 @@ class Account {
 		return new Promise((resolve, reject) => {
 			var chainsToDiscover = []
 
-			for (var chaNum in this.discovery){
-				if (!this.discovery[chaNum] || this.discovery[chaNum].lastUpdate < (Date.now() - CHAIN_EXPIRE_TIMEOUT)){
-					chainsToDiscover.push(chaNum)
+			for (var chain in this.discovery){
+				if (!this.discovery[chain] || this.discovery[chain].lastUpdate < (Date.now() - CHAIN_EXPIRE_TIMEOUT)){
+					chainsToDiscover.push(this.discovery[chain].index)
 				}
 			}
 

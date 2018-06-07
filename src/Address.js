@@ -2,14 +2,30 @@ import bitcoin from 'bitcoinjs-lib'
 import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
-import { isValidAddress } from './util'
+import { toBase58, isValidAddress } from './util'
 
 const GAP_LIMIT = 20;
 
 module.exports =
 class Address {
 	constructor(address, coin, state){
-		this.address = address
+		if (address.network){
+			this.fromBIP32 = true
+
+			if (address.address)
+				this.address = address.address
+			else if (address.index && address.depth)
+				this.address = address
+
+			// Make sure that the networks match and throw an error if they don't
+			if (address.network.pubKeyHash !== coin.network.pubKeyHash){
+				throw new Error("Address Network and Coin Network DO NOT MATCH!!!!!")
+			}
+		} else {
+			this.fromBIP32 = false
+			this.address = address
+		}
+
 		this.coin = coin || { satPerCoin: 1e8 }
 
 		this.transactions = [];
@@ -27,11 +43,11 @@ class Address {
 			this.updateState()
 		}
 	}
-	getBase58(){
-		return this.address
+	toBase58(){
+		return this.fromBIP32 ? toBase58(this.address.publicKey, this.coin.network) : this.address
 	}
 	updateState(){
-		return this.coin.explorer.getAddress(this.address).then((state) => {
+		return this.coin.explorer.getAddress(this.toBase58()).then((state) => {
 			this.fromJSON(state)
 			return this
 		})
@@ -41,7 +57,7 @@ class Address {
 			return
 
 		// If the state doesn't match for this address, ignore it.
-		if (newState.addrStr && newState.addrStr !== this.address)
+		if (newState.addrStr && newState.addrStr !== this.toBase58())
 			return;
 
 		if (!isNaN(newState.balanceSat))
