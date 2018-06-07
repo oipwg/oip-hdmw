@@ -11,10 +11,21 @@ test('Account keys generated from Mnemonic Match', () => {
 	expect(account.getExtendedPublicKey()).toBe("xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj")
 })
 
+test('Get Account Balance of all Chain Addresses', (done) => {
+	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+	
+	var account = new Account(accountMaster, networks.flo, false);
+
+	account.getBalance().then((totalBalance) => {
+		expect(totalBalance).toBeGreaterThan(0)
+		done()
+	})
+})
+
 test('Discover Chain on Account', (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
 	
-	var account = new Account(accountMaster, networks.flo);
+	var account = new Account(accountMaster, networks.flo, false);
 
 	account.discoverChain(0).then(function(acc){
 		expect(acc.getChain(0).addresses.length).toBe(25)

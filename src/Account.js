@@ -6,6 +6,12 @@ import coinselect from 'coinselect'
 import Address from './Address'
 import { isValidAddress } from './util'
 
+// Helper CONSTS (used in other consts)
+const SECOND = 1000;
+const MINUTE = 60 * SECOND;
+
+// Class Constants
+const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE;
 const GAP_LIMIT = 20;
 
 module.exports =
@@ -24,11 +30,33 @@ class Account {
 
 		this.addresses = {}
 
+		this.discovery = {
+			0: {
+				lastUpdate: 0
+			},
+			1: {
+				lastUpdate: 0
+			}
+		}
+
 		// Discover both External and Internal chains
 		if (discover){
 			this.discoverChain(0)
 			this.discoverChain(1)
 		}
+	}
+	getBalance(){
+		return new Promise((resolve, reject) => {
+			return this.discoverChainsIfNeeded().then(() => {
+				var totBal = 0;
+
+				for (var addr in this.addresses){
+					totBal += this.addresses[addr].getBalance()
+				}
+
+				resolve(totBal)
+			})
+		})
 	}
 	sendTransaction(options){
 		// Store an array of addresses to request utxos for
@@ -93,15 +121,38 @@ class Account {
 						}
 
 						checkComplete()
-					}).catch(function(e) {
-						callback(e)
-					})
+					}).catch(callback)
 				}
 			}, (err, used, checked) => {
 				if (err) throw err
 
-				resolve(this)
+				this.discovery[chainNumber] = { lastUpdate: Date.now() }
+
+				resolve(this, chainNumber)
 			})
+		})
+	}
+	discoverChainsIfNeeded(){
+		return new Promise((resolve, reject) => {
+			var chainsToDiscover = []
+
+			for (var chaNum in this.discovery){
+				if (!this.discovery[chaNum] || this.discovery[chaNum].lastUpdate < (Date.now() - CHAIN_EXPIRE_TIMEOUT)){
+					chainsToDiscover.push(chaNum)
+				}
+			}
+
+			var checkIfComplete = () => {
+				if (chainsToDiscover.length === 0)
+					resolve(this);
+			}
+
+			for (var c of chainsToDiscover){
+				this.discoverChain(c).then((account, chainNumber) => {
+					chainsToDiscover.splice(chainsToDiscover.indexOf(chainNumber))
+					checkIfComplete();
+				}).catch(console.error);
+			}
 		})
 	}
 }
