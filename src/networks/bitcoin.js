@@ -1,9 +1,14 @@
 import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
+import bip44constants from 'bip44-constants'
 
 var bitcoinFeePerKb = 100000
 
-exports = {
+var n = networks.bitcoin;
+
+n.slip44 = bip44constants.BTC;
+
+module.exports = {
 	name: 'bitcoin',
 	displayName: 'Bitcoin',
 	ticker: 'BTC',
@@ -16,9 +21,7 @@ exports = {
 
 	txVersion: 1,
 
-	explorers: [
-		new Insight('https://insight.bitpay.io')
-	],
+	explorer: new Insight('https://insight.bitpay.io/api'),
 
-	network: networks.bitcoin
+	network: n
 }

@@ -2,7 +2,7 @@ import { Insight } from 'insight-explorer'
 
 var floFeePerKb = 100000
 
-exports = {
+module.exports = {
 	name: 'flo',
 	displayName: 'Flo',
 	ticker: 'FLO',
@@ -15,15 +15,14 @@ exports = {
 
 	txVersion: 2,
 
-	explorers: [
-		new Insight('https://livenet.flocha.in')
-	],
+	explorer: new Insight('https://livenet.flocha.in/api'),
 
 	network: {
 		bip32: {
 			public: 0x0134406b,
 			private: 0x01343c31
 		},
+		slip44: 216,
 		messagePrefix: '\x1bFlorincoin Signed Message:\n',
 		pubKeyHash: 35,
 		scriptHash: 94,

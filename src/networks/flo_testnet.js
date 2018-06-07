@@ -2,7 +2,7 @@ import { Insight } from 'insight-explorer'
 
 var floFeePerKb = 100000
 
-exports = {
+module.exports = {
 	name: 'flo_testnet',
 	displayName: 'Flo Testnet',
 	ticker: 'tFLO',
@@ -15,9 +15,7 @@ exports = {
 
 	txVersion: 2,
 
-	explorers: [
-		new Insight('https://testnet.flocha.in')
-	],
+	explorer: new Insight('https://testnet.flocha.in/api'),
 
 	network: {
 		bip32: {

@@ -3,7 +3,11 @@ import { networks } from 'bitcoinjs-lib'
 
 var litecoinFeePerKb = 100000
 
-exports = {
+var n = networks.litecoin;
+
+n.slip44 = 2;
+
+module.exports = {
 	name: 'litecoin',
 	displayName: 'Litecoin',
 	ticker: 'LTC',
@@ -16,9 +20,7 @@ exports = {
 
 	txVersion: 1,
 
-	explorers: [
-		new Insight('https://insight.litecore.io')
-	],
+	explorer: new Insight('https://insight.litecore.io/api'),
 
 	network: networks.litecoin
 }

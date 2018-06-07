@@ -3,7 +3,7 @@ import { networks } from 'bitcoinjs-lib'
 
 var litecoinFeePerKb = 100000
 
-exports = {
+module.exports = {
 	name: 'litecoin_testnet',
 	displayName: 'Litecoin Testnet',
 	ticker: 'tLTC',
@@ -16,9 +16,7 @@ exports = {
 
 	txVersion: 1,
 
-	explorers: [
-		new Insight('https://testnet.litecore.io')
-	],
+	explorer: new Insight('https://testnet.litecore.io/api'),
 
 	network: {
 		messagePrefix: '\x18Litecoin Signed Message:\n',

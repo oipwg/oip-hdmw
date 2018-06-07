@@ -57,14 +57,27 @@ class Wallet {
 		// The array to hold the live coin objects
 		this.coins = {};
 
+		// An optional variable to say if we should auto run address discovery on Account Chains
+		this.discover = options.discover || true
+
 		// Validate that each supported coin has a pair network
 		for (var coin of this.supported_coins){
 			for (var coinNet in this.networks){
 				// If we have found a pair, attach a live coin object
-				if (coin === coinNet)
-					this.coins[coin] = new Coin(this.seed, this.networks[coinNet])
+				if (coin === coinNet){
+					this.coins[coin] = new Coin(this.seed, this.networks[coinNet], this.discover)
+				}
 			}
 		}
+	}
+	getCoin(coin){
+		for (var c in this.coins){
+			if (c === coin)
+				return this.coins[c]
+		}
+	}
+	getCoins(){
+		return this.coins;
 	}
 	getMnemonic(){
 		return this.mnemonic

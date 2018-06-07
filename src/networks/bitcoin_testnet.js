@@ -3,7 +3,7 @@ import { networks } from 'bitcoinjs-lib'
 
 var bitcoinFeePerKb = 100000
 
-exports = {
+module.exports = {
 	name: 'bitcoin_testnet',
 	displayName: 'Bitcoin Testnet',
 	ticker: 'tBTC',
@@ -16,9 +16,7 @@ exports = {
 
 	txVersion: 1,
 
-	explorers: [
-		new Insight('https://test-insight.bitpay.com')
-	],
+	explorer: new Insight('https://test-insight.bitpay.com/api'),
 
 	network: networks.testnet
 }
