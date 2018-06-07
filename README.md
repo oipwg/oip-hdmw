@@ -1,2 +1,3 @@
+![](https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master)
 # oip-hdmw
 BIP44 Javascript Wallet, under development...
