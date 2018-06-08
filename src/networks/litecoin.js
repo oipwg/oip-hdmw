@@ -12,7 +12,7 @@ module.exports = {
 	displayName: 'Litecoin',
 	ticker: 'LTC',
 	satPerCoin: 1e8,
-	floFeePerKb: litecoinFeePerKb,
+	feePerKb: litecoinFeePerKb,
 	feePerByte: litecoinFeePerKb / 1024,
 	maxFeePerByte: 100,
 	minFee: litecoinFeePerKb,

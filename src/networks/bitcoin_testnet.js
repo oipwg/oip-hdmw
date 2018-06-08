@@ -8,7 +8,7 @@ module.exports = {
 	displayName: 'Bitcoin Testnet',
 	ticker: 'tBTC',
 	satPerCoin: 1e8,
-	floFeePerKb: bitcoinFeePerKb,
+	feePerKb: bitcoinFeePerKb,
 	feePerByte: bitcoinFeePerKb / 1024,
 	maxFeePerByte: 100,
 	minFee: bitcoinFeePerKb,

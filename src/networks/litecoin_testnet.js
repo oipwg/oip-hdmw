@@ -8,7 +8,7 @@ module.exports = {
 	displayName: 'Litecoin Testnet',
 	ticker: 'tLTC',
 	satPerCoin: 1e8,
-	floFeePerKb: litecoinFeePerKb,
+	feePerKb: litecoinFeePerKb,
 	feePerByte: litecoinFeePerKb / 1024,
 	maxFeePerByte: 100,
 	minFee: litecoinFeePerKb,

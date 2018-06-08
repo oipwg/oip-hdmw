@@ -7,7 +7,7 @@ module.exports = {
 	displayName: 'Flo Testnet',
 	ticker: 'tFLO',
 	satPerCoin: 1e8,
-	floFeePerKb: floFeePerKb,
+	feePerKb: floFeePerKb,
 	feePerByte: floFeePerKb / 1024,
 	maxFeePerByte: 100,
 	minFee: floFeePerKb,
