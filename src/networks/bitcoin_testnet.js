@@ -18,5 +18,7 @@ module.exports = {
 
 	explorer: new Insight('https://test-insight.bitpay.com/api'),
 
+	getExtraBytes: function(options){ return },
+
 	network: networks.testnet
 }

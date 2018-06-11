@@ -1,4 +1,5 @@
 import { Insight } from 'insight-explorer'
+import { varIntBuffer } from '../util'
 
 var floFeePerKb = 10000
 
@@ -16,6 +17,11 @@ module.exports = {
 	txVersion: 2,
 
 	explorer: new Insight('https://livenet.flocha.in/api'),
+
+	getExtraBytes: function(options){
+		var fData = options.floData || ""
+		return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
+	},
 
 	network: {
 		bip32: {

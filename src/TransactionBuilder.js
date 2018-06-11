@@ -19,6 +19,8 @@ class TransactionBuilder {
 		// Addresses we want to send to & amounts
 		this.to = [];
 
+		this.passedOptions = {};
+
 		this.parseOptions(options);	
 	}
 	addFrom(addr){
@@ -69,6 +71,8 @@ class TransactionBuilder {
 				}
 			}
 		}
+
+		this.passedOptions = options;
 	}
 	getUnspents(){
 		var addresses = this.from.map((address) => { return address.getPublicAddress() });
@@ -94,7 +98,15 @@ class TransactionBuilder {
 				}
 			})
 
-			return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte))
+			var extraBytesLength = 0;
+			var extraBytes = this.coin.getExtraBytes(this.passedOptions);
+
+			if (extraBytes)
+				extraBytesLength = extraBytes.length
+
+			return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+		})
+	}
 	buildTX(){
 		return this.buildInputsAndOutputs().then((selected) => {
 			var inputs = selected.inputs;
@@ -129,7 +141,14 @@ class TransactionBuilder {
 				}
 			}
 
-			return txb.build().toHex()
+			var builtHex = txb.build().toHex();
+
+			var extraBytes = this.coin.getExtraBytes(this.passedOptions)
+
+			if (extraBytes)
+				builtHex += extraBytes
+
+			return builtHex
 		})
 	}
 }

@@ -36,6 +36,7 @@
     "bitcoinjs-lib": "git+https://github.com/bitcoinjs/bitcoinjs-lib.git",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "insight-explorer": "^1.0.0",
+    "varuint-bitcoin": "^1.1.0",
     "wif": "^2.0.6"
   },
   "devDependencies": {

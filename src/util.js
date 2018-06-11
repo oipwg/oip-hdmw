@@ -3,6 +3,7 @@ import { Buffer } from 'safe-buffer'
 import createHash from 'create-hash'
 import bs58check from 'bs58check'
 import wif from 'wif'
+import varuint from 'varuint-bitcoin'
 
 function ripemd160 (buffer) {
   return createHash('rmd160').update(buffer).digest()
@@ -109,5 +110,6 @@ module.exports = {
   toBase58,
 	isValidPublicAddress,
   isValidWIF,
-  discovery
+  discovery,
+  varIntBuffer: varuint.encode
 }

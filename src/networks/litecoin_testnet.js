@@ -18,6 +18,8 @@ module.exports = {
 
 	explorer: new Insight('https://testnet.litecore.io/api'),
 
+	getExtraBytes: function(options){ return },
+
 	network: {
 		messagePrefix: '\x18Litecoin Signed Message:\n',
 		bip32: {

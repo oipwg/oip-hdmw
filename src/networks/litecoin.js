@@ -22,5 +22,7 @@ module.exports = {
 
 	explorer: new Insight('https://insight.litecore.io/api'),
 
+	getExtraBytes: function(options){ return },
+
 	network: networks.litecoin
 }
