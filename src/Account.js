@@ -1,10 +1,9 @@
 import bitcoin from 'bitcoinjs-lib'
 import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
-import coinselect from 'coinselect'
 
 import Address from './Address'
-import { toBase58, isValidAddress, discovery } from './util'
+import { toBase58, isValidPublicAddress, discovery } from './util'
 
 // Helper CONSTS (used in other consts)
 const SECOND = 1000;
@@ -64,28 +63,12 @@ class Account {
 			})
 		})
 	}
+	getNextChangeAddress(){
+		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
+		return new Address(this.account.getChain(1).next(), this.coin, false);
+	}
 	sendTransaction(options){
-		// Store an array of addresses to request utxos for
-		var addrs = [];
-
-		// Check if we define what address the transaction must come from
-		if (options.from){
-			if (Array.isArray(options.from)){
-				for (var addr of options.from){
-					if (isValidAddress(addr, this.coin.network)){
-						addrs.push(addr);
-					}
-				}
-			} else {
-				if (isValidAddress(options.from, this.coin.network)){
-					addrs.push(options.from);
-				}
-			}
-		} else {
-			for (var addr of this.addresses){
-				addrs.push(addr);
-			}
-		}
+		
 	}
 	getExtendedPrivateKey(){
 		return this.accountMaster.toBase58()
@@ -121,7 +104,7 @@ class Account {
 				var checkComplete = () => {
 					var done = true;
 					for (var a of addresses){
-						if (results[toBase58(a.address.publicKey, this.coin.network)] === undefined){
+						if (results[toBase58(a.address.publicKey, this.coin.network.pubKeyHash)] === undefined){
 							done = false
 						}
 					}
@@ -136,11 +119,11 @@ class Account {
 
 					address.updateState().then((ad) => {
 						if (ad.getTotalReceived() > 0){
-							results[ad.toBase58()] = true
+							results[ad.getPublicAddress()] = true
 
-							this.addresses[ad.toBase58()] = ad;
+							this.addresses[ad.getPublicAddress()] = ad;
 						} else {
-							results[ad.toBase58()] = false
+							results[ad.getPublicAddress()] = false
 						}
 
 						checkComplete()

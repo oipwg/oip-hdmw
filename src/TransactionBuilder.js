@@ -4,14 +4,15 @@ import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
 
 import Address from './Address'
-import { isValidAddress } from './util'
+import { isValidPublicAddress } from './util'
 
 const GAP_LIMIT = 20;
 
 module.exports =
 class TransactionBuilder {
-	constructor(coin, options){
+	constructor(coin, options, account){
 		this.coin = coin;
+		this.account = account;
 
 		// Addresses we are sending from
 		this.from = [];
@@ -22,7 +23,7 @@ class TransactionBuilder {
 	}
 	addFrom(addr){
 		if (addr instanceof Address){
-			if (isValidAddress(addr.toBase58(), this.coin.network)){
+			if (isValidPublicAddress(addr.getPublicAddress(), this.coin.network)){
 				this.from.push(addr)
 			}
 		} else {
@@ -30,9 +31,11 @@ class TransactionBuilder {
 		}
 	}
 	addTo(address, amount){
-		if (isValidAddress(address, this.coin.network) && !isNaN(amount)){
-			var tmpTo = {};
-			tmpTo[address] = amount
+		if (isValidPublicAddress(address, this.coin.network) && !isNaN(amount)){
+			var tmpTo = {
+				address: address,
+				value: amount
+			}
 			this.to.push(tmpTo)
 		}
 	}

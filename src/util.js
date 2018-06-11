@@ -2,6 +2,7 @@ import bitcoin from 'bitcoinjs-lib'
 import { Buffer } from 'safe-buffer'
 import createHash from 'create-hash'
 import bs58check from 'bs58check'
+import wif from 'wif'
 
 function ripemd160 (buffer) {
   return createHash('rmd160').update(buffer).digest()
@@ -23,15 +24,30 @@ function toBase58Check (hash, version) {
   return bs58check.encode(payload)
 }
 
-function toBase58 (publicKey, network) {
-  if (!publicKey){
-    return console.log("PUBLIC KEY NULL!!!!")
+function toBase58 (key, version) {
+  if (!key){
+    return console.log("KEY NULL!!!!")
   }
 
-  return toBase58Check(hash160(publicKey), network.pubKeyHash)
+  return toBase58Check(hash160(key), version)
 }
 
-function isValidAddress (address, network) {
+function isValidWIF (key, network) {
+  try {
+    let dec = wif.decode(key);
+
+    if (network) {
+      return dec.version === network.wif
+    } else {
+      return true
+    }
+  } catch (e) {
+    console.error(e);
+    return false
+  }
+}
+
+function isValidPublicAddress (address, network) {
   try {
     let dec = bitcoin.address.fromBase58Check(address)
     if (network) {
@@ -66,7 +82,7 @@ function discovery (chain, gapLimit, queryCb, i, done) {
 
       // iterate batch, guarantees order agnostic of queryCb result ordering
       batch.forEach(function (a) {
-        if (queryResultSet[toBase58(a.address.publicKey, a.network)]) {
+        if (queryResultSet[toBase58(a.address.publicKey, a.network.pubKeyHash)]) {
           gap = 0
         } else {
           gap += 1
@@ -91,6 +107,7 @@ function discovery (chain, gapLimit, queryCb, i, done) {
 
 module.exports = {
   toBase58,
-	isValidAddress,
+	isValidPublicAddress,
+  isValidWIF,
   discovery
 }

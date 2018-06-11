@@ -1,8 +1,11 @@
 import bitcoin from 'bitcoinjs-lib'
 import bip32 from 'bip32'
+import wif from 'wif'
 import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
-import { toBase58, isValidAddress } from './util'
+import { toBase58, isValidPublicAddress, isValidWIF } from './util'
+
+const ECPair = bitcoin.ECPair;
 
 const GAP_LIMIT = 20;
 
@@ -22,8 +25,14 @@ class Address {
 				throw new Error("Address Network and Coin Network DO NOT MATCH!!!!!")
 			}
 		} else {
-			this.fromBIP32 = false
-			this.address = address
+			if (isValidPublicAddress(address, coin.network)){
+				this.fromBIP32 = false
+				this.pubAddress = address
+			} else if (isValidWIF(address, coin.network)){
+				this.fromBIP32 = true
+
+				this.address = ECPair.fromWIF(address, coin.network)
+			}
 		}
 
 		this.coin = coin || { satPerCoin: 1e8 }
@@ -43,11 +52,14 @@ class Address {
 			this.updateState()
 		}
 	}
-	toBase58(){
-		return this.fromBIP32 ? toBase58(this.address.publicKey, this.coin.network) : this.address
+	getPublicAddress(){
+		return this.fromBIP32 ? toBase58(this.address.publicKey, this.coin.network.pubKeyHash) : this.pubAddress
+	}
+	getPrivateAddress(){
+		return this.address ? this.address.toWIF() : undefined
 	}
 	updateState(){
-		return this.coin.explorer.getAddress(this.toBase58()).then((state) => {
+		return this.coin.explorer.getAddress(this.getPublicAddress()).then((state) => {
 			this.fromJSON(state)
 			return this
 		})
@@ -57,7 +69,7 @@ class Address {
 			return
 
 		// If the state doesn't match for this address, ignore it.
-		if (newState.addrStr && newState.addrStr !== this.toBase58())
+		if (newState.addrStr && newState.addrStr !== this.getPublicAddress())
 			return;
 
 		if (!isNaN(newState.balanceSat))
