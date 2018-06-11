@@ -50,6 +50,11 @@ class Account {
 			this.discoverChain(1)
 		}
 	}
+	getMainAddress(chain_number, main_address_number){
+		var addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(main_address_number || 0), this.coin.network);
+		
+		return new Address(addr, this.coin, false)
+	}
 	getBalance(){
 		return new Promise((resolve, reject) => {
 			return this.discoverChainsIfNeeded().then(() => {

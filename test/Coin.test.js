@@ -28,3 +28,32 @@ test('Account auto-adds if not Existing on Coin', () => {
 
 	expect(coins.bitcoin.getAccount(1).getExtendedPrivateKey()).toBe("xprv9xpXFhFpqdQK5owUStFsuAiWUxYpLkvQn1QmVDumBKTvmmjkNEZgpMYoAaAftt3JVeDhRkvyLvrKathDToUMdz2FqRF7JNavF7uboJWArrw")
 })
+
+test('Coin, get main address', () => {
+	var w = new Wallet('00000000000000000000000000000000', { 
+		discover: false,
+		supported_coins: ['bitcoin', 'bitcoin_testnet', 'litecoin', 'litecoin_testnet', 'flo', 'flo_testnet']
+	});
+
+	var coins = w.getCoins()
+
+	expect(coins.bitcoin.getMainAddress().getPublicAddress()).toBe("1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA");
+	expect(coins.litecoin.getMainAddress(0).getPublicAddress()).toBe("LUWPbpM43E2p7ZSh8cyTBEkvpHmr3cB8Ez");
+	expect(coins.flo.getMainAddress(1).getPublicAddress()).toBe("FTogNNXik7eiHZw5uN2KMe4cvcr7GCEjbZ");
+	expect(coins.bitcoin_testnet.getMainAddress(1).getPublicAddress()).toBe("n2VQDkgibQ3S8wPVH25Mea3TcQgVFFQqab");
+	expect(coins.litecoin_testnet.getMainAddress(1).getPublicAddress()).toBe("n2VQDkgibQ3S8wPVH25Mea3TcQgVFFQqab");
+	expect(coins.flo_testnet.getMainAddress(1).getPublicAddress()).toBe("odqpABssS7twQfwqNhQdb58c8RiG6awnCh");
+})
+
+test('Coin, get main address', () => {
+	var w = new Wallet('00000000000000000000000000000000', { 
+		discover: false,
+		supported_coins: 'flo_testnet'
+	});
+
+	var coins = w.getCoins()
+
+	expect(coins.flo_testnet.getMainAddress().getPublicAddress()).toBe("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S");
+	expect(coins.flo_testnet.getMainAddress(0).getPublicAddress()).toBe("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S");
+	expect(coins.flo_testnet.getMainAddress(1).getPublicAddress()).toBe("odqpABssS7twQfwqNhQdb58c8RiG6awnCh");
+})

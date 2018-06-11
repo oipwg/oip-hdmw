@@ -31,6 +31,9 @@ class Coin {
 
 		}
 	}
+	getMainAddress(account_num){
+		return this.getAccount(account_num || 0).getMainAddress()
+	}
 	sendPayment(options){
 
 	}
@@ -58,5 +61,8 @@ class Coin {
 		this.accounts[accountNumber] = account;
 
 		return this.getAccount(accountNumber);
+	}
+	getCoin(){
+		return this.coin
 	}
 }
