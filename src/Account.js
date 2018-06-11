@@ -63,9 +63,13 @@ class Account {
 			})
 		})
 	}
+	getNextChainAddress(chain){
+		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
+		return new Address(this.account.getChain(chain || 0).next(), this.coin, false);
+	}
 	getNextChangeAddress(){
 		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
-		return new Address(this.account.getChain(1).next(), this.coin, false);
+		return this.getNextChainAddress(1)
 	}
 	sendTransaction(options){
 		
