@@ -28,7 +28,7 @@ test('Discover Chain on Account', (done) => {
 	var account = new Account(accountMaster, networks.flo, false);
 
 	account.discoverChain(0).then(function(acc){
-		expect(acc.getChain(0).addresses.length).toBe(25)
+		expect(acc.getChain(0).addresses.length).toBe(27)
 		expect(acc.addresses.F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp.getTotalReceived()).toBeGreaterThan(0.0001)
 		expect(acc.addresses.FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu.getTotalReceived()).toBeGreaterThan(0.0001)
 		expect(acc.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)

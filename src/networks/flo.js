@@ -1,7 +1,7 @@
 import { Insight } from 'insight-explorer'
 import { varIntBuffer } from '../util'
 
-var floFeePerKb = 10000
+var floFeePerKb = 100000
 
 module.exports = {
 	name: 'flo',

@@ -169,4 +169,13 @@ class TransactionBuilder {
 			return builtHex
 		})
 	}
+	sendTX(){
+		return new Promise((resolve, reject) => {
+			this.buildTX().then((hex) => {
+				this.coin.explorer.broadcastRawTransaction(hex).then((res) => {
+					resolve(res.txid)
+				})
+			})
+		})
+	}
 }
