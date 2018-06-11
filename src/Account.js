@@ -130,7 +130,8 @@ class Account {
 					}).catch(callback)
 				}
 			}, (err, used, checked) => {
-				if (err) throw err
+				if (err) 
+					reject(err)
 
 				this.discovery[chainNumber] = { lastUpdate: Date.now() }
 

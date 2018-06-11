@@ -90,21 +90,34 @@ class TransactionBuilder {
 		})
 	}
 	buildInputsAndOutputs(){
-		return this.getUnspents().then((utxos) => {
-			var targets = this.to.map((toObj) => {
-				return {
-					address: toObj.address,
-					value: Math.floor(toObj.value * this.coin.satPerCoin)
-				}
+		return this.discoverChange().then(() => { 
+			return this.getUnspents().then((utxos) => {
+				var targets = this.to.map((toObj) => {
+					return {
+						address: toObj.address,
+						value: Math.floor(toObj.value * this.coin.satPerCoin)
+					}
+				})
+
+				var extraBytesLength = 0;
+				var extraBytes = this.coin.getExtraBytes(this.passedOptions);
+
+				if (extraBytes)
+					extraBytesLength = extraBytes.length
+
+				return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
 			})
-
-			var extraBytesLength = 0;
-			var extraBytes = this.coin.getExtraBytes(this.passedOptions);
-
-			if (extraBytes)
-				extraBytesLength = extraBytes.length
-
-			return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+		})
+	}
+	discoverChange(){
+		return new Promise((resolve, reject) => {
+			if (this.account){
+				this.account.discoverChain(1).then(() => {
+					resolve()
+				})
+			} else {
+				resolve()
+			}
 		})
 	}
 	buildTX(){
@@ -119,6 +132,8 @@ class TransactionBuilder {
 
 			let txb = new bitcoin.TransactionBuilder(this.coin.network)
 
+			txb.setVersion(this.coin.txVersion)
+
 			inputs.forEach(input => txb.addInput(input.txId, input.vout))
 			outputs.forEach(output => {
 				// watch out, outputs may have been added that you need to provide
@@ -126,7 +141,10 @@ class TransactionBuilder {
 				if (!output.address){
 					// Check if we have access to an account to get the change address from
 					if (this.account){
-						output.address = this.account.getNextChangeAddress(0).getPublicAddress()
+						var changeAddress = this.account.getNextChangeAddress().getPublicAddress();
+						output.address = changeAddress
+					} else {
+						console.warning("No Account Provided! Will not send to change address, but rather pay entire change as miners fee!!!")
 					}
 				}
 

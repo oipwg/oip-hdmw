@@ -58,7 +58,7 @@ test("TransactionBuilder should be able to get unspents for From Addresses", (do
 		expect(utxos.length).toBeGreaterThan(0)
 		done()
 	}).catch(console.error)
-})
+}, 10000)
 
 test("TransactionBuilder should be able to get unspents for From Addresses", (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
@@ -80,7 +80,7 @@ test("TransactionBuilder should be able to get unspents for From Addresses", (do
 		expect(selected.outputs.length).toBeGreaterThan(0)
 		done()
 	}).catch(console.error)
-})
+}, 10000)
 
 test("TransactionBuilder should be able build tx hex", (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
@@ -100,5 +100,5 @@ test("TransactionBuilder should be able build tx hex", (done) => {
 		expect(hex).toBe("02000000019cbf3c990fdc5abdddb6132c18ec153a00d9b7f58b93296bf99809f061e38776010000006a473044022017d5de7fc12815069ff429db7da49becee3c14c400e443012f706b3e98c6c3e10220018464e5901a40bc51d62ed91b0a24efa52acc9698c6f314eae2c762706b2f51012102294759360dcc528809caedf39335adf415598a1069de79a43bb11703b35fbf8dffffffff02e8030000000000001976a9147f0e8b2f342a9f6256374138dc11252652a4093d88ace4790100000000001976a91488902905b0a6f436e5ef8a91785423736c69b41588ac0000000000")
 		done()
 	}).catch(console.error)
-})
+}, 10000)
 
