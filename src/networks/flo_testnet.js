@@ -28,6 +28,7 @@ module.exports = {
 			public: 0x013440e2,
 			private: 0x01343c23
 		},
+		slip44: 1,
 		messagePrefix: '\x1bFlorincoin Signed Message:\n',
 		pubKeyHash: 115,
 		scriptHash: 58,

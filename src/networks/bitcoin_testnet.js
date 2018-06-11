@@ -3,6 +3,10 @@ import { networks } from 'bitcoinjs-lib'
 
 var bitcoinFeePerKb = 100000
 
+var n = networks.testnet;
+
+n.slip44 = 1;
+
 module.exports = {
 	name: 'bitcoin_testnet',
 	displayName: 'Bitcoin Testnet',
@@ -20,5 +24,5 @@ module.exports = {
 
 	getExtraBytes: function(options){ return },
 
-	network: networks.testnet
+	network: n
 }

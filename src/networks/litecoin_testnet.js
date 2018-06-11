@@ -26,6 +26,7 @@ module.exports = {
 			public: 0x0436ef7d,
 			private: 0x0436f6e1
 		},
+		slip44: 1,
 		pubKeyHash: 0x6f,
 		scriptHash: 0xc4,
 		wif: 0xef,

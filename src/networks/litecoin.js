@@ -1,11 +1,12 @@
 import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
+import bip44constants from 'bip44-constants'
 
 var litecoinFeePerKb = 100000
 
 var n = networks.litecoin;
 
-n.slip44 = 2;
+n.slip44 = bip44constants.LTC;
 
 module.exports = {
 	name: 'litecoin',
@@ -24,5 +25,5 @@ module.exports = {
 
 	getExtraBytes: function(options){ return },
 
-	network: networks.litecoin
+	network: n
 }
