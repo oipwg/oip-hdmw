@@ -71,8 +71,29 @@ class TransactionBuilder {
 		}
 	}
 	getUnspents(){
-		var addresses = this.from.map((address) => { return address.toBase58() });
+		var addresses = this.from.map((address) => { return address.getPublicAddress() });
 
-		return this.coin.explorer.getAddressesUtxo(addresses)
+		return this.coin.explorer.getAddressesUtxo(addresses).then((utxos) => {
+			return utxos.map((utxo) => {
+				return {
+					txId: utxo.txid,
+					vout: utxo.vout,
+					scriptPubKey: utxo.scriptPubKey,
+					value: utxo.satoshis
+				}
+			})
+		})
+	}
+	buildInputsAndOutputs(){
+		return this.getUnspents().then((utxos) => {
+			var targets = this.to.map((toObj) => {
+				return {
+					address: toObj.address,
+					value: Math.floor(toObj.value * this.coin.satPerCoin)
+				}
+			})
+
+			return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte))
+		})
 	}
 }
