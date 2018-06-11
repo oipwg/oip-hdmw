@@ -45,6 +45,8 @@ class Address {
 		this.unconfirmedBalanceSat = 0;
 
 		this.lastUpdated = 0;
+
+		this.spentTransactions = []
 		
 		if (state || state === false){
 			this.fromJSON(state)
@@ -68,7 +70,7 @@ class Address {
 		})
 	}
 	fromJSON(newState){
-		if (newState === false)
+		if (!newState)
 			return
 
 		// If the state doesn't match for this address, ignore it.
@@ -90,10 +92,24 @@ class Address {
 		if (!isNaN(newState.transactions))
 			this.transactions = newState.transactions
 
+		if (!isNaN(newState.spentTransactions))
+			this.spentTransactions = newState.spentTransactions
+
 		if (!isNaN(newState.lastUpdated))
 			this.lastUpdated = newState.lastUpdated
 		else
 			this.lastUpdated = Date.now()
+	}
+	toJSON(){
+		return {
+			addrStr: this.getPublicAddress(),
+			balanceSat: this.balanceSat,
+			totalReceivedSat: this.totalReceivedSat,
+			unconfirmedBalanceSat: this.unconfirmedBalanceSat,
+			transactions: this.transactions,
+			spentTransactions: this.spentTransactions,
+			lastUpdated: this.lastUpdated
+		}
 	}
 	getBalance(){
 		return this.balanceSat / this.coin.satPerCoin
@@ -106,5 +122,46 @@ class Address {
 	}
 	getUnconfirmedBalance(){
 		return this.unconfirmedBalanceSat / this.coin.satPerCoin
+	}
+	removeSpent(unspentTransactions){
+		// If we are not defined, or we are not an array, just return
+		if (!unspentTransactions || !Array.isArray(unspentTransactions))
+			return
+
+		var unspent = [];
+
+		for (var tx of unspentTransactions){
+			var spent = false
+			for (var txid of this.spentTransactions){
+				if (txid === tx.txid){
+					spent = true;
+				}
+			}
+
+			if (!spent)
+				unspent.push(tx);
+		}
+
+		var spentMinusConfirmed = [];
+
+		for (var txid of this.spentTransactions){
+			var confirmed = true
+			for (var tx of unspentTransactions){
+				// Check if we are still in the unspent array
+				if (txid === tx.txid){
+					// If so, set confirmed so that this spent txid gets set back to the spentTransactions array
+					confirmed = false;
+				}
+			}
+
+			if (!confirmed){
+				spentMinusConfirmed.push(txid);
+			}
+		}
+
+		this.spentTransactions = spentMinusConfirmed
+	}
+	addSpentTransaction(txid){
+		this.spentTransactions.push(txid);
 	}
 }
