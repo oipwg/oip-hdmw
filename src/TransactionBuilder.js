@@ -76,6 +76,7 @@ class TransactionBuilder {
 		return this.coin.explorer.getAddressesUtxo(addresses).then((utxos) => {
 			return utxos.map((utxo) => {
 				return {
+					address: utxo.address,
 					txId: utxo.txid,
 					vout: utxo.vout,
 					scriptPubKey: utxo.scriptPubKey,
@@ -94,6 +95,41 @@ class TransactionBuilder {
 			})
 
 			return coinselect(utxos, targets, Math.ceil(this.coin.feePerByte))
+	buildTX(){
+		return this.buildInputsAndOutputs().then((selected) => {
+			var inputs = selected.inputs;
+			var outputs = selected.outputs;
+			var fee = selected.fee;
+
+			// inputs and outputs will be undefined if no solution was found
+			if (!inputs || !outputs) 
+				return
+
+			let txb = new bitcoin.TransactionBuilder(this.coin.network)
+
+			inputs.forEach(input => txb.addInput(input.txId, input.vout))
+			outputs.forEach(output => {
+				// watch out, outputs may have been added that you need to provide
+				// an output address/script for
+				if (!output.address){
+					// Check if we have access to an account to get the change address from
+					if (this.account){
+						output.address = this.account.getNextChangeAddress(0).getPublicAddress()
+					}
+				}
+
+				txb.addOutput(output.address, output.value)
+			})
+
+			for (var i in inputs){
+				for (var addr of this.from){
+					if (addr.getPublicAddress() === inputs[i].address){
+						txb.sign(parseInt(i), addr.getECKey())
+					}
+				}
+			}
+
+			return txb.build().toHex()
 		})
 	}
 }

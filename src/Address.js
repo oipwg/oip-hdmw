@@ -58,6 +58,9 @@ class Address {
 	getPrivateAddress(){
 		return this.address ? this.address.toWIF() : undefined
 	}
+	getECKey(){
+		return this.address
+	}
 	updateState(){
 		return this.coin.explorer.getAddress(this.getPublicAddress()).then((state) => {
 			this.fromJSON(state)
