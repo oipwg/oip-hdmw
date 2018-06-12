@@ -66,6 +66,28 @@ test('Test Serialization of Address (no discovery)', () => {
     });
 })
 
+test('Test Serialization of Address (roundtrip, no discovery)', () => {
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, { 
+		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+        balanceSat: 123,
+        totalReceivedSat: 234,
+        unconfirmedBalanceSat: 345,
+        transactions: ['abcde'],
+        spentTransactions: ['bcdef'],
+        lastUpdated: 456 
+    });
+
+	expect(address.toJSON()).toEqual({ 
+		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+        balanceSat: 123,
+        totalReceivedSat: 234,
+        unconfirmedBalanceSat: 345,
+        transactions: ['abcde'],
+        spentTransactions: ['bcdef'],
+        lastUpdated: 456 
+    });
+})
+
 test('Test Serialization of Address with Spent Transactions (no discovery)', () => {
 	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, {
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp', 
