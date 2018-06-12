@@ -20,12 +20,12 @@ class Wallet {
 				this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
 			} else {
 				this.seed = seed;
-				this.mnemonic
 			}
 		} else if (seed instanceof Buffer) {
 			this.seed = seed.toString('hex');
 		} else {
-			this.seed = bip39.generateMnemonic();
+			this.mnemonic = bip39.generateMnemonic();
+			this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
 		}
 
 		// Set the networks to the imported defaults
@@ -81,6 +81,9 @@ class Wallet {
 	}
 	getMnemonic(){
 		return this.mnemonic
+	}
+	getEntropy(){
+		return this.entropy
 	}
 	getSeed(){
 		return this.seed
