@@ -5,21 +5,21 @@ import networks from './networks'
 
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
 
-/** Full Service BIP44 Multi-Coin Wallet supporting both sending and recieving payments */
+/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
 class Wallet {
 	/**
-	 * Create a new BIP44 wallet with the supplied settings
+	 * Create a new [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) wallet with the supplied settings
 	 *
 	 * ##### Examples
 	 * Create wallet with Random Mnemonic
 	 * ```
 	 * var wallet = new Wallet()
 	 * ```
-	 * Create wallet from BIP39 Mnemonic
+	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic
 	 * ```
 	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
 	 * ```
-	 * Create wallet from BIP39 Entropy
+	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy
 	 * ```
 	 * var wallet = new Wallet('00000000000000000000000000000000')
 	 * ```
@@ -32,7 +32,7 @@ class Wallet {
 	 * var wallet = new Wallet(new Buffer("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4", "hex"))
 	 * ```
 	 * 
-	 * @param  {string|Buffer} [seed] - BIP39 Mnemonic OR BIP39 Entropy OR seed hex/seed Buffer
+	 * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
 	 * @param  {Object} [settings] - Wallet settings
 	 * @param {boolean} [settings.discover] - Defines if the Wallet should "auto-discover" Coin Account chains or not
 	 * @param {Array.<string>} [settings.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
@@ -136,7 +136,7 @@ class Wallet {
 		return this.coins;
 	}
 	/**
-	 * Get the BIP39 Mnemonic, if defined
+	 * Get the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, if defined
 	 * @example
 	 * var wallet = new Wallet('00000000000000000000000000000000');
 	 * var mnemonic = wallet.getMnemonic()
@@ -147,7 +147,7 @@ class Wallet {
 		return this.mnemonic
 	}
 	/**
-	 * Get the Entropy value used to generate the BIP39 Mnemonic.
+	 * Get the Entropy value used to generate the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic.
 	 * Note that the Entropy will only be defined if we are creating 
 	 * a wallet from Entropy or a Mnemonic, not off of just the Seed Hex
 	 * 
