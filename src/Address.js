@@ -89,11 +89,15 @@ class Address {
 		if (!isNaN(newState.unconfirmedBalanceSat))
 			this.unconfirmedBalanceSat = newState.unconfirmedBalanceSat
 
-		if (!isNaN(newState.transactions))
+		if (Array.isArray(newState.transactions)){
 			this.transactions = newState.transactions
+		}
 
-		if (!isNaN(newState.spentTransactions))
-			this.spentTransactions = newState.spentTransactions
+		if (Array.isArray(newState.spentTransactions)){
+			for (var tx of newState.spentTransactions){
+				this.spentTransactions.push(tx)
+			}
+		}
 
 		if (!isNaN(newState.lastUpdated))
 			this.lastUpdated = newState.lastUpdated
@@ -122,6 +126,11 @@ class Address {
 	}
 	getUnconfirmedBalance(){
 		return this.unconfirmedBalanceSat / this.coin.satPerCoin
+	}
+	getUnspent(){
+		return this.coin.explorer.getAddressUtxo(this.getPublicAddress()).then((utxos) => {
+			return this.removeSpent(utxos)
+		})
 	}
 	removeSpent(unspentTransactions){
 		// If we are not defined, or we are not an array, just return
@@ -160,6 +169,8 @@ class Address {
 		}
 
 		this.spentTransactions = spentMinusConfirmed
+
+		return unspent;
 	}
 	addSpentTransaction(txid){
 		this.spentTransactions.push(txid);
