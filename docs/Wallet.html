@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#getCoin">getCoin</a></li><li data-type='method'><a href="Wallet.html#getCoins">getCoins</a></li><li data-type='method'><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type='method'><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type='method'><a href="Wallet.html#getSeed">getSeed</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coin.html">Coin</a><ul class='methods'><li data-type='method'><a href="Coin.html#addAccount">addAccount</a></li><li data-type='method'><a href="Coin.html#getAccount">getAccount</a></li><li data-type='method'><a href="Coin.html#getBalance">getBalance</a></li><li data-type='method'><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type='method'><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type='method'><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type='method'><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type='method'><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type='method'><a href="Wallet.html#getCoin">getCoin</a></li><li data-type='method'><a href="Wallet.html#getCoins">getCoins</a></li><li data-type='method'><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type='method'><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type='method'><a href="Wallet.html#getSeed">getSeed</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -43,7 +43,7 @@
         Wallet
         </h2>
         
-            <div class="class-description"><p>Full Service BIP44 Multi-Coin Wallet supporting both sending and recieving payments</p></div>
+            <div class="class-description"><p>Full Service <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44</a> Multi-Coin Wallet supporting both sending and recieving payments</p></div>
         
     
 </header>
@@ -109,10 +109,10 @@
 
 
 <div class="description">
-    <p>Create a new BIP44 wallet with the supplied settings</p>
+    <p>Create a new <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki">BIP44</a> wallet with the supplied settings</p>
 <h5>Examples</h5><p>Create wallet with Random Mnemonic</p>
-<pre class="prettyprint source"><code>var wallet = new Wallet()</code></pre><p>Create wallet from BIP39 Mnemonic</p>
-<pre class="prettyprint source"><code>var wallet = new Wallet(&quot;abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about&quot;)</code></pre><p>Create wallet from BIP39 Entropy</p>
+<pre class="prettyprint source"><code>var wallet = new Wallet()</code></pre><p>Create wallet from <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Mnemonic</p>
+<pre class="prettyprint source"><code>var wallet = new Wallet(&quot;abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about&quot;)</code></pre><p>Create wallet from <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Entropy</p>
 <pre class="prettyprint source"><code>var wallet = new Wallet('00000000000000000000000000000000')</code></pre><p>Create wallet from Seed Hex</p>
 <pre class="prettyprint source"><code>var wallet = new Wallet(&quot;5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4&quot;)</code></pre><p>Create wallet from Seed Buffer</p>
 <pre class="prettyprint source"><code>var wallet = new Wallet(new Buffer(&quot;5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4&quot;, &quot;hex&quot;))</code></pre>
@@ -184,7 +184,7 @@
 
             
 
-            <td class="description last"><p>BIP39 Mnemonic OR BIP39 Entropy OR seed hex/seed Buffer</p></td>
+            <td class="description last"><p><a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Mnemonic, <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Entropy, or Seed Hex/Buffer</p></td>
         </tr>
 
     
@@ -405,7 +405,7 @@
 
     
 
-    <h4 class="name" id="getCoin"><span class="type-signature"></span>getCoin<span class="signature">(coin)</span><span class="type-signature"> &rarr; {Coin}</span></h4>
+    <h4 class="name" id="getCoin"><span class="type-signature"></span>getCoin<span class="signature">(coin)</span><span class="type-signature"> &rarr; {<a href="Coin.html">Coin</a>}</span></h4>
 
     
 
@@ -548,7 +548,7 @@ var coin = wallet.getCoin("bitcoin")</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">Coin</span>
+<span class="param-type"><a href="Coin.html">Coin</a></span>
 
 
     </dd>
@@ -562,7 +562,7 @@ var coin = wallet.getCoin("bitcoin")</code></pre>
 
     
 
-    <h4 class="name" id="getCoins"><span class="type-signature"></span>getCoins<span class="signature">()</span><span class="type-signature"> &rarr; {Coin}</span></h4>
+    <h4 class="name" id="getCoins"><span class="type-signature"></span>getCoins<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Coin.html">Coin</a>}</span></h4>
 
     
 
@@ -665,7 +665,7 @@ var coins = wallet.getCoins();
     </dt>
     <dd>
         
-<span class="param-type">Coin</span>
+<span class="param-type"><a href="Coin.html">Coin</a></span>
 
 
     </dd>
@@ -731,7 +731,7 @@ var coins = wallet.getCoins();
 
 
 <div class="description">
-    <p>Get the Entropy value used to generate the BIP39 Mnemonic.
+    <p>Get the Entropy value used to generate the <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Mnemonic.
 Note that the Entropy will only be defined if we are creating 
 a wallet from Entropy or a Mnemonic, not off of just the Seed Hex</p>
 </div>
@@ -842,7 +842,7 @@ var entropy = wallet.getEntropy()
 
 
 <div class="description">
-    <p>Get the BIP39 Mnemonic, if defined</p>
+    <p>Get the <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP39</a> Mnemonic, if defined</p>
 </div>
 
 
@@ -1025,7 +1025,7 @@ var seedHex = wallet.getSeed()
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jun 12 2018 15:05:51 GMT-0700 (PDT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jun 12 2018 16:12:53 GMT-0700 (PDT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
