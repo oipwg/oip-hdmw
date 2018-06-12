@@ -20,6 +20,30 @@ var floFeePerKb = 100000
  * @property {InsightExplorer} explorer - An InsightExplorer for the current coin so that data can be retreived from the network
  * @property {function} getExtraBytes - A function that is passed options from TransactionBuilder when a transaction is being built/sent. You can use this to add custom logic/tx hex building.
  * @property {CoinNetwork} network - The specific coin network variables, same as used in bitcoinjs-lib
+ *
+ * @example
+ * {
+	name: 'flo',
+	displayName: 'Flo',
+	ticker: 'FLO',
+	satPerCoin: 1e8,
+	feePerKb: floFeePerKb,
+	feePerByte: floFeePerKb / 1024,
+	maxFeePerByte: 100,
+	minFee: floFeePerKb,
+	dust: 100000,
+
+	txVersion: 2,
+
+	explorer: new Insight('https://livenet.flocha.in/api'),
+
+	getExtraBytes: function(options){
+		var fData = options.floData || ""
+		return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
+	},
+
+	network: CoinNetwork
+}
  */
 
 /**
@@ -33,6 +57,19 @@ var floFeePerKb = 100000
  * @property {number} pubKeyHash - The coin specific "version" used when creating a Public Key Hash (Public Address)
  * @property {number} scriptHash - The coin specific "version" used when creating a Script Hash
  * @property {number} wif - Wallet Import Format "version" for this specific coin
+ *
+ * @example
+ * {
+	bip32: {
+		public: 0x0134406b,
+		private: 0x01343c31
+	},
+	slip44: 216,
+	messagePrefix: '\x1bFlorincoin Signed Message:\n',
+	pubKeyHash: 35,
+	scriptHash: 94,
+	wif: 163
+}
  */
 
 module.exports = {
