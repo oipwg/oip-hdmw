@@ -23,7 +23,7 @@ var floFeePerKb = 100000
  */
 
 /**
- * An object that contains information about a coins Name, Network, and access to an explorer
+ * An object that contains version variables specific to the Coin
  * @typedef {Object} CoinNetwork
  * @property {Object} bip32 - BIP32 Variables
  * @property {number} bip32.public - The Extended Public Key version bytes
