@@ -3,6 +3,38 @@ import { varIntBuffer } from '../util'
 
 var floFeePerKb = 100000
 
+
+/**
+ * An object that contains information about a coins Name, Network, and access to an explorer
+ * @typedef {Object} CoinInfo
+ * @property {string} name - All lowercase "name" of the CoinInfo, this is what is passed in to the `supported_coins` check. This cannot include spaces.
+ * @property {string} displayName - The Display Name for the Coin, this would be the full official name and can include spaces.
+ * @property {string} ticker - The "Ticker" that is used to track the Coin on Exchanges
+ * @property {number} satPerCoin - The number of satoshis per single coin
+ * @property {number} feePerKb - The amount of fee in satoshis to pay per kilobyte of data being put into the blockchain
+ * @property {number} feePerByte - The amount of fee in satoshis to pay per byte of data being put into the blockchain
+ * @property {number} maxFeePerByte - The maximum fee to pay per byte of data being put into the blockchain
+ * @property {number} minFee - The minimum fee that should ever be paid
+ * @property {number} dust - Amount in Satoshis of the minimum value allowed to be sent around the network
+ * @property {number} txVersion - The current TX version number for the coin
+ * @property {InsightExplorer} explorer - An InsightExplorer for the current coin so that data can be retreived from the network
+ * @property {function} getExtraBytes - A function that is passed options from TransactionBuilder when a transaction is being built/sent. You can use this to add custom logic/tx hex building.
+ * @property {CoinNetwork} network - The specific coin network variables, same as used in bitcoinjs-lib
+ */
+
+/**
+ * An object that contains information about a coins Name, Network, and access to an explorer
+ * @typedef {Object} CoinNetwork
+ * @property {Object} bip32 - BIP32 Variables
+ * @property {number} bip32.public - The Extended Public Key version bytes
+ * @property {number} bip32.private - The Extended Private Key version bytes
+ * @property {number} slip44 - The `coin_type` number for the coin, must match [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
+ * @property {string} messagePrefix - The Prefix to add on when checking/signing a message
+ * @property {number} pubKeyHash - The coin specific "version" used when creating a Public Key Hash (Public Address)
+ * @property {number} scriptHash - The coin specific "version" used when creating a Script Hash
+ * @property {number} wif - Wallet Import Format "version" for this specific coin
+ */
+
 module.exports = {
 	name: 'flo',
 	displayName: 'Flo',

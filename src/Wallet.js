@@ -5,8 +5,17 @@ import networks from './networks'
 
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
 
-module.exports =
+/** This Class manages all Supported Coins */
 class Wallet {
+	/**
+	 * Create
+	 * @param  {string|Buffer} [seed] - 
+	 * @param  {Object} [settings]
+	 * @param {boolean} [settings.discover] - Defines if the Wallet should "auto-discover" Coin Account chains or not
+	 * @param {Array.<string>} [settings.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
+	 * @param {Array.<CoinInfo>} [settings.networks] - An array containing a custom coins network info
+	 * @return {Wallet}
+	 */
 	constructor(seed, options){
 		// Check if seed is a string or buffer, if not, create a new BIP39 Mnemonic
 		if (typeof seed === "string"){
@@ -89,3 +98,5 @@ class Wallet {
 		return this.seed
 	}
 }
+
+module.exports = Wallet
