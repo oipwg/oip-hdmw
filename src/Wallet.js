@@ -112,7 +112,7 @@ class Wallet {
 	 * @example
 	 * var wallet = new Wallet();
 	 * var coin = wallet.getCoin("bitcoin")
-	 * @return {Coin}
+	 * @return {Coin} Returns the requested Coin
 	 */
 	getCoin(coin){
 		for (var c in this.coins){
