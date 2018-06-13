@@ -20,7 +20,7 @@ test('Get Account Balance of all Chain Addresses', (done) => {
 		expect(totalBalance).toBeGreaterThan(0)
 		done()
 	})
-})
+}, 10000)
 
 test('Discover Chain on Account', (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
@@ -34,4 +34,4 @@ test('Discover Chain on Account', (done) => {
 		expect(acc.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)
 		done();
 	})
-})
+}, 10000)

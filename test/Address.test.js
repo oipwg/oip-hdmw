@@ -3,7 +3,7 @@ var Address = require('../lib/Address');
 var networks = require('../lib/networks');
 
 test('Address is able to check its balance from String', (done) => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo);
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, false);
 
 	address.updateState().then((addr) => {
 		expect(addr.getTotalReceived()).toBeGreaterThan(0)
@@ -20,7 +20,7 @@ test('Address is able to check its balance from BIP32', (done) => {
 		expect(addr.getTotalReceived()).toBeGreaterThan(0)
 		done()
 	})
-})
+}, 10000)
 
 test('Address to PublicAddress', () => {
 	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
@@ -116,7 +116,7 @@ test('get utxo for address', (done) => {
 		expect(utxos.length).toBeGreaterThan(0)
 		done()
 	})
-})
+}, 10000)
 
 test('get utxo for address (remove spent)', (done) => {
 	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, {
@@ -128,4 +128,4 @@ test('get utxo for address (remove spent)', (done) => {
 		expect(utxos.length).toBe(0)
 		done()
 	})
-})
+}, 10000)
