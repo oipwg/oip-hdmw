@@ -34,7 +34,7 @@ class Wallet {
 	 * 
 	 * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
 	 * @param  {Object} [settings] - Wallet settings
-	 * @param {boolean} [settings.discover] - Defines if the Wallet should "auto-discover" Coin Account chains or not
+	 * @param {boolean} [settings.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
 	 * @param {Array.<string>} [settings.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
 	 * @param {Array.<CoinInfo>} [settings.networks] - An array containing a custom coins network info
 	 *
