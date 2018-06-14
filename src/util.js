@@ -5,6 +5,8 @@ import bs58check from 'bs58check'
 import wif from 'wif'
 import varuint from 'varuint-bitcoin'
 
+/** @module util */
+
 function ripemd160 (buffer) {
   return createHash('rmd160').update(buffer).digest()
 }
@@ -25,6 +27,11 @@ function toBase58Check (hash, version) {
   return bs58check.encode(payload)
 }
 
+/**
+ * @param  {Buffer} key - The buffer for the Private/Public Key to encode
+ * @param  {number} version - The specific "version" byte to prepend
+ * @return {string} Returns the Base58 encoded Key
+ */
 function toBase58 (key, version) {
   if (!key){
     return console.log("KEY NULL!!!!")
@@ -33,6 +40,12 @@ function toBase58 (key, version) {
   return toBase58Check(hash160(key), version)
 }
 
+/**
+ * Check if a WIF is valid for a specific CoinNetwork
+ * @param  {string} key - Base58 WIF Private Key
+ * @param  {CoinNetwork} network
+ * @return {Boolean}
+ */
 function isValidWIF (key, network) {
   try {
     let dec = wif.decode(key);
@@ -48,6 +61,12 @@ function isValidWIF (key, network) {
   }
 }
 
+/**
+ * Check if a Public Address is valid for a specific CoinNetwork
+ * @param  {string} address - Base58 Public Address
+ * @param  {CoinNetwork} network
+ * @return {Boolean}
+ */
 function isValidPublicAddress (address, network) {
   try {
     let dec = bitcoin.address.fromBase58Check(address)

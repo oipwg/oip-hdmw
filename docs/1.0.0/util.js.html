@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      Home - Documentation
+      util.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -52,14 +54,14 @@
 
   <div class="top-nav-wrapper">
     <ul>
-      <li  class="active" >
+      <li >
         <a href="index.html">
           
-          
-            <svg fill="#0095dd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
               <path d="M0 0h24v24H0z" fill="none"/>
             </svg>
+          
           
         </a>
       </li>
@@ -79,26 +81,152 @@
 
   <div id="main">
     
+      <h1 class="page-title">
+        util.js
+      </h1>
+    
 
     
       
 
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>import bitcoin from 'bitcoinjs-lib'
+import { Buffer } from 'safe-buffer'
+import createHash from 'create-hash'
+import bs58check from 'bs58check'
+import wif from 'wif'
+import varuint from 'varuint-bitcoin'
+
+/** @module util */
+
+function ripemd160 (buffer) {
+  return createHash('rmd160').update(buffer).digest()
+}
+
+function sha256 (buffer) {
+  return createHash('sha256').update(buffer).digest()
+}
+
+function hash160 (buffer) {
+  return ripemd160(sha256(buffer))
+}
+
+function toBase58Check (hash, version) {
+  var payload = Buffer.allocUnsafe(21)
+  payload.writeUInt8(version, 0)
+  hash.copy(payload, 1)
+
+  return bs58check.encode(payload)
+}
+
+/**
+ * @param  {Buffer} key - The buffer for the Private/Public Key to encode
+ * @param  {number} version - The specific "version" byte to prepend
+ * @return {string} Returns the Base58 encoded Key
+ */
+function toBase58 (key, version) {
+  if (!key){
+    return console.log("KEY NULL!!!!")
+  }
+
+  return toBase58Check(hash160(key), version)
+}
+
+/**
+ * Check if a WIF is valid for a specific CoinNetwork
+ * @param  {string} key - Base58 WIF Private Key
+ * @param  {CoinNetwork} network
+ * @return {Boolean}
+ */
+function isValidWIF (key, network) {
+  try {
+    let dec = wif.decode(key);
+
+    if (network) {
+      return dec.version === network.wif
+    } else {
+      return true
+    }
+  } catch (e) {
+    console.error(e);
+    return false
+  }
+}
+
+/**
+ * Check if a Public Address is valid for a specific CoinNetwork
+ * @param  {string} address - Base58 Public Address
+ * @param  {CoinNetwork} network
+ * @return {Boolean}
+ */
+function isValidPublicAddress (address, network) {
+  try {
+    let dec = bitcoin.address.fromBase58Check(address)
+    if (network) {
+      return dec.version === network.pubKeyHash || dec.version === network.scriptHash
+    } else {
+      return true
+    }
+  } catch (e) {
+    return false
+  }
+}
+
+// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account-discovery
+function discovery (chain, gapLimit, queryCb, i, done) {
+  var gap = 0
+  var checked = 0
+
+  function cycle () {
+    var batch = [chain.get()]
+    checked++
+
+    while (batch.length &lt; gapLimit) {
+      chain.next()
+      batch.push(chain.get())
+
+      checked++
+    }
+
+    queryCb(batch, function (err, queryResultSet) {
+      if (Array.isArray(queryResultSet)) return done(new TypeError('Expected query set, not Array'))
+      if (err) return done(err)
+
+      // iterate batch, guarantees order agnostic of queryCb result ordering
+      batch.forEach(function (a) {
+        if (queryResultSet[toBase58(a.address.publicKey, a.network.pubKeyHash)]) {
+          gap = 0
+        } else {
+          gap += 1
+        }
+      })
+
+      if (gap >= gapLimit) {
+        var used = checked - gap
+
+        return done(undefined, used, checked, i)
+      } else {
+        chain.next()
+      }
+
+      cycle()
+    })
+  }
+
+  cycle()
+}
 
 
-    
-
-      
-
-
-  <section class="readme">
-    <article>
-      <p><img src="https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master" alt="">
-<a href="https://www.npmjs.com/package/oip-hdmw"><img src="https://img.shields.io/npm/v/oip-hdmw.svg" alt=""></a></p>
-<h1>OIP HD-MultiWallet</h1><p><code>oip-hdmw</code> is a full service BIP44 compatable Javascript Wallet. You can spawn and recover the entire wallet for each coin using just a single BIP-39 Mnemonic. The wallet looks up transactions from a provided <code>insight-api</code> server, and constructs transactions using that information.</p>
-<p>Please view the <a href="https://oipwg.github.io/oip-hdmw/">documentation here!</a></p>
-    </article>
-  </section>
-
+module.exports = {
+  toBase58,
+	isValidPublicAddress,
+  isValidWIF,
+  discovery,
+  varIntBuffer: varuint.encode
+}</code></pre>
+  </article>
+</section>
 
     
 

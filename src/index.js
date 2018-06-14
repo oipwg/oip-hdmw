@@ -4,6 +4,7 @@ import Account from './Account'
 import Address from './Address'
 import TransactionBuilder from './TransactionBuilder'
 import Networks from './networks'
+import util from './util'
 
 module.exports = {
 	Wallet,
@@ -11,5 +12,6 @@ module.exports = {
 	Account,
 	Address,
 	TransactionBuilder,
-	Networks
+	Networks,
+	util
 }
