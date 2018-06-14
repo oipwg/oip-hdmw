@@ -94,7 +94,10 @@ class Wallet {
 		this.coins = {};
 
 		// An optional variable to say if we should auto run address discovery on Account Chains
-		this.discover = options.discover || true
+		if (options.discover || options.discover === false)
+			this.discover = options.discover
+		else
+			this.discover = true
 
 		// Validate that each supported coin has a pair network
 		for (var coin of this.supported_coins){
