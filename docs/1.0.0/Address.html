@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      Coin - Documentation
+      Address - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -80,7 +80,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        Coin
+        Address
       </h1>
     
 
@@ -91,13 +91,13 @@
     
       <h2>
         
-        Coin
+        Address
         
       </h2>
 
       
         <div class="class-description">
-          <p>Manage Accounts for a specific Coin</p>
+          <p>Manages information about a specific Address</p>
         </div>
       
     
@@ -114,13 +114,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#Coin">
+    <a class="link-icon" href="#Address">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="Coin">
-      <span class="type-signature"></span>new Coin<span class="signature">(seed, coin, discover<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+    <h4 class="name" id="Address">
+      <span class="type-signature"></span>new Address<span class="signature">(address, coin, discovery<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -129,14 +129,19 @@
 
 
   <div class="description">
-    <p>Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.</p>
-<h5>Examples</h5><p>Create a new Coin using a specified seed.</p>
-<pre class="prettyprint source"><code>import { Coin, Networks } from 'oip-hdmw'
+    <p>Create a new Address based on either a bip32 node, WIF Private Key, or Public Address</p>
+<h5>Examples</h5><p>Create Address from bip32</p>
+<pre class="prettyprint source"><code>import bip32 from 'bip32';
+import { Address, Networks } from 'oip-hdmw';
 
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)</code></pre><p>Create a new Coin using a specified seed, don't auto discover.</p>
-<pre class="prettyprint source"><code>import { Coin, Networks } from 'oip-hdmw'
+var node = bip32.fromBase58(&quot;Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw&quot;, Networks.flo.network)
+var address = new Address(node, Networks.flo);</code></pre><p>Create Address from WIF</p>
+<pre class="prettyprint source"><code>import { Address, Networks } from 'oip-hdmw';
 
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)</code></pre>
+var address = new Address(&quot;RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5&quot;, Networks.flo);</code></pre><p>Create Address from Base58 Public Address</p>
+<pre class="prettyprint source"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networks.flo);</code></pre>
   </div>
 
 
@@ -173,12 +178,18 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
     
       <tr>
         
-          <td class="name"><code>seed</code></td>
+          <td class="name"><code>address</code></td>
         
 
         <td class="type">
           
             
+    <span class="param-type">
+      <a href="global.html#bip32">bip32</a>
+    </span>
+
+    |
+
     <span class="param-type">
       string
     </span>
@@ -206,7 +217,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
         
 
         <td class="description last">
-          <p>Master Seed hex (needs to be at least 128 bits)</p>
+          <p>The Public Address, Private Key (WIF), or bip32 Node that the Address is for.</p>
           
         </td>
       </tr>
@@ -247,7 +258,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
         
 
         <td class="description last">
-          <p>The CoinInfo containing network &amp; version variables</p>
+          <p>CoinInfo for the specific Address</p>
           
         </td>
       </tr>
@@ -255,7 +266,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
     
       <tr>
         
-          <td class="name"><code>discover</code></td>
+          <td class="name"><code>discovery</code></td>
         
 
         <td class="type">
@@ -263,6 +274,12 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
             
     <span class="param-type">
       boolean
+    </span>
+
+    |
+
+    <span class="param-type">
+      <a href="global.html#AddressState">AddressState</a>
     </span>
 
     
@@ -292,7 +309,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
         
 
         <td class="description last">
-          <p>Should the Coin auto-discover Accounts and Chains</p>
+          <p>Either a <code>boolean</code> value for if the Address should auto-discover, or an AddressState object to load the Internal state from.</p>
           
         </td>
       </tr>
@@ -336,7 +353,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line12">line 12</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line66">line 66</a>
         </li>
       </ul>
     </dd>
@@ -389,13 +406,13 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#addAccount">
+    <a class="link-icon" href="#addSpentTransaction">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="addAccount">
-      <span class="type-signature"></span>addAccount<span class="signature">(account_number<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Account.html">Account</a>}</span>
+    <h4 class="name" id="addSpentTransaction">
+      <span class="type-signature"></span>addSpentTransaction<span class="signature">(txid)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -404,8 +421,7 @@ var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, fal
 
 
   <div class="description">
-    <p>Add the Account at the specified number, if it already exists, it returns the Account.
-If the Account does not exist, it will create it and then return it.</p>
+    <p>Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.</p>
   </div>
 
 
@@ -427,434 +443,6 @@ If the Account does not exist, it will create it and then return it.</p>
       <th>Type</th>
 
       
-        <th>Attributes</th>
-      
-
-      
-        <th>Default</th>
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>account_number</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      number
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
-
-        
-          <td class="default">
-            
-              0
-            
-          </td>
-        
-
-        <td class="description last">
-          
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line163">line 163</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#addAccount-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="addAccount-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var account = bitcoin.addAccount(1)</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      <a href="Account.html">Account</a>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getAccount">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getAccount">
-      <span class="type-signature"></span>getAccount<span class="signature">(account_number<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Account.html">Account</a>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Account at the specified number</p>
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-        <th>Attributes</th>
-      
-
-      
-        <th>Default</th>
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>account_number</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      number
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
-
-        
-          <td class="default">
-            
-              0
-            
-          </td>
-        
-
-        <td class="description last">
-          
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line144">line 144</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getAccount-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getAccount-examples">Examples</h5>
-    
-  <p class="code-caption">
-    Get Default Account
-  </p>
-
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var account = bitcoin.getAccount()</code></pre>
-
-  <p class="code-caption">
-    Get Account #1
-  </p>
-
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var account = bitcoin.getAccount(1)</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      <a href="Account.html">Account</a>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getBalance">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getBalance">
-      <span class="type-signature"></span>getBalance<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!</p>
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-        <th>Attributes</th>
-      
 
       
 
@@ -866,66 +454,7 @@ var account = bitcoin.getAccount(1)</code></pre>
     
       <tr>
         
-          <td class="name"><code>options</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      Object
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          <p>Specific options defining what balance to get back</p>
-          
-            <h6>Properties</h6>
-            
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-        <th>Attributes</th>
-      
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>address</code></td>
+          <td class="name"><code>txid</code></td>
         
 
         <td class="type">
@@ -942,68 +471,11 @@ var account = bitcoin.getAccount(1)</code></pre>
         </td>
 
         
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
 
         
 
         <td class="description last">
-          <p>Get Balance for Single Address</p>
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>addresses</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      Array.&lt;string>
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          <p>Get Balance for Addresses</p>
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
+          <p>The TXID of the spent output that we should remove</p>
           
         </td>
       </tr>
@@ -1047,7 +519,7 @@ var account = bitcoin.getAccount(1)</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line71">line 71</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line418">line 418</a>
         </li>
       </ul>
     </dd>
@@ -1073,55 +545,24 @@ var account = bitcoin.getAccount(1)</code></pre>
 
 
   <div class="example-container">
-    <a class="link-icon" href="#getBalance-examples">
+    <a class="link-icon" href="#addSpentTransaction-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="getBalance-examples">Example</h5>
+    <h5 id="addSpentTransaction-examples">Example</h5>
     
-  <p class="code-caption">
-     Get Balance for entire Coin
-  </p>
 
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
 
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-bitcoin.getBalance().then((balance) => {
- 	console.log(balance)
-})</code></pre>
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")</code></pre>
 
 
   </div>
 
 
 
-<h5>Returns:</h5>
-
-        
-  <div class="param-desc">
-    <p>A Promise that will resolve to the balance of the entire Coin</p>
-  </div>
-
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      Promise.&lt;number>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
 
       
         
@@ -1130,13 +571,13 @@ bitcoin.getBalance().then((balance) => {
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#getCoinInfo">
+    <a class="link-icon" href="#fromJSON">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="getCoinInfo">
-      <span class="type-signature"></span>getCoinInfo<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#CoinInfo">CoinInfo</a>}</span>
+    <h4 class="name" id="fromJSON">
+      <span class="type-signature"></span>fromJSON<span class="signature">(state)</span><span class="type-signature"> &rarr; {<a href="Address.html">Address</a>}</span>
     </h4>
   </span>
 
@@ -1145,420 +586,7 @@ bitcoin.getBalance().then((balance) => {
 
 
   <div class="description">
-    <p>Get the CoinInfo for the Coin</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line188">line 188</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getCoinInfo-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getCoinInfo-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var coin_info = bitcoin.getCoinInfo()
-// coin_info = Networks.bitcoin</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      <a href="global.html#CoinInfo">CoinInfo</a>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getExtendedPrivateKey">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getExtendedPrivateKey">
-      <span class="type-signature"></span>getExtendedPrivateKey<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Extended Private Key for the root path. This is derived at m/44'/coin_type'</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line113">line 113</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getExtendedPrivateKey-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getExtendedPrivateKey-examples">Example</h5>
-    
-  <p class="code-caption">
-    Get the Extended Private Key for the entire Coin
-  </p>
-
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var extPrivateKey = bitcoin.getExtendedPrivateKey()
-// extPrivateKey = xprv9x8MQtHNRrGgrnWPkUxjUC57DWKgkjobwAYUFedxVa2FAA5qaQuGqLkJnVcszqomTar51PCR8JiKnGGgzK9eJKGjbpUirKPVHxH2PU2Rc93</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-  <div class="param-desc">
-    <p>The Extended Private Key</p>
-  </div>
-
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getExtendedPublicKey">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getExtendedPublicKey">
-      <span class="type-signature"></span>getExtendedPublicKey<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Neutered Extended Public Key for the root path. This is derived at m/44'/coin_type'</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line126">line 126</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getExtendedPublicKey-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getExtendedPublicKey-examples">Example</h5>
-    
-  <p class="code-caption">
-    Get the Extended Private Key for the entire Coin
-  </p>
-
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var extPublicKey = bitcoin.getExtendedPrivateKey()
-// extPublicKey = xpub6B7hpPpGGDpz5GarrWVjqL1qmYABACXTJPU5433a3uZE2xQz7xDXP94ndkjrxogjordTDSDaHY4i5G4HqRH6E9FJZk2F4ED4cbnprW2Vm9v</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-  <div class="param-desc">
-    <p>The Extended Public Key</p>
-  </div>
-
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getMainAddress">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getMainAddress">
-      <span class="type-signature"></span>getMainAddress<span class="signature">(account_number<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Address.html">Address</a>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Main Address for a specific Account number. 
-This is the Address at index 0 on the External Chain of the Account.</p>
+    <p>Load Address state from an AddressState object</p>
   </div>
 
 
@@ -1580,11 +608,7 @@ This is the Address at index 0 on the External Chain of the Account.</p>
       <th>Type</th>
 
       
-        <th>Attributes</th>
-      
 
-      
-        <th>Default</th>
       
 
       <th class="last">Description</th>
@@ -1595,14 +619,14 @@ This is the Address at index 0 on the External Chain of the Account.</p>
     
       <tr>
         
-          <td class="name"><code>account_number</code></td>
+          <td class="name"><code>state</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      number
+      <a href="global.html#AddressState">AddressState</a>
     </span>
 
     
@@ -1612,27 +636,11 @@ This is the Address at index 0 on the External Chain of the Account.</p>
         </td>
 
         
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
 
-            
-
-            
-          </td>
-        
-
-        
-          <td class="default">
-            
-              0
-            
-          </td>
         
 
         <td class="description last">
-          <p>Number of the Account you wish to get</p>
+          
           
         </td>
       </tr>
@@ -1676,7 +684,7 @@ This is the Address at index 0 on the External Chain of the Account.</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line92">line 92</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line221">line 221</a>
         </li>
       </ul>
     </dd>
@@ -1702,32 +710,30 @@ This is the Address at index 0 on the External Chain of the Account.</p>
 
 
   <div class="example-container">
-    <a class="link-icon" href="#getMainAddress-examples">
+    <a class="link-icon" href="#fromJSON-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="getMainAddress-examples">Examples</h5>
+    <h5 id="fromJSON-examples">Example</h5>
     
-  <p class="code-caption">
-    Get Main Address for Coin
-  </p>
 
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
 
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var mainAddress = bitcoin.getMainAddress()</code></pre>
+address.fromJSON({ 
+	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+	balanceSat: 123,
+	totalReceivedSat: 234,
+	unconfirmedBalanceSat: 345,
+	transactions: ['abcde'],
+	spentTransactions: ['bcdef'],
+	lastUpdated: 456 
+})
 
-  <p class="code-caption">
-    Get Main Address for Account #1 on Coin
-  </p>
-
-
-  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
-
-var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
-var mainAddress = bitcoin.getMainAddress(1)</code></pre>
+var balance = address.getBalance()
+// balance = 0.00000123</code></pre>
 
 
   </div>
@@ -1763,13 +769,13 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#sendPayment">
+    <a class="link-icon" href="#getBalance">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="sendPayment">
-      <span class="type-signature"></span>sendPayment<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
+    <h4 class="name" id="getBalance">
+      <span class="type-signature"></span>getBalance<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
     </h4>
   </span>
 
@@ -1778,7 +784,1074 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
 
 
   <div class="description">
-    <p>Send payment, NOT YET IMPLEMENTED!</p>
+    <p>Get the Balance (in whole coins) for the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line298">line 298</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getBalance-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getBalance-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+var balance = address.getBalance();
+// balance = 0</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getECPair">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getECPair">
+      <span class="type-signature"></span>getECPair<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#ECPair">ECPair</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers. 
+Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access 
+to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
+the ECPair will exist.</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line180">line 180</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getECPair-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getECPair-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import bip32 from 'bip32';
+import { Address, Networks } from 'oip-hdmw';
+
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo);
+var ecpair = address.getECPair();</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="global.html#ECPair">ECPair</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getPrivateAddress">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getPrivateAddress">
+      <span class="type-signature"></span>getPrivateAddress<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Base58 sharable Private Address (WIF)</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line163">line 163</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getPrivateAddress-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getPrivateAddress-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import bip32 from 'bip32';
+import { Address, Networks } from 'oip-hdmw';
+
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo);
+var wif = address.getPrivateAddress();
+// wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getPublicAddress">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getPublicAddress">
+      <span class="type-signature"></span>getPublicAddress<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Base58 sharable Public Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line148">line 148</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getPublicAddress-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getPublicAddress-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
+var pubAddr = address.getPublicAddress();
+// pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getTotalReceived">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getTotalReceived">
+      <span class="type-signature"></span>getTotalReceived<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Total Recieved balance (in whole coins) for the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line311">line 311</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getTotalReceived-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getTotalReceived-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+var totReceived = address.getTotalReceived();
+// totReceived = 0</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getTotalSent">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getTotalSent">
+      <span class="type-signature"></span>getTotalSent<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Total Sent balance (in whole coins) for the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line324">line 324</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getTotalSent-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getTotalSent-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+var totSent = address.getTotalSent();
+// totSent = 0</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getUnconfirmedBalance">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getUnconfirmedBalance">
+      <span class="type-signature"></span>getUnconfirmedBalance<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Unconfirmed Balance (in whole coins) for the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line337">line 337</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getUnconfirmedBalance-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getUnconfirmedBalance-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+var uBal = address.getUnconfirmedBalance();
+// uBal = 0</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getUnspent">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getUnspent">
+      <span class="type-signature"></span>getUnspent<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#utxo">utxo</a>>>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the unspent transaction outputs for the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line351">line 351</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getUnspent-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getUnspent-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+address.getUnspent().then((utxos) => {
+	console.log(utxos);
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>Returns a Promise that resolves to an Array of utxos.</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise.&lt;Array.&lt;<a href="global.html#utxo">utxo</a>>>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#removeSpent">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="removeSpent">
+      <span class="type-signature"></span>removeSpent<span class="signature">(unspentTransactions)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#utxo">utxo</a>>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Remove the already spent outputs from the array we are given.</p>
   </div>
 
 
@@ -1811,14 +1884,14 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
     
       <tr>
         
-          <td class="name"><code>options</code></td>
+          <td class="name"><code>unspentTransactions</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      Object
+      Array.&lt;<a href="global.html#utxo">utxo</a>>
     </span>
 
     
@@ -1832,7 +1905,7 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
         
 
         <td class="description last">
-          
+          <p>An Array containing utxos to sort through</p>
           
         </td>
       </tr>
@@ -1876,7 +1949,7 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line100">line 100</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line369">line 369</a>
         </li>
       </ul>
     </dd>
@@ -1901,13 +1974,307 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
 
 
 
+  <div class="example-container">
+    <a class="link-icon" href="#removeSpent-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="removeSpent-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+address.getUnspent().then((utxos) => {
+	var unspent_utxos = address.removeSpent(utxos)
+	console.log(unspent_utxos)
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Array.&lt;<a href="global.html#utxo">utxo</a>>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#toJSON">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="toJSON">
+      <span class="type-signature"></span>toJSON<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#AddressState">AddressState</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the current AddressState from the Address</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line277">line 277</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#toJSON-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="toJSON-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+
+var address_state = address.toJSON()
+// address_state = { 
+// 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+// 	balanceSat: 0,
+// 	totalReceivedSat: 0,
+// 	unconfirmedBalanceSat: 0,
+// 	transactions: [],
+// 	spentTransactions: [],
+// 	lastUpdated: 0 
+// }</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="global.html#AddressState">AddressState</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#updateState">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="updateState">
+      <span class="type-signature"></span>updateState<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Address.html">Address</a>>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the latest State for this address from the Blockchain Explorer</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line194">line 194</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#updateState-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="updateState-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+
+var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
+address.updateState().then((addr) => {
+	console.log(addr.getTotalReceived())
+})</code></pre>
+
+
+  </div>
+
 
 
 <h5>Returns:</h5>
 
         
   <div class="param-desc">
-    <p>A Promise that will resolve to the success txid</p>
+    <p>Returns a Promise that will resolve to the Address</p>
   </div>
 
 
@@ -1917,7 +2284,7 @@ var mainAddress = bitcoin.getMainAddress(1)</code></pre>
     <dd>
       
     <span class="param-type">
-      Promise.&lt;string>
+      Promise.&lt;<a href="Address.html">Address</a>>
     </span>
 
     
