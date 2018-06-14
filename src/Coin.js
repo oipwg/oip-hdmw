@@ -11,7 +11,22 @@ const COIN_START = 0x80000000;
  */
 class Coin {
 	/**
-	 * @param  {string} seed - Master Seed hex
+	 * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.
+	 *
+	 * ##### Examples
+	 * Create a new Coin using a specified seed.
+	 *```
+	 *import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 *```
+	 * Create a new Coin using a specified seed, don't auto discover.
+	 *```
+	 *import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+	 *```
+	 * @param  {string} seed - Master Seed hex (needs to be at least 128 bits)
 	 * @param  {CoinInfo} coin - The CoinInfo containing network & version variables
 	 * @param  {boolean} [discover=true] - Should the Coin auto-discover Accounts and Chains
 	 * @return {Coin}
@@ -40,11 +55,18 @@ class Coin {
 		this.addAccount(0);
 	}
 	/**
-	 * Get the balance for the entire coin, or a specific address/array of addresses
+	 * Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!
 	 * @param  {Object} [options] - Specific options defining what balance to get back
 	 * @param {string} [options.address] - Get Balance for Single Address
 	 * @param {Array.<string>} [options.addresses] - Get Balance for Addresses
-	 * @return {number} Returns a numerical balance
+	 * @example <caption> Get Balance for entire Coin</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * bitcoin.getBalance().then((balance) => {
+	 *  	console.log(balance)
+	 * })
+	 * @return {Promise<number>} A Promise that will resolve to the balance of the entire Coin
 	 */
 	getBalance(options){
 		if (options.address){
@@ -55,6 +77,16 @@ class Coin {
 	 * Get the Main Address for a specific Account number. 
 	 * This is the Address at index 0 on the External Chain of the Account.
 	 * @param  {number} [account_number=0] - Number of the Account you wish to get
+	 * @example <caption>Get Main Address for Coin</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var mainAddress = bitcoin.getMainAddress()
+	 * @example <caption>Get Main Address for Account #1 on Coin</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var mainAddress = bitcoin.getMainAddress(1)
 	 * @return {Address}
 	 */
 	getMainAddress(account_number){
@@ -70,6 +102,12 @@ class Coin {
 	}
 	/**
 	 * Get the Extended Private Key for the root path. This is derived at m/44'/coin_type'
+	 * @example <caption>Get the Extended Private Key for the entire Coin</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var extPrivateKey = bitcoin.getExtendedPrivateKey()
+	 * // extPrivateKey = xprv9x8MQtHNRrGgrnWPkUxjUC57DWKgkjobwAYUFedxVa2FAA5qaQuGqLkJnVcszqomTar51PCR8JiKnGGgzK9eJKGjbpUirKPVHxH2PU2Rc93
 	 * @return {string} The Extended Private Key
 	 */
 	getExtendedPrivateKey(){
@@ -77,6 +115,12 @@ class Coin {
 	}
 	/**
 	 * Get the Neutered Extended Public Key for the root path. This is derived at m/44'/coin_type'
+	 * @example <caption>Get the Extended Private Key for the entire Coin</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var extPublicKey = bitcoin.getExtendedPrivateKey()
+	 * // extPublicKey = xpub6B7hpPpGGDpz5GarrWVjqL1qmYABACXTJPU5433a3uZE2xQz7xDXP94ndkjrxogjordTDSDaHY4i5G4HqRH6E9FJZk2F4ED4cbnprW2Vm9v
 	 * @return {string} The Extended Public Key
 	 */
 	getExtendedPublicKey(){
@@ -85,6 +129,16 @@ class Coin {
 	/**
 	 * Get the Account at the specified number
 	 * @param  {number} [account_number=0]
+	 * @example <caption>Get Default Account</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.getAccount()
+	 * @example <caption>Get Account #1</caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.getAccount(1)
 	 * @return {Account}
 	 */
 	getAccount(account_number){
@@ -99,6 +153,11 @@ class Coin {
 	 * Add the Account at the specified number, if it already exists, it returns the Account.
 	 * If the Account does not exist, it will create it and then return it.
 	 * @param  {number} [account_number=0]
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.addAccount(1)
 	 * @return {Account}
 	 */
 	addAccount(account_number){
@@ -118,6 +177,12 @@ class Coin {
 	}
 	/**
 	 * Get the CoinInfo for the Coin
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var coin_info = bitcoin.getCoinInfo()
+	 * // coin_info = Networks.bitcoin
 	 * @return {CoinInfo}
 	 */
 	getCoinInfo(){
