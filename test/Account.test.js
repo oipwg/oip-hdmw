@@ -1,6 +1,6 @@
 var bip32 = require('bip32');
-var Account = require('../lib/Account');
-var networks = require('../lib/networks');
+var Account = require('../lib').Account;
+var networks = require('../lib').Networks;
 
 test('Account keys generated from Mnemonic Match', () => {
 	var accountMaster = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
@@ -15,6 +15,9 @@ test('Get Account Balance of all Chain Addresses', (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
 	
 	var account = new Account(accountMaster, networks.flo, false);
+
+	console.log(account.getExtendedPrivateKey())
+	console.log(account.getExtendedPublicKey())
 
 	account.getBalance().then((totalBalance) => {
 		expect(totalBalance).toBeGreaterThan(0)

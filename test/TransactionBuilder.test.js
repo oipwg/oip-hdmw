@@ -1,8 +1,8 @@
 var bip32 = require('bip32');
-var TransactionBuilder = require('../lib/TransactionBuilder');
-var networks = require('../lib/networks');
-var Account = require('../lib/Account');
-var Address = require('../lib/Address');
+var TransactionBuilder = require('../lib').TransactionBuilder;
+var networks = require('../lib').Networks;
+var Account = require('../lib').Account;
+var Address = require('../lib').Address;
 
 test("TransactionBuilder should load a From Address", () => {
 	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)

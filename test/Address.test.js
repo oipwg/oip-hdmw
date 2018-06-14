@@ -1,6 +1,6 @@
 var bip32 = require('bip32');
-var Address = require('../lib/Address');
-var networks = require('../lib/networks');
+var Address = require('../lib').Address;
+var networks = require('../lib').Networks;
 
 test('Address is able to check its balance from String', (done) => {
 	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, false);

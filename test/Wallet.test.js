@@ -1,4 +1,4 @@
-var Wallet = require('../lib');
+var Wallet = require('../lib').Wallet;
 
 test('Wallet can be defined from Mnemonic', () => {
 	var w = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about", {discover: false})
