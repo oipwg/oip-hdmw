@@ -76,7 +76,7 @@
       OIP HDMW
     </h3>
 
-    <h3>Classes</h3><ul><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChainsIfNeeded-nav"><a href="Account.html#discoverChainsIfNeeded">discoverChainsIfNeeded</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
   </nav>
 
   <div id="main">
@@ -104,7 +104,22 @@ const COIN_START = 0x80000000;
  */
 class Coin {
 	/**
-	 * @param  {string} seed - Master Seed hex
+	 * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.
+	 *
+	 * ##### Examples
+	 * Create a new Coin using a specified seed.
+	 *```
+	 *import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 *```
+	 * Create a new Coin using a specified seed, don't auto discover.
+	 *```
+	 *import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+	 *```
+	 * @param  {string} seed - Master Seed hex (needs to be at least 128 bits)
 	 * @param  {CoinInfo} coin - The CoinInfo containing network &amp; version variables
 	 * @param  {boolean} [discover=true] - Should the Coin auto-discover Accounts and Chains
 	 * @return {Coin}
@@ -133,11 +148,18 @@ class Coin {
 		this.addAccount(0);
 	}
 	/**
-	 * Get the balance for the entire coin, or a specific address/array of addresses
+	 * Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!
 	 * @param  {Object} [options] - Specific options defining what balance to get back
 	 * @param {string} [options.address] - Get Balance for Single Address
 	 * @param {Array.&lt;string>} [options.addresses] - Get Balance for Addresses
-	 * @return {number} Returns a numerical balance
+	 * @example &lt;caption> Get Balance for entire Coin&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * bitcoin.getBalance().then((balance) => {
+	 *  	console.log(balance)
+	 * })
+	 * @return {Promise&lt;number>} A Promise that will resolve to the balance of the entire Coin
 	 */
 	getBalance(options){
 		if (options.address){
@@ -148,6 +170,16 @@ class Coin {
 	 * Get the Main Address for a specific Account number. 
 	 * This is the Address at index 0 on the External Chain of the Account.
 	 * @param  {number} [account_number=0] - Number of the Account you wish to get
+	 * @example &lt;caption>Get Main Address for Coin&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var mainAddress = bitcoin.getMainAddress()
+	 * @example &lt;caption>Get Main Address for Account #1 on Coin&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var mainAddress = bitcoin.getMainAddress(1)
 	 * @return {Address}
 	 */
 	getMainAddress(account_number){
@@ -163,6 +195,12 @@ class Coin {
 	}
 	/**
 	 * Get the Extended Private Key for the root path. This is derived at m/44'/coin_type'
+	 * @example &lt;caption>Get the Extended Private Key for the entire Coin&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var extPrivateKey = bitcoin.getExtendedPrivateKey()
+	 * // extPrivateKey = xprv9x8MQtHNRrGgrnWPkUxjUC57DWKgkjobwAYUFedxVa2FAA5qaQuGqLkJnVcszqomTar51PCR8JiKnGGgzK9eJKGjbpUirKPVHxH2PU2Rc93
 	 * @return {string} The Extended Private Key
 	 */
 	getExtendedPrivateKey(){
@@ -170,6 +208,12 @@ class Coin {
 	}
 	/**
 	 * Get the Neutered Extended Public Key for the root path. This is derived at m/44'/coin_type'
+	 * @example &lt;caption>Get the Extended Private Key for the entire Coin&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var extPublicKey = bitcoin.getExtendedPrivateKey()
+	 * // extPublicKey = xpub6B7hpPpGGDpz5GarrWVjqL1qmYABACXTJPU5433a3uZE2xQz7xDXP94ndkjrxogjordTDSDaHY4i5G4HqRH6E9FJZk2F4ED4cbnprW2Vm9v
 	 * @return {string} The Extended Public Key
 	 */
 	getExtendedPublicKey(){
@@ -178,6 +222,16 @@ class Coin {
 	/**
 	 * Get the Account at the specified number
 	 * @param  {number} [account_number=0]
+	 * @example &lt;caption>Get Default Account&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.getAccount()
+	 * @example &lt;caption>Get Account #1&lt;/caption>
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.getAccount(1)
 	 * @return {Account}
 	 */
 	getAccount(account_number){
@@ -192,6 +246,11 @@ class Coin {
 	 * Add the Account at the specified number, if it already exists, it returns the Account.
 	 * If the Account does not exist, it will create it and then return it.
 	 * @param  {number} [account_number=0]
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var account = bitcoin.addAccount(1)
 	 * @return {Account}
 	 */
 	addAccount(account_number){
@@ -211,6 +270,12 @@ class Coin {
 	}
 	/**
 	 * Get the CoinInfo for the Coin
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var coin_info = bitcoin.getCoinInfo()
+	 * // coin_info = Networks.bitcoin
 	 * @return {CoinInfo}
 	 */
 	getCoinInfo(){

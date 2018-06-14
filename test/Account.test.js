@@ -16,9 +16,6 @@ test('Get Account Balance of all Chain Addresses', (done) => {
 	
 	var account = new Account(accountMaster, networks.flo, false);
 
-	console.log(account.getExtendedPrivateKey())
-	console.log(account.getExtendedPublicKey())
-
 	account.getBalance().then((totalBalance) => {
 		expect(totalBalance).toBeGreaterThan(0)
 		done()
