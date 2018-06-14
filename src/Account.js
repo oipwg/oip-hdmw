@@ -16,6 +16,7 @@ const GAP_LIMIT = 20;
 const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
 	return { address: node, network: network }
 }
+
 /**
  * A BIP32 Node that manages Derivation of Chains and Addresses. This is created from the [`bip32` npm package managed by `bitcoinjs`](https://github.com/bitcoinjs/bip32).
  * @typedef {Object} bip32
