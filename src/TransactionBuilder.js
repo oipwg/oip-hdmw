@@ -154,7 +154,7 @@ class TransactionBuilder {
 			for (var i in inputs){
 				for (var addr of this.from){
 					if (addr.getPublicAddress() === inputs[i].address){
-						txb.sign(parseInt(i), addr.getECKey())
+						txb.sign(parseInt(i), addr.getECPair())
 					}
 				}
 			}
