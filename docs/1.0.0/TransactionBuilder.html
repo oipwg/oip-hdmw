@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      Address - Documentation
+      TransactionBuilder - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -80,7 +80,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        Address
+        TransactionBuilder
       </h1>
     
 
@@ -91,13 +91,13 @@
     
       <h2>
         
-        Address
+        TransactionBuilder
         
       </h2>
 
       
         <div class="class-description">
-          <p>Manages information about a specific Address</p>
+          <p>Build &amp; Send Transactions out to the network Easily using Addresses!</p>
         </div>
       
     
@@ -118,13 +118,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#Address">
+    <a class="link-icon" href="#TransactionBuilder">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="Address">
-      <span class="type-signature"></span>new Address<span class="signature">(address, coin, discovery<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+    <h4 class="name" id="TransactionBuilder">
+      <span class="type-signature"></span>new TransactionBuilder<span class="signature">(coin, options<span class="signature-attributes">opt</span>, account<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -133,19 +133,18 @@
 
 
   <div class="description">
-    <p>Create a new Address based on either a bip32 node, WIF Private Key, or Public Address</p>
-<h5>Examples</h5><p>Create Address from bip32</p>
-<pre class="prettyprint source"><code>import bip32 from 'bip32';
-import { Address, Networks } from 'oip-hdmw';
+    <p>Create a new TransactionBuilder</p>
+<h5>Example</h5><pre class="prettyprint source"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
 
 var node = bip32.fromBase58(&quot;Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw&quot;, Networks.flo.network)
-var address = new Address(node, Networks.flo);</code></pre><p>Create Address from WIF</p>
-<pre class="prettyprint source"><code>import { Address, Networks } from 'oip-hdmw';
+var address = new Address(node, Networks.flo, false)
 
-var address = new Address(&quot;RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5&quot;, Networks.flo);</code></pre><p>Create Address from Base58 Public Address</p>
-<pre class="prettyprint source"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networks.flo);</code></pre>
+var builder = new TransactionBuilder(Networks.flo, {
+    from: address,
+    to: {&quot;FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu&quot;: 0.00001},
+    floData: &quot;Testing oip-hdmw!&quot;
+})</code></pre>
   </div>
 
 
@@ -171,61 +170,12 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
       
 
       
-        <th>Default</th>
-      
 
       <th class="last">Description</th>
     </tr>
   </thead>
 
   <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>address</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      <a href="global.html#bip32">bip32</a>
-    </span>
-
-    |
-
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-          <td class="default">
-            
-          </td>
-        
-
-        <td class="description last">
-          <p>The Public Address, Private Key (WIF), or bip32 Node that the Address is for.</p>
-          
-        </td>
-      </tr>
-
     
       <tr>
         
@@ -256,13 +206,9 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
         
 
         
-          <td class="default">
-            
-          </td>
-        
 
         <td class="description last">
-          <p>CoinInfo for the specific Address</p>
+          <p>CoinInfo for this specific Network you want to send the Transaction on.</p>
           
         </td>
       </tr>
@@ -270,20 +216,169 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
     
       <tr>
         
-          <td class="name"><code>discovery</code></td>
+          <td class="name"><code>options</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      boolean
+      Object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          
+          
+            <h6>Properties</h6>
+            
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>from</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="Address.html">Address</a>
     </span>
 
     |
 
     <span class="param-type">
-      <a href="global.html#AddressState">AddressState</a>
+      Array.&lt;<a href="Address.html">Address</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The Address(es) to send from.</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>to</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="global.html#OutputAddress">OutputAddress</a>
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;<a href="global.html#OutputAddress">OutputAddress</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The amounts &amp; Address(es) to send to.</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>floData</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
     </span>
 
     
@@ -307,13 +402,60 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
         
           <td class="default">
             
-              true
+              ""
             
           </td>
         
 
         <td class="description last">
-          <p>Either a <code>boolean</code> value for if the Address should auto-discover, or an AddressState object to load the Internal state from.</p>
+          <p>The FloData to be added to the Transaction</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>account</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="Account.html">Account</a>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>An Account to get a Change Address from if needed, if undefined, change will be sent to first <code>from</code> Address.</p>
           
         </td>
       </tr>
@@ -357,7 +499,7 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line66">line 66</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line59">line 59</a>
         </li>
       </ul>
     </dd>
@@ -414,13 +556,13 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#addSpentTransaction">
+    <a class="link-icon" href="#addFrom">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="addSpentTransaction">
-      <span class="type-signature"></span>addSpentTransaction<span class="signature">(txid)</span><span class="type-signature"></span>
+    <h4 class="name" id="addFrom">
+      <span class="type-signature"></span>addFrom<span class="signature">(address)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -429,7 +571,7 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
 
 
   <div class="description">
-    <p>Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.</p>
+    <p>Add an Address to send from</p>
   </div>
 
 
@@ -462,305 +604,12 @@ var address = new Address(&quot;F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp&quot;, Networ
     
       <tr>
         
-          <td class="name"><code>txid</code></td>
+          <td class="name"><code>address</code></td>
         
 
         <td class="type">
           
             
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          <p>The TXID of the spent output that we should remove</p>
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line418">line 418</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#addSpentTransaction-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="addSpentTransaction-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")</code></pre>
-
-
-  </div>
-
-
-
-
-      
-        
-
-<br />
-<br />
-<hr />
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#fromJSON">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="fromJSON">
-      <span class="type-signature"></span>fromJSON<span class="signature">(state)</span><span class="type-signature"> &rarr; {<a href="Address.html">Address</a>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Load Address state from an AddressState object</p>
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>state</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      <a href="global.html#AddressState">AddressState</a>
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line221">line 221</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#fromJSON-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="fromJSON-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-
-address.fromJSON({ 
-	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
-	balanceSat: 123,
-	totalReceivedSat: 234,
-	unconfirmedBalanceSat: 345,
-	transactions: ['abcde'],
-	spentTransactions: ['bcdef'],
-	lastUpdated: 456 
-})
-
-var balance = address.getBalance()
-// balance = 0.00000123</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
     <span class="param-type">
       <a href="Address.html">Address</a>
     </span>
@@ -768,45 +617,22 @@ var balance = address.getBalance()
     
 
 
-    </dd>
-  </dl>
+          
+        </td>
 
-
-    
-
-      
         
 
-<br />
-<br />
-<hr />
+        
 
+        <td class="description last">
+          <p>Address to add to the From Addresses</p>
+          
+        </td>
+      </tr>
 
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getBalance">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getBalance">
-      <span class="type-signature"></span>getBalance<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Balance (in whole coins) for the Address</p>
-  </div>
-
-
-
-
-
+    
+  </tbody>
+</table>
 
 
 
@@ -843,7 +669,7 @@ var balance = address.getBalance()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line298">line 298</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line110">line 110</a>
         </li>
       </ul>
     </dd>
@@ -869,186 +695,28 @@ var balance = address.getBalance()
 
 
   <div class="example-container">
-    <a class="link-icon" href="#getBalance-examples">
+    <a class="link-icon" href="#addFrom-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="getBalance-examples">Example</h5>
+    <h5 id="addFrom-examples">Example</h5>
     
 
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-var balance = address.getBalance();
-// balance = 0</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      number
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-<br />
-<br />
-<hr />
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getECPair">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getECPair">
-      <span class="type-signature"></span>getECPair<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#ECPair">ECPair</a>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers. 
-Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access 
-to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
-the ECPair will exist.</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line180">line 180</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getECPair-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getECPair-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import bip32 from 'bip32';
-import { Address, Networks } from 'oip-hdmw';
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
 
 var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-var address = new Address(node, Networks.flo);
-var ecpair = address.getECPair();</code></pre>
+var address = new Address(node, Networks.flo, false)
+
+var builder = new TransactionBuilder(Networks.flo)
+builder.addFrom(address);</code></pre>
 
 
   </div>
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      <a href="global.html#ECPair">ECPair</a>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
 
       
         
@@ -1061,13 +729,13 @@ var ecpair = address.getECPair();</code></pre>
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#getPrivateAddress">
+    <a class="link-icon" href="#addTo">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="getPrivateAddress">
-      <span class="type-signature"></span>getPrivateAddress<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    <h4 class="name" id="addTo">
+      <span class="type-signature"></span>addTo<span class="signature">(address, amount)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -1076,7 +744,7 @@ var ecpair = address.getECPair();</code></pre>
 
 
   <div class="description">
-    <p>Get the Base58 sharable Private Address (WIF)</p>
+    <p>Add an Address and Amount to send to</p>
   </div>
 
 
@@ -1085,96 +753,36 @@ var ecpair = address.getECPair();</code></pre>
 
 
 
-
-
-
-<dl class="details">
-
+  <h5>Parameters:</h5>
   
 
-  
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
 
-  
+      <th>Type</th>
 
-  
+      
 
-  
+      
 
-  
+      <th class="last">Description</th>
+    </tr>
+  </thead>
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line163">line 163</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getPrivateAddress-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getPrivateAddress-examples">Example</h5>
+  <tbody>
     
-
-  <pre class="prettyprint"><code>import bip32 from 'bip32';
-import { Address, Networks } from 'oip-hdmw';
-
-var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-var address = new Address(node, Networks.flo);
-var wif = address.getPrivateAddress();
-// wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
+      <tr>
+        
+          <td class="name"><code>address</code></td>
         
 
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
+        <td class="type">
+          
+            
     <span class="param-type">
       string
     </span>
@@ -1182,271 +790,28 @@ var wif = address.getPrivateAddress();
     
 
 
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-<br />
-<br />
-<hr />
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getPublicAddress">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getPublicAddress">
-      <span class="type-signature"></span>getPublicAddress<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Base58 sharable Public Address</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line148">line 148</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getPublicAddress-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getPublicAddress-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
-var pubAddr = address.getPublicAddress();
-// pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
+          
+        </td>
 
         
 
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
         
 
-<br />
-<br />
-<hr />
+        <td class="description last">
+          <p>Base58 Public Address to send To</p>
+          
+        </td>
+      </tr>
 
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getTotalReceived">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getTotalReceived">
-      <span class="type-signature"></span>getTotalReceived<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the Total Recieved balance (in whole coins) for the Address</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line311">line 311</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getTotalReceived-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getTotalReceived-examples">Example</h5>
     
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-var totReceived = address.getTotalReceived();
-// totReceived = 0</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
+      <tr>
+        
+          <td class="name"><code>amount</code></td>
         
 
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
+        <td class="type">
+          
+            
     <span class="param-type">
       number
     </span>
@@ -1454,11 +819,103 @@ var totReceived = address.getTotalReceived();
     
 
 
-    </dd>
-  </dl>
+          
+        </td>
 
+        
+
+        
+
+        <td class="description last">
+          <p>Amount to Send (in whole coin)</p>
+          
+        </td>
+      </tr>
 
     
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line130">line 130</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#addTo-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="addTo-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { TransactionBuilder, Networks } from 'oip-hdmw'
+
+var builder = new TransactionBuilder(Networks.flo)
+builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);</code></pre>
+
+
+  </div>
+
+
+
 
       
         
@@ -1471,13 +928,13 @@ var totReceived = address.getTotalReceived();
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#getTotalSent">
+    <a class="link-icon" href="#buildInputsAndOutputs">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="getTotalSent">
-      <span class="type-signature"></span>getTotalSent<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    <h4 class="name" id="buildInputsAndOutputs">
+      <span class="type-signature"></span>buildInputsAndOutputs<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#SelectedInputOutput">SelectedInputOutput</a>}</span>
     </h4>
   </span>
 
@@ -1486,7 +943,7 @@ var totReceived = address.getTotalReceived();
 
 
   <div class="description">
-    <p>Get the Total Sent balance (in whole coins) for the Address</p>
+    <p>Get calculated Inputs and Outputs (and Fee) for From and To Addresses</p>
   </div>
 
 
@@ -1529,7 +986,7 @@ var totReceived = address.getTotalReceived();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line324">line 324</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line243">line 243</a>
         </li>
       </ul>
     </dd>
@@ -1555,19 +1012,33 @@ var totReceived = address.getTotalReceived();
 
 
   <div class="example-container">
-    <a class="link-icon" href="#getTotalSent-examples">
+    <a class="link-icon" href="#buildInputsAndOutputs-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="getTotalSent-examples">Example</h5>
+    <h5 id="buildInputsAndOutputs-examples">Example</h5>
     
 
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
 
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-var totSent = address.getTotalSent();
-// totSent = 0</code></pre>
+var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+var account = new Account(accountMaster, networks.flo, false);
+
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo, false)
+
+var builder = new TransactionBuilder(Networks.flo, {
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+}, account)
+
+builder.buildInputsAndOutputs().then((calculated) => {
+	console.log(calculated.inputs)
+	console.log(calculated.outputs)
+	console.log(calculated.fee)
+})</code></pre>
 
 
   </div>
@@ -1584,7 +1055,7 @@ var totSent = address.getTotalSent();
     <dd>
       
     <span class="param-type">
-      number
+      <a href="global.html#SelectedInputOutput">SelectedInputOutput</a>
     </span>
 
     
@@ -1607,13 +1078,13 @@ var totSent = address.getTotalSent();
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#getUnconfirmedBalance">
+    <a class="link-icon" href="#buildTX">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="getUnconfirmedBalance">
-      <span class="type-signature"></span>getUnconfirmedBalance<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span>
+    <h4 class="name" id="buildTX">
+      <span class="type-signature"></span>buildTX<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
     </h4>
   </span>
 
@@ -1622,7 +1093,7 @@ var totSent = address.getTotalSent();
 
 
   <div class="description">
-    <p>Get the Unconfirmed Balance (in whole coins) for the Address</p>
+    <p>Build the Transaction hex for the From and To addresses</p>
   </div>
 
 
@@ -1665,7 +1136,7 @@ var totSent = address.getTotalSent();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line337">line 337</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line330">line 330</a>
         </li>
       </ul>
     </dd>
@@ -1691,155 +1162,32 @@ var totSent = address.getTotalSent();
 
 
   <div class="example-container">
-    <a class="link-icon" href="#getUnconfirmedBalance-examples">
+    <a class="link-icon" href="#buildTX-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="getUnconfirmedBalance-examples">Example</h5>
+    <h5 id="buildTX-examples">Example</h5>
     
 
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-var uBal = address.getUnconfirmedBalance();
-// uBal = 0</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      number
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-<br />
-<br />
-<hr />
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#getUnspent">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="getUnspent">
-      <span class="type-signature"></span>getUnspent<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#utxo">utxo</a>>>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the unspent transaction outputs for the Address</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line351">line 351</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#getUnspent-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="getUnspent-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-address.getUnspent().then((utxos) => {
-	console.log(utxos);
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+
+var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+var account = new Account(accountMaster, networks.flo, false);
+
+// F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+var addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+var address = new Address(addressNode, networks.flo, false);
+
+var builder = new TransactionBuilder(networks.flo, {
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+	floData: "Testing oip-hdmw!"
+}, account)
+
+builder.buildTX().then((hex) => {
+	console.log(hex)
 })</code></pre>
 
 
@@ -1851,7 +1199,304 @@ address.getUnspent().then((utxos) => {
 
         
   <div class="param-desc">
-    <p>Returns a Promise that resolves to an Array of utxos.</p>
+    <p>Returns a Promise that resolves to the calculated Transaction Hex</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise.&lt;string>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#discoverChange">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="discoverChange">
+      <span class="type-signature"></span>discoverChange<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Discover the used change addresses if we were passed an Account to discover from.</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line295">line 295</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#discoverChange-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="discoverChange-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
+
+var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+var account = new Account(accountMaster, networks.flo, false);
+
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo, false)
+
+var builder = new TransactionBuilder(Networks.flo, {
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+}, account)
+
+builder.discoverChange().then(() => {
+	console.log("Done Discovering Change!")
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getUnspents">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getUnspents">
+      <span class="type-signature"></span>getUnspents<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#utxo">utxo</a>>>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Unspent Transaction Outputs for all the From addresses specified.</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line212">line 212</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getUnspents-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getUnspents-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo, false)
+
+var builder = new TransactionBuilder(Networks.flo, {
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+})
+
+builder.getUnspents().then((utxos) => {
+	console.log(utxos)
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>Returns a Promise that will resolve to an Array of unspent utxos</p>
   </div>
 
 
@@ -1884,13 +1529,13 @@ address.getUnspent().then((utxos) => {
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#removeSpent">
+    <a class="link-icon" href="#parseOptions">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="removeSpent">
-      <span class="type-signature"></span>removeSpent<span class="signature">(unspentTransactions)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#utxo">utxo</a>>}</span>
+    <h4 class="name" id="parseOptions">
+      <span class="type-signature"></span>parseOptions<span class="signature">(options)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -1899,7 +1544,7 @@ address.getUnspent().then((utxos) => {
 
 
   <div class="description">
-    <p>Remove the already spent outputs from the array we are given.</p>
+    <p>Load From &amp; To addresses</p>
   </div>
 
 
@@ -1932,14 +1577,14 @@ address.getUnspent().then((utxos) => {
     
       <tr>
         
-          <td class="name"><code>unspentTransactions</code></td>
+          <td class="name"><code>options</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      Array.&lt;<a href="global.html#utxo">utxo</a>>
+      Object
     </span>
 
     
@@ -1953,7 +1598,176 @@ address.getUnspent().then((utxos) => {
         
 
         <td class="description last">
-          <p>An Array containing utxos to sort through</p>
+          
+          
+            <h6>Properties</h6>
+            
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>from</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="Address.html">Address</a>
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;<a href="Address.html">Address</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The Address(es) to send from.</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>to</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="global.html#OutputAddress">OutputAddress</a>
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;<a href="global.html#OutputAddress">OutputAddress</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The amounts &amp; Address(es) to send to.</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>floData</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              ""
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The FloData to be added to the Transaction</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
           
         </td>
       </tr>
@@ -1997,7 +1811,7 @@ address.getUnspent().then((utxos) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line369">line 369</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line160">line 160</a>
         </li>
       </ul>
     </dd>
@@ -2023,20 +1837,26 @@ address.getUnspent().then((utxos) => {
 
 
   <div class="example-container">
-    <a class="link-icon" href="#removeSpent-examples">
+    <a class="link-icon" href="#parseOptions-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="removeSpent-examples">Example</h5>
+    <h5 id="parseOptions-examples">Example</h5>
     
 
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
 
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-address.getUnspent().then((utxos) => {
-	var unspent_utxos = address.removeSpent(utxos)
-	console.log(unspent_utxos)
+var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+var address = new Address(node, Networks.flo, false)
+
+var builder = new TransactionBuilder(Networks.flo)
+
+builder.parseOptions({
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+	floData: "Testing oip-hdmw!"
 })</code></pre>
 
 
@@ -2044,27 +1864,6 @@ address.getUnspent().then((utxos) => {
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      Array.&lt;<a href="global.html#utxo">utxo</a>>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
 
       
         
@@ -2077,13 +1876,13 @@ address.getUnspent().then((utxos) => {
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#toJSON">
+    <a class="link-icon" href="#sendTX">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="toJSON">
-      <span class="type-signature"></span>toJSON<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#AddressState">AddressState</a>}</span>
+    <h4 class="name" id="sendTX">
+      <span class="type-signature"></span>sendTX<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
     </h4>
   </span>
 
@@ -2092,7 +1891,7 @@ address.getUnspent().then((utxos) => {
 
 
   <div class="description">
-    <p>Get the current AddressState from the Address</p>
+    <p>Build &amp; Send the Transaction that we have been forming</p>
   </div>
 
 
@@ -2135,7 +1934,7 @@ address.getUnspent().then((utxos) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line277">line 277</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line403">line 403</a>
         </li>
       </ul>
     </dd>
@@ -2161,164 +1960,32 @@ address.getUnspent().then((utxos) => {
 
 
   <div class="example-container">
-    <a class="link-icon" href="#toJSON-examples">
+    <a class="link-icon" href="#sendTX-examples">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h5 id="toJSON-examples">Example</h5>
+    <h5 id="sendTX-examples">Example</h5>
     
 
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-
-var address_state = address.toJSON()
-// address_state = { 
-// 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
-// 	balanceSat: 0,
-// 	totalReceivedSat: 0,
-// 	unconfirmedBalanceSat: 0,
-// 	transactions: [],
-// 	spentTransactions: [],
-// 	lastUpdated: 0 
-// }</code></pre>
-
-
-  </div>
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-  <dl class="param-type">
-    <dt>Type: </dt>
-    <dd>
-      
-    <span class="param-type">
-      <a href="global.html#AddressState">AddressState</a>
-    </span>
-
-    
-
-
-    </dd>
-  </dl>
-
-
-    
-
-      
-        
-
-<br />
-<br />
-<hr />
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#updateState">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="updateState">
-      <span class="type-signature"></span>updateState<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="Address.html">Address</a>>}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    <p>Get the latest State for this address from the Blockchain Explorer</p>
-  </div>
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line194">line 194</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="example-container">
-    <a class="link-icon" href="#updateState-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="updateState-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>import { Address, Networks } from 'oip-hdmw';
-
-var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
-address.updateState().then((addr) => {
-	console.log(addr.getTotalReceived())
+  <pre class="prettyprint"><code>import bip32 from 'bip32'
+import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+
+var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+var account = new Account(accountMaster, networks.flo, false);
+
+// F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+var addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+var address = new Address(addressNode, networks.flo, false);
+
+var builder = new TransactionBuilder(networks.flo, {
+	from: address,
+	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+	floData: "Testing oip-hdmw!"
+}, account)
+
+builder.sendTX().then((txid) => {
+	console.log(txid)
 })</code></pre>
 
 
@@ -2330,7 +1997,7 @@ address.updateState().then((addr) => {
 
         
   <div class="param-desc">
-    <p>Returns a Promise that will resolve to the Address</p>
+    <p>Returns a promise that will resolve to the success TXID</p>
   </div>
 
 
@@ -2340,7 +2007,7 @@ address.updateState().then((addr) => {
     <dd>
       
     <span class="param-type">
-      Promise.&lt;<a href="Address.html">Address</a>>
+      Promise.&lt;string>
     </span>
 
     
