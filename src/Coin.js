@@ -254,7 +254,14 @@ class Coin {
 	}
 	/**
 	 * Discover all Accounts for the Coin
-	 * @return {Promise<Array.<Account>>}
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+	 * bitcoin.discoverAccounts().then((accounts) => {
+	 * 	console.log(accounts.length)
+	 * })
+	 * @return {Promise<Array.<Account>>} Returns a Promise that will resolve to an Array of Accounts once complete
 	 */
 	discoverAccounts(){
 		return new Promise((resolve, reject) => {
