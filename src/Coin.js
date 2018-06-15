@@ -1,4 +1,3 @@
-import bitcoin from 'bitcoinjs-lib'
 import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
 
@@ -53,6 +52,10 @@ class Coin {
 
 		// Default add account zero
 		this.addAccount(0);
+
+		if (this.discover){
+			this.discoverAccounts()
+		}
 	}
 	/**
 	 * Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!
@@ -153,6 +156,7 @@ class Coin {
 	 * Add the Account at the specified number, if it already exists, it returns the Account.
 	 * If the Account does not exist, it will create it and then return it.
 	 * @param  {number} [account_number=0]
+	 * @param {Boolean} [discover=discover Set in Coin Constructor] - Should the Account start auto-discovery.
 	 * @example
 	 * import { Coin, Networks } from 'oip-hdmw'
 	 *
@@ -160,7 +164,7 @@ class Coin {
 	 * var account = bitcoin.addAccount(1)
 	 * @return {Account}
 	 */
-	addAccount(account_number){
+	addAccount(account_number, discover){
 		var num = account_number || 0;
 
 		// if the account has already been added, just return 
@@ -169,7 +173,14 @@ class Coin {
 
 		var accountMaster = this.root.deriveHardened(num);
 
-		var account = new Account(accountMaster, this.coin, this.discover);
+		var shouldDiscover;
+
+		if (discover !== undefined)
+			shouldDiscover = discover
+		else
+			shouldDiscover = this.discover
+
+		var account = new Account(accountMaster, this.coin, shouldDiscover);
 
 		this.accounts[num] = account;
 
@@ -187,6 +198,40 @@ class Coin {
 	 */
 	getCoinInfo(){
 		return this.coin
+	}
+	/**
+	 * Discover all Accounts for the Coin
+	 * @return {Promise<Array.<Account>>}
+	 */
+	discoverAccounts(){
+		return new Promise((resolve, reject) => {
+			var checkIfDiscoveryComplete = () => {
+				var discoveredAccounts = [];
+				var highestAccountNumber = 0;
+
+				for (var accNum in this.accounts){
+					discoveredAccounts.push(this.accounts[accNum]);
+
+					if (accNum > highestAccountNumber){
+						highestAccountNumber = accNum;
+					}
+				}
+
+				if (this.accounts[highestAccountNumber].getAddresses().length > 0){
+					var account = this.getAccount(highestAccountNumber + 1, false)
+
+					account.discoverChains().then(checkIfDiscoveryComplete)
+				} else {
+					resolve(discoveredAccounts)
+				}
+			}
+
+			// Reset the internal accounts
+			this.accounts = {};
+
+			// Get the Account #0 and start discovery there.
+			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete)
+		})
 	}
 }
 
