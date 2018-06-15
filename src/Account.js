@@ -202,19 +202,51 @@ class Account {
 	 * account.getBalance().then((balance) => {
 	 * 	console.log(balance);
 	 * })
+	 * @param {Object} [options] Specific options defining what balance to get back
+	 * @param {Boolean} [options.discover=true] - Should the Account discover Chains and Addresses
+	 * @param {string|Array.<string>} [options.addresses] - Address, or Addresses to get the balance of
+	 * @param {number} [options.id] - The ID number to return when the Promise resolves
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
-	getBalance(){
+	getBalance(options){
 		return new Promise((resolve, reject) => {
-			return this.discoverChainsIfNeeded().then(() => {
+			var getBalances = () => {
 				var totBal = 0;
 
 				for (var addr in this.addresses){
-					totBal += this.addresses[addr].getBalance()
+					if (options && options.addresses && typeof options.addresses === "string"){
+						if (addr === options.addresses){
+							totBal += this.addresses[addr].getBalance()
+						}
+					} else if (options && options.addresses && Array.isArray(options.addresses)){
+						for (var ad of options.addresses){
+							if (addr === ad){
+								totBal += this.addresses[addr].getBalance()
+							}
+						}
+					} else {
+						totBal += this.addresses[addr].getBalance()
+					}
 				}
 
-				resolve(totBal)
-			})
+				var id;
+
+				if (options && options.id)
+					id = options.id;
+
+				resolve(totBal, id);
+			}
+
+			var discovery = this.discover;
+
+			if (options && options.discover !== undefined)
+				discovery = options.discover;
+
+			if (discovery){
+				getBalances()
+			} else {
+				return this.discoverChains().then(getBalances)
+			}
 		})
 	}
 	/**
