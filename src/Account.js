@@ -145,6 +145,52 @@ class Account {
 		return new Address(addr, this.coin, false)
 	}
 	/**
+	 * Get the All Used Address (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
+	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
+	 * @example <caption>Get all Used Addresses on the Account</caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getAddresses()
+	 * // addresses = [Address, Address, Address]
+	 * @example <caption>Get the addresses on Chain `0`</caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getAddresses(0)
+	 * // addresses = [Address, Address, Address]
+	 * @return {Array.<Address>}
+	 */
+	getAddresses(chain_number){
+		var addrs = [];
+
+		if (chain_number && !isNaN(chainNumber)){
+			for (var addr of this.addresses){
+				var chain = this.account.getChain(chain_number);
+				var addresses = chain.addresses.map((addr) => {
+					return new Address(addr, this.coin, false)
+				})
+				for (var adr of addresses){
+					if (adr.getPublicAddress() === addr.getPublicAddress()){
+						addrs.push(addr)
+					}
+				}
+			}
+		} else {
+			for (var addr of this.addresses){
+				addrs.push(addr)
+			}
+		}
+
+		return addrs
+	}
+	/**
 	 * Get the Balance for the entire Account
 	 * @example
 	 * import bip32 from 'bip32'
