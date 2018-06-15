@@ -60,8 +60,9 @@ class Coin {
 	/**
 	 * Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!
 	 * @param  {Object} [options] - Specific options defining what balance to get back
-	 * @param {string} [options.address] - Get Balance for Single Address
-	 * @param {Array.<string>} [options.addresses] - Get Balance for Addresses
+	 * @param {Boolean} [options.discover=true] - Should the Coin discover Accounts
+	 * @param {number|Array.<number>} [options.accounts=All Accounts in Coin] - Get Balance for defined Accounts
+	 * @param {string|Array.<string>} [options.addresses=All Addresses in each Account in Coin] - Get Balance for defined Addresses
 	 * @example <caption> Get Balance for entire Coin</caption>
 	 * import { Coin, Networks } from 'oip-hdmw'
 	 *
@@ -72,9 +73,61 @@ class Coin {
 	 * @return {Promise<number>} A Promise that will resolve to the balance of the entire Coin
 	 */
 	getBalance(options){
-		if (options.address){
+		return new Promise((resolve, reject) => {
+			var countBalance = () => {
+				var accounts_to_search = [];
 
-		}
+				// Check if we are an array (ex. [0,1,2]) or just a number (ex. 1)
+				if (options && Array.isArray(options.accounts)) {
+					for (var accNum of options.accounts) {
+						if (!isNaN(accNum)) {
+							accounts_to_search.push(accNum)
+						}
+					}
+				} else if (options && !isNaN(options.accounts)) {
+					accounts_to_search.push(options.accounts)
+				} else {
+					for (var accNum in this.accounts){
+						accounts_to_search.push(accNum)
+					}
+				}
+
+				var totalBalance = 0;
+
+				var addrsToSearch, disc;
+
+				if (options && options.discover === false)
+					disc = false;
+
+				if (options && options.addresses && (typeof options.addresses === "string" || Array.isArray(options.addresses))){
+					addrsToSearch = options.addresses
+				}
+
+				var addBalance = (balance, id) => {
+					accounts_to_search.splice(accounts_to_search.indexOf(id));
+					totalBalance += balance;
+
+					if (accounts_to_search.length === 0)
+						resolve(totalBalance);
+				}
+
+				for (accNum of accounts_to_search){
+					if (this.accounts[accNum]){
+						this.accounts[accNum].getBalance({
+							discover: disc,
+							addresses: addrsToSearch,
+							id: accNum
+						}).then(addBalance)
+					}
+				}
+			}
+
+			if (options.discover === false){
+				countBalance();
+			} else {
+				this.discoverAccounts().then(countBalance)
+			}
+		})
 	}
 	/**
 	 * Get the Main Address for a specific Account number. 
