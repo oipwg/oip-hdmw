@@ -96,10 +96,14 @@ class Account {
 			}
 		}
 
+		this.discover = true;
+
+		if (discover !== undefined)
+			this.discover = discover
+
 		// Discover both External and Internal chains
-		if (discover){
-			this.discoverChain(0)
-			this.discoverChain(1)
+		if (this.discover){
+			this.discoverChains()
 		}
 	}
 	/**
@@ -331,7 +335,7 @@ class Account {
 		})
 	}
 	/**
-	 * Discover all Chains if we haven't in the past 30 minutes
+	 * Discover all Chains
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
@@ -339,21 +343,15 @@ class Account {
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * var account = new Account(account_master, Networks.flo, false);
-	 * account.discoverChainsIfNeeded().then((acc) => {
+	 * account.discoverChains().then((acc) => {
 	 * 	console.log(acc.getChain(0).addresses)
 	 * 	console.log(acc.getChain(1).addresses)
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	discoverChainsIfNeeded(){
+	discoverChains(){
 		return new Promise((resolve, reject) => {
-			var chainsToDiscover = []
-
-			for (var chain in this.discovery){
-				if (!this.discovery[chain] || this.discovery[chain].lastUpdate < (Date.now() - CHAIN_EXPIRE_TIMEOUT)){
-					chainsToDiscover.push(this.discovery[chain].index)
-				}
-			}
+			var chainsToDiscover = [0, 1]
 
 			var checkIfComplete = () => {
 				if (chainsToDiscover.length === 0)
