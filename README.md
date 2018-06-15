@@ -15,10 +15,17 @@
 	* [Account](https://oipwg.github.io/oip-hdmw/1.0.0/Account.html)
 	* [Address](https://oipwg.github.io/oip-hdmw/1.0.0/Address.html)
 	* [TransactionBuilder](https://oipwg.github.io/oip-hdmw/1.0.0/TransactionBuilder.html)
+* [License](https://github.com/oipwg/oip-hdmw/#license)
 
 ## Installation Instructions
-
+You can install the latest version by running the following `npm install` command.
+```
+$ npm install --save oip-hdmw
+```
 ## Getting Started
+### Creating your first Wallet
+### Getting your first Address
+### Sending your first Transaction
 
 ## API Documentation
 Learn more about how each Class works, or take a look at all functions available to you.
@@ -27,3 +34,26 @@ Learn more about how each Class works, or take a look at all functions available
 * [Account](https://oipwg.github.io/oip-hdmw/1.0.0/Account.html)
 * [Address](https://oipwg.github.io/oip-hdmw/1.0.0/Address.html)
 * [TransactionBuilder](https://oipwg.github.io/oip-hdmw/1.0.0/TransactionBuilder.html)
+
+## License
+MIT License
+
+Copyright (c) 2018 Open Index Protocol Working Group
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
