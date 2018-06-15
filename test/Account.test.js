@@ -16,7 +16,7 @@ test('Get Account Balance of all Chain Addresses', (done) => {
 	
 	var account = new Account(accountMaster, networks.flo, false);
 
-	account.getBalance().then((totalBalance) => {
+	account.getBalance({ discover: true }).then((totalBalance) => {
 		expect(totalBalance).toBeGreaterThan(0)
 		done()
 	})

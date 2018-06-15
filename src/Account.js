@@ -199,7 +199,7 @@ class Account {
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * var account = new Account(account_master, Networks.flo, false);
-	 * account.getBalance().then((balance) => {
+	 * account.getBalance({ discover: true }).then((balance) => {
 	 * 	console.log(balance);
 	 * })
 	 * @param {Object} [options] Specific options defining what balance to get back
@@ -243,9 +243,9 @@ class Account {
 				discovery = options.discover;
 
 			if (discovery){
-				getBalances()
+				this.discoverChains().then(getBalances)
 			} else {
-				return this.discoverChains().then(getBalances)
+				getBalances()
 			}
 		})
 	}
