@@ -351,7 +351,9 @@ class TransactionBuilder {
 						var changeAddress = this.account.getNextChangeAddress().getPublicAddress();
 						output.address = changeAddress
 					} else {
-						console.warning("No Account Provided! Will not send to change address, but rather pay entire change as miners fee!!!")
+						// If the change is undefined, send change to the first from address
+						var changeAddress = this.from[0].getPublicAddress();
+						output.address = changeAddress
 					}
 				}
 
