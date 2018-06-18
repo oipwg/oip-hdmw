@@ -209,6 +209,22 @@ class Coin {
 		return this.accounts[num];
 	}
 	/**
+	 * Get all Accounts on the Coin
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+	 * var accounts = bitcoin.getAccounts()
+	 * // accounts = {
+	 * // 	0: Account,
+	 * // 	1: Account
+	 * // }
+	 * @return {Object} Returns a JSON object with accounts
+	 */
+	getAccounts(){
+		return this.accounts;
+	}
+	/**
 	 * Add the Account at the specified number, if it already exists, it returns the Account.
 	 * If the Account does not exist, it will create it and then return it.
 	 * @param  {number} [account_number=0]
