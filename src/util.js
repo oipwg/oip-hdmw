@@ -15,6 +15,10 @@ function sha256 (buffer) {
   return createHash('sha256').update(buffer).digest()
 }
 
+function hash256 (buffer) {
+  return sha256(sha256(buffer))
+}
+
 function hash160 (buffer) {
   return ripemd160(sha256(buffer))
 }
@@ -124,11 +128,28 @@ function discovery (chain, gapLimit, queryCb, i, done) {
   cycle()
 }
 
+function isMnemonic(mnemonic){
+  if (typeof mnemonic === "string" && mnemonic.split(" ").length >= 2)
+    return true
+
+  return false
+}
+
+function isEntropy(entropy){
+  if (typeof entropy === "string" && entropy.length >= 16 && entropy.length <= 32)
+    return true
+
+  return false
+}
 
 module.exports = {
+  hash160,
+  hash256,
   toBase58,
 	isValidPublicAddress,
   isValidWIF,
+  isMnemonic,
+  isEntropy,
   discovery,
   varIntBuffer: varuint.encode
 }
