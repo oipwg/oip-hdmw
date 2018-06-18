@@ -122,7 +122,7 @@ class Coin {
 				}
 			}
 
-			if (options.discover === false){
+			if (options && options.discover === false){
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance)
