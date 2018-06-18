@@ -87,7 +87,7 @@ class Wallet {
 		this.coins = {};
 
 		// An optional variable to say if we should auto run address discovery on Account Chains
-		if (options.discover || options.discover === false)
+		if (options && (options.discover || options.discover === false))
 			this.discover = options.discover
 		else
 			this.discover = true
