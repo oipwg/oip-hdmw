@@ -3,6 +3,8 @@ import bip39 from 'bip39'
 import Coin from './Coin'
 import networks from './networks'
 
+import { isEntropy, isMnemonic } from './util'
+
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
 
 /** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
@@ -45,23 +47,14 @@ class Wallet {
 	 */
 	constructor(seed, options){
 		// Check if seed is a string or buffer, if not, create a new BIP39 Mnemonic
-		if (typeof seed === "string"){
-			if (seed.split(" ").length >= 2){
-				this.mnemonic = seed;
-				this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
-				this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
-			} else if (seed.length >= 16 && seed.length <= 32) {
-				this.entropy = seed;
-				this.mnemonic = bip39.entropyToMnemonic(this.entropy);
-				this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
-			} else {
-				this.seed = seed;
-			}
-		} else if (seed instanceof Buffer) {
-			this.seed = seed.toString('hex');
+		if (isMnemonic(seed)){
+			this.fromMnemonic(seed)
+		} else if (isEntropy(seed)) {
+			this.fromEntropy(seed)
+		} else if (seed) {
+			this.fromSeed(seed);
 		} else {
-			this.mnemonic = bip39.generateMnemonic();
-			this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
+			this.fromMnemonic(bip39.generateMnemonic());
 		}
 
 		// Set the networks to the imported defaults
@@ -139,6 +132,21 @@ class Wallet {
 		return this.coins;
 	}
 	/**
+	 * @param  {string} mnemonic - A BIP39 Mnemonic String
+	 * @return {Boolean} Returns if the operation was successful
+	 */
+	fromMnemonic(mnemonic){
+		if (isMnemonic(mnemonic)){
+			this.mnemonic = mnemonic;
+			this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
+			this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
+
+			return true
+		}
+
+		return false
+	}
+	/**
 	 * Get the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, if defined
 	 * @example
 	 * var wallet = new Wallet('00000000000000000000000000000000');
@@ -148,6 +156,13 @@ class Wallet {
 	 */
 	getMnemonic(){
 		return this.mnemonic
+	}
+	fromEntropy(entropy){
+		if (isEntropy(entropy)){
+			this.entropy = entropy;
+			this.mnemonic = bip39.entropyToMnemonic(this.entropy);
+			this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
+		}
 	}
 	/**
 	 * Get the Entropy value used to generate the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic.
@@ -162,6 +177,17 @@ class Wallet {
 	 */
 	getEntropy(){
 		return this.entropy
+	}
+	fromSeed(seed){
+		if (seed instanceof Buffer){
+			this.seed = seed.toString('hex');
+			return true;
+		} else if (typeof seed === "string"){
+			this.seed = seed;
+			return true;
+		}
+
+		return false
 	}
 	/**
 	 * Get the Encoded Seed hex string
