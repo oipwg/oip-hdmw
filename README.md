@@ -29,11 +29,12 @@ $ npm install --save oip-hdmw
 
 ## API Documentation
 Learn more about how each Class works, or take a look at all functions available to you.
-* [Wallet](https://oipwg.github.io/oip-hdmw/1.0.0/Wallet.html)
-* [Coin](https://oipwg.github.io/oip-hdmw/1.0.0/Coin.html)
-* [Account](https://oipwg.github.io/oip-hdmw/1.0.0/Account.html)
-* [Address](https://oipwg.github.io/oip-hdmw/1.0.0/Address.html)
-* [TransactionBuilder](https://oipwg.github.io/oip-hdmw/1.0.0/TransactionBuilder.html)
+* [Documentation Home](https://oipwg.github.io/oip-hdmw/)
+	* [Wallet](https://oipwg.github.io/oip-hdmw/1.0.0/Wallet.html)
+	* [Coin](https://oipwg.github.io/oip-hdmw/1.0.0/Coin.html)
+	* [Account](https://oipwg.github.io/oip-hdmw/1.0.0/Account.html)
+	* [Address](https://oipwg.github.io/oip-hdmw/1.0.0/Address.html)
+	* [TransactionBuilder](https://oipwg.github.io/oip-hdmw/1.0.0/TransactionBuilder.html)
 
 ## License
 MIT License
