@@ -200,6 +200,9 @@ class Coin {
 	getAccount(account_number){
 		var num = account_number || 0;
 
+		if (typeof account_number === "string" && !isNaN(parseInt(account_number)))
+			num = parseInt(account_number)
+
 		if (!this.accounts[num])
 			return this.addAccount(num);
 
@@ -219,6 +222,9 @@ class Coin {
 	 */
 	addAccount(account_number, discover){
 		var num = account_number || 0;
+
+		if (typeof account_number === "string" && !isNaN(parseInt(account_number)))
+			num = parseInt(account_number)
 
 		// if the account has already been added, just return 
 		if (this.accounts[num])
