@@ -4,6 +4,7 @@ import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
 
 import Address from './Address'
+import { sign } from './TransactionBuilderHelpers'
 import { isValidPublicAddress } from './util'
 
 /**
@@ -363,7 +364,13 @@ class TransactionBuilder {
 			for (var i in inputs){
 				for (var addr of this.from){
 					if (addr.getPublicAddress() === inputs[i].address){
-						txb.sign(parseInt(i), addr.getECPair())
+						var extraBytes = this.coin.getExtraBytes(this.passedOptions);
+
+						if (extraBytes){
+							sign(txb, extraBytes, parseInt(i), addr.getECPair())
+						} else {
+							txb.sign(parseInt(i), addr.getECPair())
+						}
 					}
 				}
 			}
