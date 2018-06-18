@@ -171,20 +171,20 @@ class Account {
 		var addrs = [];
 
 		if (chain_number && !isNaN(chainNumber)){
-			for (var addr of this.addresses){
+			for (var addr in this.addresses){
 				var chain = this.account.getChain(chain_number);
-				var addresses = chain.addresses.map((addr) => {
-					return new Address(addr, this.coin, false)
+				var addresses = chain.addresses.map((ad) => {
+					return new Address(ad, this.coin, false)
 				})
 				for (var adr of addresses){
-					if (adr.getPublicAddress() === addr.getPublicAddress()){
-						addrs.push(addr)
+					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()){
+						addrs.push(this.addresses[addr])
 					}
 				}
 			}
 		} else {
-			for (var addr of this.addresses){
-				addrs.push(addr)
+			for (var addr in this.addresses){
+				addrs.push(this.addresses[addr])
 			}
 		}
 
