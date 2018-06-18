@@ -1,5 +1,13 @@
 var Wallet = require('../lib').Wallet;
 
+test('Wallet can be created from nothing', () => {
+	// Discover false is passed to prevent tons of extra async calls
+	var w = new Wallet(undefined, {discover: false})
+	expect(w.getMnemonic()).toBeDefined()
+	expect(w.getSeed()).toBeDefined()
+	expect(w.getEntropy()).toBeDefined()
+})
+
 test('Wallet can be defined from Mnemonic', () => {
 	var w = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about", {discover: false})
 
@@ -46,4 +54,15 @@ test('Wallet can spawn on multiple defined coins', () => {
 	expect(w.getCoin('flo')).toBeDefined()
 	expect(w.getCoin('bitcoin')).toBeUndefined()
 	expect(w.getCoin('litecoin')).toBeUndefined()
+})
+
+test('Wallet can return all coins', () => {
+	var w = new Wallet('00000000000000000000000000000000', { discover: false })
+
+	var coins = w.getCoins();
+
+	expect(coins.bitcoin).toBeDefined()
+	expect(coins.litecoin).toBeDefined()
+	expect(coins.flo).toBeDefined()
+	expect(coins.bitcoin_testnet).toBeUndefined()
 })

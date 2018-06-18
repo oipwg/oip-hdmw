@@ -1,9 +1,9 @@
 var bip32 = require('bip32');
 var Address = require('../lib').Address;
-var networks = require('../lib').Networks;
+var Networks = require('../lib').Networks;
 
 test('Address is able to check its balance from String', (done) => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, false);
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
 	address.updateState().then((addr) => {
 		expect(addr.getTotalReceived()).toBeGreaterThan(0)
@@ -12,9 +12,9 @@ test('Address is able to check its balance from String', (done) => {
 })
 
 test('Address is able to check its balance from BIP32', (done) => {
-	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
 
-	var address = new Address(node, networks.flo, false);
+	var address = new Address(node, Networks.flo, false);
 
 	address.updateState().then((addr) => {
 		expect(addr.getTotalReceived()).toBeGreaterThan(0)
@@ -23,29 +23,29 @@ test('Address is able to check its balance from BIP32', (done) => {
 }, 10000)
 
 test('Address to PublicAddress', () => {
-	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
 
-	var address = new Address(node, networks.flo, false);
+	var address = new Address(node, Networks.flo, false);
 
 	expect(address.getPublicAddress()).toBe("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp")
 })
 
 test('Address to WIF', () => {
-	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
 
-	var address = new Address(node, networks.flo, false);
+	var address = new Address(node, Networks.flo, false);
 
 	expect(address.getPrivateAddress()).toBe("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5")
 })
 
 test('Address WIF roundtrip', () => {
-	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", networks.flo, false);
+	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo, false);
 
 	expect(address.getPrivateAddress()).toBe("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5")
 })
 
 test('Address WIF to PublicAddress', () => {
-	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", networks.flo, false);
+	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo, false);
 
 	expect(address.getPublicAddress()).toBe("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp")
 })
@@ -53,7 +53,7 @@ test('Address WIF to PublicAddress', () => {
 // Add tests to confirm removeSpent and addSpent work properly and as expected.
 // Add tests for toJSON and fromJSON
 test('Test Serialization of Address (no discovery)', () => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, false);
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
 	expect(address.toJSON()).toEqual({ 
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
@@ -67,7 +67,7 @@ test('Test Serialization of Address (no discovery)', () => {
 })
 
 test('Test Serialization of Address (roundtrip, no discovery)', () => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, { 
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, { 
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
         balanceSat: 123,
         totalReceivedSat: 234,
@@ -89,7 +89,7 @@ test('Test Serialization of Address (roundtrip, no discovery)', () => {
 })
 
 test('Test Serialization of Address with Spent Transactions (no discovery)', () => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, {
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, {
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp', 
 		spentTransactions: ["aaaaaa"]
 	});
@@ -110,7 +110,7 @@ test('Test Serialization of Address with Spent Transactions (no discovery)', () 
 })
 
 test('get utxo for address', (done) => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, false);
+	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, false);
 
 	address.getUnspent().then((utxos) => {
 		expect(utxos.length).toBeGreaterThan(0)
@@ -119,9 +119,9 @@ test('get utxo for address', (done) => {
 }, 10000)
 
 test('get utxo for address (remove spent)', (done) => {
-	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", networks.flo, {
-		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp', 
-		spentTransactions: ["7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c"]
+	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, {
+		addrStr: 'oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S', 
+		spentTransactions: ["dcf88fa15cabf64555d8a0da18ffa1d57256ca0cbb877882bd6de2f2bc4f8e9b"]
 	});
 
 	address.getUnspent().then((utxos) => {
