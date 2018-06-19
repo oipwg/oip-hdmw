@@ -26,6 +26,8 @@ $ npm install --save oip-hdmw
 ### Creating your first Wallet
 ### Getting your first Address
 ### Sending your first Transaction
+### Understanding the Wallet Topology
+![](https://raw.githubusercontent.com/oipwg/oip-hdmw/master/docs/hdmw-topology.png)
 
 ## API Documentation
 Learn more about how each Class works, or take a look at all functions available to you.
