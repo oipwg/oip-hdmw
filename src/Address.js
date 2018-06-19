@@ -418,6 +418,22 @@ class Address {
 	addSpentTransaction(txid){
 		this.spentTransactions.push(txid);
 	}
+	/**
+	 * Send a Payment to outputs from this Address
+	 * @param  {OutputAddress|Array.<OutputAddress>}
+	 * @param {Object} [options] - Specify extra options to be passed to the transaction builder.
+	 * @return {Promise<string>} Returns a Promise that will resolve to the txid
+	 */
+	sendPayment(outputs, options){
+		var txb = new TransactionBuilder(this.coin, {
+			from: this,
+			to: outputs
+		})
+
+		txb.parseOptions(options)
+
+		return txb.sendTX()
+	}
 }
 
 module.exports = Address
