@@ -24,8 +24,63 @@ $ npm install --save oip-hdmw
 ```
 ## Getting Started
 ### Creating your first Wallet
+Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no paramaters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples
+```javascript
+const HDMW = require('oip-hdmw')
+const Wallet = HDMW.Wallet;
+
+var myWallet = new Wallet();
+
+console.log("My Mnemonic: '" + myWallet.getMnemonic() + "'")
+// My Mnemonic: 'carbon panda replace drum guess heart inside useless random bulb hint industry'
+```
+### Getting the Coins from your Wallet
+Now that you have a Mnemonic for your wallet, lets go ahead and create the Wallet again, but this time, we will give it the Mnemonic to start from.
+```javascript
+const HDMW = require('oip-hdmw')
+const Wallet = HDMW.Wallet;
+
+var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+
+console.log("My Wallets Coins: ", myWallet.getCoins())
+// My Wallets Coins: {
+//	bitcoin: Coin,
+//	litecoin: Coin,
+//	flo: Coin
+//}
+```
+As you can see, we get back a JSON object containing each `Coin` along with an `identifier` that is the Coin name.
 ### Getting your first Address
+Now that we have created a new Wallet and accessed the Coins on the wallet, lets go ahead and get the Main Address for one of the coins. To do this, we will first need to get a `Coin` from the `Wallet`. To do this, we use the `getCoin` function and pass it the Coin name that we wish to get the Coin for. After we have grabbed the `Coin`, we run the `getMainAddress` function in order to get the main address for the `Coin`. After we have stored the `Address` returned to us by the `Coin`, we need to get the human readable Public key of the Address.
+```javascript
+const HDMW = require('oip-hdmw')
+const Wallet = HDMW.Wallet;
+
+var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+
+var bitcoin = myWallet.getCoin('bitcoin');
+
+var myMainAddress = bitcoin.getMainAddress();
+
+console.log("My Wallets Bitcoin Main Address: ", myMainAddress.getPublicAddress());
+// My Wallets Bitcoin Main Address: 13BW4eTvNFXBLeTjJQRgVxuiuStAFp1HfL
+```
 ### Sending your first Transaction
+In order to send a transaction, we will need to have a balance on our Wallet first. Send some funds to the Address that you got in the last step. After you have sent some money to the Wallet, we can send our first transaction. To send the Transaction, use the `sendPayment` method.
+```javascript
+const HDMW = require('oip-hdmw')
+const Wallet = HDMW.Wallet;
+
+var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+
+myWallet.sendPayment({
+	to: { "12nP3k9tFKgQPJNkDDyNWqgjtm2bt3qq1b": 0.001 }
+}).then(function(txid){
+	console.log("Successfully sent Transaction! " + txid);
+}).catch(function(error){
+	console.error("Unable to send Transaction!", error)
+})
+```
 ### Understanding the Wallet Topology
 ![](https://raw.githubusercontent.com/oipwg/oip-hdmw/master/docs/hdmw-topology.png)
 
