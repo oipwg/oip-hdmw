@@ -335,8 +335,10 @@ class TransactionBuilder {
 			var fee = selected.fee;
 
 			// inputs and outputs will be undefined if no solution was found
-			if (!inputs || !outputs) 
+			if (!inputs || !outputs) {
+				throw new Error("No Inputs or Outputs selected! Fail!")
 				return
+			}
 
 			let txb = new bitcoin.TransactionBuilder(this.coin.network)
 
@@ -412,9 +414,14 @@ class TransactionBuilder {
 	sendTX(){
 		return new Promise((resolve, reject) => {
 			this.buildTX().then((hex) => {
-				this.coin.explorer.broadcastRawTransaction(hex).then((res) => {
-					resolve(res.txid)
-				})
+				if (hex){
+					console.log("BroadcastHex: " + hex)
+					this.coin.explorer.broadcastRawTransaction(hex).then((res) => {
+						resolve(res.txid)
+					})
+				} else {
+					reject(new Error("TransactionBuilder.buildTX() did not create hex!"))
+				}
 			})
 		})
 	}
