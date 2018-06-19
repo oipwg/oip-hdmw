@@ -284,10 +284,57 @@ class Account {
 	/**
 	 * Send a Payment to specified Addresses and Amounts, NOT YET IMPLEMENTED
 	 * @param  {Object} options - the options for the specific transaction being sent
+	 * @param {string|Array.<string>} options.from - Define what public address(es) you wish to send from
+	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
 	 * @return {Promise<string>} - Returns a promise that will resolve to the success TXID
 	 */
 	sendPayment(options){
-		
+		return new Promise((resolve, reject) => {
+			if (!options)
+				reject(new Error("You must define your payment options!"))
+
+			var processPayment = () => {
+				var sendFrom = [];
+
+				var allAddresses = this.getAddresses();
+
+				if (options.from) {
+					if (typeof options.from === "string") {
+						for (var address of allAddresses){
+							if (address.getPublicAddress() === options.from){
+								sendFrom.push(address);
+							}
+						}
+					} else if (Array.isArray(options.from)) {
+						for (var adr of options.from){
+							for (var address of allAddresses){
+								if (address.getPublicAddress() === adr){
+									sendFrom.push(address);
+								}
+							}
+						}
+					}
+				} else {
+					sendFrom = allAddresses;
+				}
+
+				var newOpts = options;
+
+				newOpts.from = sendFrom;
+
+				var txb = new TransactionBuilder(this.coin, newOpts);
+
+				txb.sendTX().then(resolve);
+			}
+
+			if (options.discover === false){
+				processPayment();
+			} else {
+				this.discoverChains().then(processPayment)
+			}
+		})
 	}
 	/**
 	 * Get the Extended Private Key for the Account
