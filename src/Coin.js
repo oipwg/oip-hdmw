@@ -2,6 +2,7 @@ import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
 
 import Account from './Account'
+import TransactionBuilder from './TransactionBuilder'
 
 const COIN_START = 0x80000000;
 
@@ -149,12 +150,91 @@ class Coin {
 		return this.getAccount(account_number || 0).getMainAddress()
 	}
 	/**
-	 * Send payment, NOT YET IMPLEMENTED!
-	 * @param  {Object} options
-	 * @return {Promise<string>} A Promise that will resolve to the success txid
+	 * Send a Payment to specified Addresses and Amounts
+	 * @param  {Object} options - the options for the specific transaction being sent
+	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {string|Array.<string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
+	 * @param {number|Array.<number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts you wish to send from
+	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
+	 * @return {Promise<string>} - Returns a promise that will resolve to the success TXID
 	 */
 	sendPayment(options){
+		return new Promise((resolve, reject) => {
+			if (!options)
+				reject(new Error("You must define your payment options!"))
 
+			var processPayment = () => {
+				var sendFrom = [];
+
+				var allAddresses = [];
+
+				// Add all Addresses from selected accounts to array
+				for (var account in this.accounts){
+					// Check if we are defining what accounts to send the payment from
+					if (options.fromAccounts) {
+						// Check if it is a single account number, or an array of account numbers
+						if (typeof options.fromAccounts === "number") {
+							// If we match the passed account number, set the grabbed addresses
+							if (options.fromAccounts === parseInt(account)){
+								allAddresses = this.accounts[account].getAddresses()
+							}
+						} else if (Array.isArray(options.fromAccounts)){
+							// If we are an array, itterate through
+							for (var acs of options.fromAccounts){
+								if (acs === parseInt(account)){
+									allAddresses = allAddresses.concat(this.accounts[account].getAddresses())
+								}
+							}
+						}
+					} else {
+						allAddresses = allAddresses.concat(this.accounts[account].getAddresses())
+					}
+				}
+
+				// Check if we define what address we wish to send from
+				if (options.from) {
+					// Check if it is a single from address or an array
+					if (typeof options.from === "string") {
+						for (var address of allAddresses){
+							if (address.getPublicAddress() === options.from){
+								sendFrom.push(address);
+							}
+						}
+					} else if (Array.isArray(options.from)) {
+						for (var adr of options.from){
+							for (var address of allAddresses){
+								if (address.getPublicAddress() === adr){
+									sendFrom.push(address);
+								}
+							}
+						}
+					}
+				// else add all the addresses on the Account that have recieved any txs
+				} else {
+					sendFrom = allAddresses;
+				}
+
+				if (sendFrom.length === 0){
+					reject(new Error("No Addresses match defined options.from Addresses!"))
+					return;
+				}
+
+				var newOpts = options;
+
+				newOpts.from = sendFrom;
+
+				var txb = new TransactionBuilder(this.coin, newOpts);
+
+				txb.sendTX().then(resolve);
+			}
+
+			if (options.discover === false){
+				processPayment();
+			} else {
+				this.discoverAccounts().then(processPayment)
+			}
+		})
 	}
 	/**
 	 * Get the Extended Private Key for the root path. This is derived at m/44'/coin_type'
