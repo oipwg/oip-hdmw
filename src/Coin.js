@@ -131,6 +131,16 @@ class Coin {
 		})
 	}
 	/**
+	 * Get a specific Address
+	 * @param  {number} [account_number=0] - Number of the account you wish to get the Address from
+	 * @param  {number} [chain_number=0] - Number of the Chain you wish to get the Address from
+	 * @param  {number} [address_index=0] - Index of the Address you wish to get
+	 * @return {Address}
+	 */
+	getAddress(account_number, chain_number, address_index){
+		return this.getAccount(account_number || 0).getAddress(chain_number, address_index);
+	}
+	/**
 	 * Get the Main Address for a specific Account number. 
 	 * This is the Address at index 0 on the External Chain of the Account.
 	 * @param  {number} [account_number=0] - Number of the Account you wish to get
