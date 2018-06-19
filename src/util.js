@@ -128,6 +128,13 @@ function discovery (chain, gapLimit, queryCb, i, done) {
   cycle()
 }
 
+/**
+ * Check if a given string is in a BIP39 Mnemonic format (is a string, and is at least 2 words long). 
+ * Please note that this does not validate if the Mnemonic is a valid BIP39 Mnemonic 
+ * (i.e. defined from Entropy vs a Brain Wallet)
+ * @param  {string} mnemonic - BIP39 Mnemonic to check
+ * @return {Boolean}
+ */
 function isMnemonic(mnemonic){
   if (typeof mnemonic === "string" && mnemonic.split(" ").length >= 2)
     return true
@@ -135,6 +142,11 @@ function isMnemonic(mnemonic){
   return false
 }
 
+/**
+ * Check if a given string is a BIP39 Entropy string.
+ * @param  {string} entropy - The Entropy string to check
+ * @return {Boolean}
+ */
 function isEntropy(entropy){
   if (typeof entropy === "string" && entropy.length >= 16 && entropy.length <= 32)
     return true
