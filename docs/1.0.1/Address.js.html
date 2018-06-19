@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      Address.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.3.0/highlightjs-line-numbers.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <link type="text/css" rel="stylesheet" href="styles/monokai-sublime.css">
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      OIP HDMW
+    </h3>
+
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChains-nav"><a href="Account.html#discoverChains">discoverChains</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getAddresses-nav"><a href="Account.html#getAddresses">getAddresses</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Address-nav"><a href="Address.html">Address</a><ul class='methods'><li data-type="method" id="Address-addSpentTransaction-nav"><a href="Address.html#addSpentTransaction">addSpentTransaction</a></li><li data-type="method" id="Address-fromJSON-nav"><a href="Address.html#fromJSON">fromJSON</a></li><li data-type="method" id="Address-getBalance-nav"><a href="Address.html#getBalance">getBalance</a></li><li data-type="method" id="Address-getECPair-nav"><a href="Address.html#getECPair">getECPair</a></li><li data-type="method" id="Address-getPrivateAddress-nav"><a href="Address.html#getPrivateAddress">getPrivateAddress</a></li><li data-type="method" id="Address-getPublicAddress-nav"><a href="Address.html#getPublicAddress">getPublicAddress</a></li><li data-type="method" id="Address-getTotalReceived-nav"><a href="Address.html#getTotalReceived">getTotalReceived</a></li><li data-type="method" id="Address-getTotalSent-nav"><a href="Address.html#getTotalSent">getTotalSent</a></li><li data-type="method" id="Address-getUnconfirmedBalance-nav"><a href="Address.html#getUnconfirmedBalance">getUnconfirmedBalance</a></li><li data-type="method" id="Address-getUnspent-nav"><a href="Address.html#getUnspent">getUnspent</a></li><li data-type="method" id="Address-removeSpent-nav"><a href="Address.html#removeSpent">removeSpent</a></li><li data-type="method" id="Address-toJSON-nav"><a href="Address.html#toJSON">toJSON</a></li><li data-type="method" id="Address-updateState-nav"><a href="Address.html#updateState">updateState</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-discoverAccounts-nav"><a href="Coin.html#discoverAccounts">discoverAccounts</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getAccounts-nav"><a href="Coin.html#getAccounts">getAccounts</a></li><li data-type="method" id="Coin-getAddress-nav"><a href="Coin.html#getAddress">getAddress</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="TransactionBuilder-nav"><a href="TransactionBuilder.html">TransactionBuilder</a><ul class='methods'><li data-type="method" id="TransactionBuilder-addFrom-nav"><a href="TransactionBuilder.html#addFrom">addFrom</a></li><li data-type="method" id="TransactionBuilder-addTo-nav"><a href="TransactionBuilder.html#addTo">addTo</a></li><li data-type="method" id="TransactionBuilder-buildInputsAndOutputs-nav"><a href="TransactionBuilder.html#buildInputsAndOutputs">buildInputsAndOutputs</a></li><li data-type="method" id="TransactionBuilder-buildTX-nav"><a href="TransactionBuilder.html#buildTX">buildTX</a></li><li data-type="method" id="TransactionBuilder-discoverChange-nav"><a href="TransactionBuilder.html#discoverChange">discoverChange</a></li><li data-type="method" id="TransactionBuilder-getUnspents-nav"><a href="TransactionBuilder.html#getUnspents">getUnspents</a></li><li data-type="method" id="TransactionBuilder-parseOptions-nav"><a href="TransactionBuilder.html#parseOptions">parseOptions</a></li><li data-type="method" id="TransactionBuilder-sendTX-nav"><a href="TransactionBuilder.html#sendTX">sendTX</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-fromEntropy-nav"><a href="Wallet.html#fromEntropy">fromEntropy</a></li><li data-type="method" id="Wallet-fromMnemonic-nav"><a href="Wallet.html#fromMnemonic">fromMnemonic</a></li><li data-type="method" id="Wallet-fromSeed-nav"><a href="Wallet.html#fromSeed">fromSeed</a></li><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li><li data-type="method" id="Wallet-sendPayment-nav"><a href="Wallet.html#sendPayment">sendPayment</a></li></ul></li></ul><h3>Modules</h3><ul><li id="util-nav"><a href="module-util.html">util</a><ul class='methods'><li data-type="method" id="util-isEntropy-nav"><a href="module-util.html#~isEntropy">isEntropy</a></li><li data-type="method" id="util-isMnemonic-nav"><a href="module-util.html#~isMnemonic">isMnemonic</a></li><li data-type="method" id="util-isValidPublicAddress-nav"><a href="module-util.html#~isValidPublicAddress">isValidPublicAddress</a></li><li data-type="method" id="util-isValidWIF-nav"><a href="module-util.html#~isValidWIF">isValidWIF</a></li><li data-type="method" id="util-toBase58-nav"><a href="module-util.html#~toBase58">toBase58</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        Address.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>import bitcoin from 'bitcoinjs-lib'
+import bip32 from 'bip32'
+import wif from 'wif'
+import bip32utils from 'bip32-utils'
+import coinselect from 'coinselect'
+
+import { toBase58, isValidPublicAddress, isValidWIF } from './util'
+
+const ECPair = bitcoin.ECPair;
+
+const GAP_LIMIT = 20;
+
+/**
+ * [bitcoinjs-lib ECPair](https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/ecpair.js#L16)
+ * @typedef {Object} ECPair
+ */
+
+/**
+ * Contains information about an Unspent Transaction Output
+ * @typedef {Object} utxo
+ * @property {string} address - Base58 Public Address
+ * @property {string} txid - The Transaction ID
+ * @property {number} vout - The Index of this specific Output in its parent Transaction
+ * @property {string} scriptPubKey - The Script Public Key Hash
+ * @property {number} amount - Amount (in whole Coin) of this Output
+ * @property {number} satoshis - Amount in Satoshis of this Output
+ * @property {number} height - The Blockheight the Parent Transaction was confirmed in
+ * @property {number} confirmations - The total number of Confirmations the Parent Transaction has recieved
+ * @example
+ * { 
+ * 	address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+ * 	txid: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
+ * 	vout: 1,
+ * 	scriptPubKey: '76a9141bfcff1731caf3a16225d3e78735ddc229e4fc6c88ac',
+ * 	amount: 0.001,
+ * 	satoshis: 100000,
+ * 	height: 2784696,
+ * 	confirmations: 6828 
+ * }
+ */
+
+/**
+ * Contains information about an Unspent Transaction Output
+ * @typedef {Object} AddressState
+ * @property {string} addrStr - Base58 Public Address
+ * @property {number} balanceSat - Balance of the Address in Satoshis
+ * @property {number} totalReceivedSat - Total Recieved to the Address in Satoshis
+ * @property {number} unconfirmedBalanceSat - Unconfirmed Balance of the Address in Satoshis
+ * @property {Array.&lt;string>} transactions - Array of `txids` that have been confirmed on the Network
+ * @property {Array.&lt;string>} spentTransactions - Array of `txids` that have been spent, but not yet confirmed on the Network
+ * @property {number} lastUpdated - Timestamp of when the Address was last updated/synced with the Explorer
+ * @example
+ * { 
+ * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+ * 	balanceSat: 0,
+ * 	totalReceivedSat: 0,
+ * 	unconfirmedBalanceSat: 0,
+ * 	transactions: [],
+ * 	spentTransactions: [],
+ * 	lastUpdated: 0 
+ * }
+ */
+
+/**
+ * Manages information about a specific Address
+ */
+class Address {
+	/**
+	 * Create a new Address based on either a bip32 node, WIF Private Key, or Public Address
+	 * ##### Examples
+	 * Create Address from bip32
+	 * ```
+	 * import bip32 from 'bip32';
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+	 * var address = new Address(node, Networks.flo);
+	 * ```
+	 * Create Address from WIF
+	 * ```
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
+	 * ```
+	 * Create Address from Base58 Public Address
+	 * ```
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
+	 * ```
+	 * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
+	 * @param  {CoinInfo} coin - CoinInfo for the specific Address
+	 * @param  {boolean|AddressState} [discovery=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
+	 * @return {Address}
+	 */
+	constructor(address, coin, discovery){
+		if (address.network){
+			this.fromBIP32 = true
+
+			if (address.address)
+				this.address = address.address
+			else if (address.index &amp;&amp; address.depth)
+				this.address = address
+
+			// Make sure that the networks match and throw an error if they don't
+			if (address.network.pubKeyHash !== coin.network.pubKeyHash){
+				throw new Error("Address Network and Coin Network DO NOT MATCH!!!!!")
+			}
+		} else {
+			if (isValidPublicAddress(address, coin.network)){
+				this.fromBIP32 = false
+				this.pubAddress = address
+			} else if (isValidWIF(address, coin.network)){
+				this.fromBIP32 = true
+
+				this.address = ECPair.fromWIF(address, coin.network)
+			}
+		}
+
+		this.coin = coin || { satPerCoin: 1e8 }
+
+		this.transactions = [];
+
+		this.balanceSat = 0;
+		this.totalReceivedSat = 0;
+		this.totalSentSat = 0;
+		this.unconfirmedBalanceSat = 0;
+
+		this.lastUpdated = 0;
+
+		this.spentTransactions = []
+		
+		if (discovery || discovery === false){
+			this.fromJSON(discovery)
+		} else {
+			this.updateState()
+		}
+	}
+	/**
+	 * Get the Base58 sharable Public Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 * 
+	 * var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
+	 * var pubAddr = address.getPublicAddress();
+	 * // pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+	 * @return {string}
+	 */
+	getPublicAddress(){
+		return this.fromBIP32 ? toBase58(this.address.publicKey, this.coin.network.pubKeyHash) : this.pubAddress
+	}
+	/**
+	 * Get the Base58 sharable Private Address (WIF)
+	 * @example
+	 * import bip32 from 'bip32';
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+	 * var address = new Address(node, Networks.flo);
+	 * var wif = address.getPrivateAddress();
+	 * // wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5
+	 * @return {string}
+	 */
+	getPrivateAddress(){
+		return this.address ? this.address.toWIF() : undefined
+	}
+	/**
+	 * Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers. 
+	 * Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access 
+	 * to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
+	 * the ECPair will exist.
+	 * @example
+	 * import bip32 from 'bip32';
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+	 * var address = new Address(node, Networks.flo);
+	 * var ecpair = address.getECPair();
+	 * @return {ECPair}
+	 */
+	getECPair(){
+		return this.address
+	}
+	/**
+	 * Get the latest State for this address from the Blockchain Explorer
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
+	 * address.updateState().then((addr) => {
+	 * 	console.log(addr.getTotalReceived())
+	 * })
+	 * @return {Promise&lt;Address>} Returns a Promise that will resolve to the Address
+	 */
+	updateState(){
+		return this.coin.explorer.getAddress(this.getPublicAddress()).then((state) => {
+			return this.fromJSON(state)
+		})
+	}
+	/**
+	 * Load Address state from an AddressState object
+	 * @param  {AddressState} state
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * 
+	 * address.fromJSON({ 
+	 * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+     * 	balanceSat: 123,
+     * 	totalReceivedSat: 234,
+     * 	unconfirmedBalanceSat: 345,
+     * 	transactions: ['abcde'],
+     * 	spentTransactions: ['bcdef'],
+     * 	lastUpdated: 456 
+     * })
+     *
+     * var balance = address.getBalance()
+     * // balance = 0.00000123
+	 * @return {Address}
+	 */
+	fromJSON(state){
+		if (!state)
+			return
+
+		// If the state doesn't match for this address, ignore it.
+		if (state.addrStr &amp;&amp; state.addrStr !== this.getPublicAddress())
+			return;
+
+		if (!isNaN(state.balanceSat))
+			this.balanceSat = state.balanceSat
+
+		if (!isNaN(state.totalReceivedSat))
+			this.totalReceivedSat = state.totalReceivedSat
+
+		if (!isNaN(state.totalSentSat))
+			this.totalSentSat = state.totalSentSat
+
+		if (!isNaN(state.unconfirmedBalanceSat))
+			this.unconfirmedBalanceSat = state.unconfirmedBalanceSat
+
+		if (Array.isArray(state.transactions)){
+			this.transactions = state.transactions
+		}
+
+		if (Array.isArray(state.spentTransactions)){
+			for (var tx of state.spentTransactions){
+				this.spentTransactions.push(tx)
+			}
+		}
+
+		if (!isNaN(state.lastUpdated))
+			this.lastUpdated = state.lastUpdated
+		else
+			this.lastUpdated = Date.now()
+
+		return this
+	}
+	/**
+	 * Get the current AddressState from the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 *
+	 * var address_state = address.toJSON()
+	 * // address_state = { 
+	 * // 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+     * // 	balanceSat: 0,
+     * // 	totalReceivedSat: 0,
+     * // 	unconfirmedBalanceSat: 0,
+     * // 	transactions: [],
+     * // 	spentTransactions: [],
+     * // 	lastUpdated: 0 
+     * // }
+	 * @return {AddressState}
+	 */
+	toJSON(){
+		return {
+			addrStr: this.getPublicAddress(),
+			balanceSat: this.balanceSat,
+			totalReceivedSat: this.totalReceivedSat,
+			unconfirmedBalanceSat: this.unconfirmedBalanceSat,
+			transactions: this.transactions,
+			spentTransactions: this.spentTransactions,
+			lastUpdated: this.lastUpdated
+		}
+	}
+	/**
+	 * Get the Balance (in whole coins) for the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * var balance = address.getBalance();
+	 * // balance = 0
+	 * @return {number}
+	 */
+	getBalance(){
+		return this.balanceSat / this.coin.satPerCoin
+	}
+	/**
+	 * Get the Total Recieved balance (in whole coins) for the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * var totReceived = address.getTotalReceived();
+	 * // totReceived = 0
+	 * @return {number}
+	 */
+	getTotalReceived(){
+		return this.totalReceivedSat / this.coin.satPerCoin
+	}
+	/**
+	 * Get the Total Sent balance (in whole coins) for the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * var totSent = address.getTotalSent();
+	 * // totSent = 0
+	 * @return {number}
+	 */
+	getTotalSent(){
+		return this.totalSentSat / this.coin.satPerCoin
+	}
+	/**
+	 * Get the Unconfirmed Balance (in whole coins) for the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * var uBal = address.getUnconfirmedBalance();
+	 * // uBal = 0
+	 * @return {number}
+	 */
+	getUnconfirmedBalance(){
+		return this.unconfirmedBalanceSat / this.coin.satPerCoin
+	}
+	/**
+	 * Get the unspent transaction outputs for the Address
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * address.getUnspent().then((utxos) => {
+	 * 	console.log(utxos);
+	 * })
+	 * @return {Promise&lt;Array.&lt;utxo>>} Returns a Promise that resolves to an Array of utxos.
+	 */
+	getUnspent(){
+		return this.coin.explorer.getAddressUtxo(this.getPublicAddress()).then((utxos) => {
+			return this.removeSpent(utxos)
+		})
+	}
+	/**
+	 * Remove the already spent outputs from the array we are given.
+	 * @param  {Array.&lt;utxo>} unspentTransactions - An Array containing utxos to sort through
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * address.getUnspent().then((utxos) => {
+	 * 	var unspent_utxos = address.removeSpent(utxos)
+	 * 	console.log(unspent_utxos)
+	 * })
+	 * @return {Array.&lt;utxo>}
+	 */
+	removeSpent(unspentTransactions){
+		// If we are not defined, or we are not an array, just return
+		if (!unspentTransactions || !Array.isArray(unspentTransactions))
+			return
+
+		var unspent = [];
+
+		for (var tx of unspentTransactions){
+			var spent = false
+			for (var txid of this.spentTransactions){
+				if (txid === tx.txid){
+					spent = true;
+				}
+			}
+
+			if (!spent)
+				unspent.push(tx);
+		}
+
+		var spentMinusConfirmed = [];
+
+		for (var txid of this.spentTransactions){
+			var confirmed = true
+			for (var tx of unspentTransactions){
+				// Check if we are still in the unspent array
+				if (txid === tx.txid){
+					// If so, set confirmed so that this spent txid gets set back to the spentTransactions array
+					confirmed = false;
+				}
+			}
+
+			if (!confirmed){
+				spentMinusConfirmed.push(txid);
+			}
+		}
+
+		this.spentTransactions = spentMinusConfirmed
+
+		return unspent;
+	}
+	/**
+	 * Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")
+	 * @param {string} txid - The TXID of the spent output that we should remove
+	 */
+	addSpentTransaction(txid){
+		this.spentTransactions.push(txid);
+	}
+}
+
+module.exports = Address</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+  
+</body>
+</html>

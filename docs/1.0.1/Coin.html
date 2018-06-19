@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      Coin - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.3.0/highlightjs-line-numbers.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <link type="text/css" rel="stylesheet" href="styles/monokai-sublime.css">
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      OIP HDMW
+    </h3>
+
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChains-nav"><a href="Account.html#discoverChains">discoverChains</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getAddresses-nav"><a href="Account.html#getAddresses">getAddresses</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Address-nav"><a href="Address.html">Address</a><ul class='methods'><li data-type="method" id="Address-addSpentTransaction-nav"><a href="Address.html#addSpentTransaction">addSpentTransaction</a></li><li data-type="method" id="Address-fromJSON-nav"><a href="Address.html#fromJSON">fromJSON</a></li><li data-type="method" id="Address-getBalance-nav"><a href="Address.html#getBalance">getBalance</a></li><li data-type="method" id="Address-getECPair-nav"><a href="Address.html#getECPair">getECPair</a></li><li data-type="method" id="Address-getPrivateAddress-nav"><a href="Address.html#getPrivateAddress">getPrivateAddress</a></li><li data-type="method" id="Address-getPublicAddress-nav"><a href="Address.html#getPublicAddress">getPublicAddress</a></li><li data-type="method" id="Address-getTotalReceived-nav"><a href="Address.html#getTotalReceived">getTotalReceived</a></li><li data-type="method" id="Address-getTotalSent-nav"><a href="Address.html#getTotalSent">getTotalSent</a></li><li data-type="method" id="Address-getUnconfirmedBalance-nav"><a href="Address.html#getUnconfirmedBalance">getUnconfirmedBalance</a></li><li data-type="method" id="Address-getUnspent-nav"><a href="Address.html#getUnspent">getUnspent</a></li><li data-type="method" id="Address-removeSpent-nav"><a href="Address.html#removeSpent">removeSpent</a></li><li data-type="method" id="Address-toJSON-nav"><a href="Address.html#toJSON">toJSON</a></li><li data-type="method" id="Address-updateState-nav"><a href="Address.html#updateState">updateState</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-discoverAccounts-nav"><a href="Coin.html#discoverAccounts">discoverAccounts</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getAccounts-nav"><a href="Coin.html#getAccounts">getAccounts</a></li><li data-type="method" id="Coin-getAddress-nav"><a href="Coin.html#getAddress">getAddress</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="TransactionBuilder-nav"><a href="TransactionBuilder.html">TransactionBuilder</a><ul class='methods'><li data-type="method" id="TransactionBuilder-addFrom-nav"><a href="TransactionBuilder.html#addFrom">addFrom</a></li><li data-type="method" id="TransactionBuilder-addTo-nav"><a href="TransactionBuilder.html#addTo">addTo</a></li><li data-type="method" id="TransactionBuilder-buildInputsAndOutputs-nav"><a href="TransactionBuilder.html#buildInputsAndOutputs">buildInputsAndOutputs</a></li><li data-type="method" id="TransactionBuilder-buildTX-nav"><a href="TransactionBuilder.html#buildTX">buildTX</a></li><li data-type="method" id="TransactionBuilder-discoverChange-nav"><a href="TransactionBuilder.html#discoverChange">discoverChange</a></li><li data-type="method" id="TransactionBuilder-getUnspents-nav"><a href="TransactionBuilder.html#getUnspents">getUnspents</a></li><li data-type="method" id="TransactionBuilder-parseOptions-nav"><a href="TransactionBuilder.html#parseOptions">parseOptions</a></li><li data-type="method" id="TransactionBuilder-sendTX-nav"><a href="TransactionBuilder.html#sendTX">sendTX</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-fromEntropy-nav"><a href="Wallet.html#fromEntropy">fromEntropy</a></li><li data-type="method" id="Wallet-fromMnemonic-nav"><a href="Wallet.html#fromMnemonic">fromMnemonic</a></li><li data-type="method" id="Wallet-fromSeed-nav"><a href="Wallet.html#fromSeed">fromSeed</a></li><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li><li data-type="method" id="Wallet-sendPayment-nav"><a href="Wallet.html#sendPayment">sendPayment</a></li></ul></li></ul><h3>Modules</h3><ul><li id="util-nav"><a href="module-util.html">util</a><ul class='methods'><li data-type="method" id="util-isEntropy-nav"><a href="module-util.html#~isEntropy">isEntropy</a></li><li data-type="method" id="util-isMnemonic-nav"><a href="module-util.html#~isMnemonic">isMnemonic</a></li><li data-type="method" id="util-isValidPublicAddress-nav"><a href="module-util.html#~isValidPublicAddress">isValidPublicAddress</a></li><li data-type="method" id="util-isValidWIF-nav"><a href="module-util.html#~isValidWIF">isValidWIF</a></li><li data-type="method" id="util-toBase58-nav"><a href="module-util.html#~toBase58">toBase58</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        Coin
+      </h1>
+    
+
+    
+
+<section>
+  <header>
+    
+      <h2>
+        
+        Coin
+        
+      </h2>
+
+      
+        <div class="class-description">
+          <p>Manage Accounts for a specific Coin</p>
+        </div>
+      
+    
+  </header>
+
+  <article>
+    <div class="container-overview">
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+    <h2>Constructor</h2>
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#Coin">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="Coin">
+      <span class="type-signature"></span>new Coin<span class="signature">(seed, coin, discover<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.</p>
+<h5>Examples</h5><p>Create a new Coin using a specified seed.</p>
+<pre class="prettyprint source"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)</code></pre><p>Create a new Coin using a specified seed, don't auto discover.</p>
+<pre class="prettyprint source"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)</code></pre>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>seed</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Master Seed hex (needs to be at least 128 bits)</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>coin</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="global.html#CoinInfo">CoinInfo</a>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The CoinInfo containing network &amp; version variables</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>discover</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      boolean
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              true
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Should the Coin auto-discover Accounts and Chains</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line12">line 12</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+      <h3 class="subsection-title">Methods</h3>
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#addAccount">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="addAccount">
+      <span class="type-signature"></span>addAccount<span class="signature">(account_number<span class="signature-attributes">opt</span>, discover<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Account.html">Account</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Add the Account at the specified number, if it already exists, it returns the Account.
+If the Account does not exist, it will create it and then return it.</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>account_number</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>discover</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Boolean
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              discover Set in Coin Constructor
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Should the Account start auto-discovery.</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line329">line 329</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#addAccount-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="addAccount-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var account = bitcoin.addAccount(1)</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="Account.html">Account</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#discoverAccounts">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="discoverAccounts">
+      <span class="type-signature"></span>discoverAccounts<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="Account.html">Account</a>>>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Discover all Accounts for the Coin</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line378">line 378</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#discoverAccounts-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="discoverAccounts-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+bitcoin.discoverAccounts().then((accounts) => {
+	console.log(accounts.length)
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>Returns a Promise that will resolve to an Array of Accounts once complete</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise.&lt;Array.&lt;<a href="Account.html">Account</a>>>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getAccount">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getAccount">
+      <span class="type-signature"></span>getAccount<span class="signature">(account_number<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Account.html">Account</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Account at the specified number</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>account_number</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line290">line 290</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getAccount-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getAccount-examples">Examples</h5>
+    
+  <p class="code-caption">
+    Get Default Account
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var account = bitcoin.getAccount()</code></pre>
+
+  <p class="code-caption">
+    Get Account #1
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var account = bitcoin.getAccount(1)</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="Account.html">Account</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getAccounts">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getAccounts">
+      <span class="type-signature"></span>getAccounts<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get all Accounts on the Coin</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line314">line 314</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getAccounts-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getAccounts-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var accounts = bitcoin.getAccounts()
+// accounts = {
+// 	0: Account,
+// 	1: Account
+// }</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>Returns a JSON object with accounts</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Object
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getAddress">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getAddress">
+      <span class="type-signature"></span>getAddress<span class="signature">(account_number<span class="signature-attributes">opt</span>, chain_number<span class="signature-attributes">opt</span>, address_index<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Address.html">Address</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get a specific Address</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>account_number</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Number of the account you wish to get the Address from</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>chain_number</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Number of the Chain you wish to get the Address from</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>address_index</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Index of the Address you wish to get</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line140">line 140</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="Address.html">Address</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getBalance">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getBalance">
+      <span class="type-signature"></span>getBalance<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>options</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>Specific options defining what balance to get back</p>
+          
+            <h6>Properties</h6>
+            
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>discover</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Boolean
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              true
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Should the Coin discover Accounts</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>accounts</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;number>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              All Accounts in Coin
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Get Balance for defined Accounts</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>addresses</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;string>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              All Addresses in each Account in Coin
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Get Balance for defined Addresses</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line76">line 76</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getBalance-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getBalance-examples">Example</h5>
+    
+  <p class="code-caption">
+     Get Balance for entire Coin
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+bitcoin.getBalance().then((balance) => {
+ 	console.log(balance)
+})</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>A Promise that will resolve to the balance of the entire Coin</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise.&lt;number>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getCoinInfo">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getCoinInfo">
+      <span class="type-signature"></span>getCoinInfo<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#CoinInfo">CoinInfo</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the CoinInfo for the Coin</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line364">line 364</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getCoinInfo-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getCoinInfo-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var coin_info = bitcoin.getCoinInfo()
+// coin_info = Networks.bitcoin</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="global.html#CoinInfo">CoinInfo</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getExtendedPrivateKey">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getExtendedPrivateKey">
+      <span class="type-signature"></span>getExtendedPrivateKey<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Extended Private Key for the root path. This is derived at m/44'/coin_type'</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line259">line 259</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getExtendedPrivateKey-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getExtendedPrivateKey-examples">Example</h5>
+    
+  <p class="code-caption">
+    Get the Extended Private Key for the entire Coin
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var extPrivateKey = bitcoin.getExtendedPrivateKey()
+// extPrivateKey = xprv9x8MQtHNRrGgrnWPkUxjUC57DWKgkjobwAYUFedxVa2FAA5qaQuGqLkJnVcszqomTar51PCR8JiKnGGgzK9eJKGjbpUirKPVHxH2PU2Rc93</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>The Extended Private Key</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getExtendedPublicKey">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getExtendedPublicKey">
+      <span class="type-signature"></span>getExtendedPublicKey<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Neutered Extended Public Key for the root path. This is derived at m/44'/coin_type'</p>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line272">line 272</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getExtendedPublicKey-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getExtendedPublicKey-examples">Example</h5>
+    
+  <p class="code-caption">
+    Get the Extended Private Key for the entire Coin
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var extPublicKey = bitcoin.getExtendedPrivateKey()
+// extPublicKey = xpub6B7hpPpGGDpz5GarrWVjqL1qmYABACXTJPU5433a3uZE2xQz7xDXP94ndkjrxogjordTDSDaHY4i5G4HqRH6E9FJZk2F4ED4cbnprW2Vm9v</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <p>The Extended Public Key</p>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getMainAddress">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getMainAddress">
+      <span class="type-signature"></span>getMainAddress<span class="signature">(account_number<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Address.html">Address</a>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Get the Main Address for a specific Account number. 
+This is the Address at index 0 on the External Chain of the Account.</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>account_number</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              0
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Number of the Account you wish to get</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line159">line 159</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="example-container">
+    <a class="link-icon" href="#getMainAddress-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="getMainAddress-examples">Examples</h5>
+    
+  <p class="code-caption">
+    Get Main Address for Coin
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var mainAddress = bitcoin.getMainAddress()</code></pre>
+
+  <p class="code-caption">
+    Get Main Address for Account #1 on Coin
+  </p>
+
+
+  <pre class="prettyprint"><code>import { Coin, Networks } from 'oip-hdmw'
+
+var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
+var mainAddress = bitcoin.getMainAddress(1)</code></pre>
+
+
+  </div>
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      <a href="Address.html">Address</a>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+        
+
+<br />
+<br />
+<hr />
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#sendPayment">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="sendPayment">
+      <span class="type-signature"></span>sendPayment<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    <p>Send a Payment to specified Addresses and Amounts</p>
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>options</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+
+        
+
+        <td class="description last">
+          <p>the options for the specific transaction being sent</p>
+          
+            <h6>Properties</h6>
+            
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+        <th>Default</th>
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>to</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="global.html#OutputAddress">OutputAddress</a>
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;<a href="global.html#OutputAddress">OutputAddress</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Define outputs for the Payment</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>from</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;string>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              All Addresses in Coin
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Define what public address(es) you wish to send from</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>fromAccounts</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    |
+
+    <span class="param-type">
+      Array.&lt;number>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              All Accounts in Coin
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Define what Accounts you wish to send from</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>discover</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Boolean
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              true
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Should discovery happen before sending payment</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>floData</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              ""
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Flo data to attach to the transaction</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line172">line 172</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+  <div class="param-desc">
+    <ul>
+<li>Returns a promise that will resolve to the success TXID</li>
+</ul>
+  </div>
+
+
+
+  <dl class="param-type">
+    <dt>Type: </dt>
+    <dd>
+      
+    <span class="param-type">
+      Promise.&lt;string>
+    </span>
+
+    
+
+
+    </dd>
+  </dl>
+
+
+    
+
+      
+    
+
+    
+
+    
+  </article>
+</section>
+
+
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+  
+</body>
+</html>

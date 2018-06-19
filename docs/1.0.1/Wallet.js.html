@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      Wallet.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.3.0/highlightjs-line-numbers.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <link type="text/css" rel="stylesheet" href="styles/monokai-sublime.css">
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      OIP HDMW
+    </h3>
+
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChains-nav"><a href="Account.html#discoverChains">discoverChains</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getAddresses-nav"><a href="Account.html#getAddresses">getAddresses</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Address-nav"><a href="Address.html">Address</a><ul class='methods'><li data-type="method" id="Address-addSpentTransaction-nav"><a href="Address.html#addSpentTransaction">addSpentTransaction</a></li><li data-type="method" id="Address-fromJSON-nav"><a href="Address.html#fromJSON">fromJSON</a></li><li data-type="method" id="Address-getBalance-nav"><a href="Address.html#getBalance">getBalance</a></li><li data-type="method" id="Address-getECPair-nav"><a href="Address.html#getECPair">getECPair</a></li><li data-type="method" id="Address-getPrivateAddress-nav"><a href="Address.html#getPrivateAddress">getPrivateAddress</a></li><li data-type="method" id="Address-getPublicAddress-nav"><a href="Address.html#getPublicAddress">getPublicAddress</a></li><li data-type="method" id="Address-getTotalReceived-nav"><a href="Address.html#getTotalReceived">getTotalReceived</a></li><li data-type="method" id="Address-getTotalSent-nav"><a href="Address.html#getTotalSent">getTotalSent</a></li><li data-type="method" id="Address-getUnconfirmedBalance-nav"><a href="Address.html#getUnconfirmedBalance">getUnconfirmedBalance</a></li><li data-type="method" id="Address-getUnspent-nav"><a href="Address.html#getUnspent">getUnspent</a></li><li data-type="method" id="Address-removeSpent-nav"><a href="Address.html#removeSpent">removeSpent</a></li><li data-type="method" id="Address-toJSON-nav"><a href="Address.html#toJSON">toJSON</a></li><li data-type="method" id="Address-updateState-nav"><a href="Address.html#updateState">updateState</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-discoverAccounts-nav"><a href="Coin.html#discoverAccounts">discoverAccounts</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getAccounts-nav"><a href="Coin.html#getAccounts">getAccounts</a></li><li data-type="method" id="Coin-getAddress-nav"><a href="Coin.html#getAddress">getAddress</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="TransactionBuilder-nav"><a href="TransactionBuilder.html">TransactionBuilder</a><ul class='methods'><li data-type="method" id="TransactionBuilder-addFrom-nav"><a href="TransactionBuilder.html#addFrom">addFrom</a></li><li data-type="method" id="TransactionBuilder-addTo-nav"><a href="TransactionBuilder.html#addTo">addTo</a></li><li data-type="method" id="TransactionBuilder-buildInputsAndOutputs-nav"><a href="TransactionBuilder.html#buildInputsAndOutputs">buildInputsAndOutputs</a></li><li data-type="method" id="TransactionBuilder-buildTX-nav"><a href="TransactionBuilder.html#buildTX">buildTX</a></li><li data-type="method" id="TransactionBuilder-discoverChange-nav"><a href="TransactionBuilder.html#discoverChange">discoverChange</a></li><li data-type="method" id="TransactionBuilder-getUnspents-nav"><a href="TransactionBuilder.html#getUnspents">getUnspents</a></li><li data-type="method" id="TransactionBuilder-parseOptions-nav"><a href="TransactionBuilder.html#parseOptions">parseOptions</a></li><li data-type="method" id="TransactionBuilder-sendTX-nav"><a href="TransactionBuilder.html#sendTX">sendTX</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-fromEntropy-nav"><a href="Wallet.html#fromEntropy">fromEntropy</a></li><li data-type="method" id="Wallet-fromMnemonic-nav"><a href="Wallet.html#fromMnemonic">fromMnemonic</a></li><li data-type="method" id="Wallet-fromSeed-nav"><a href="Wallet.html#fromSeed">fromSeed</a></li><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li><li data-type="method" id="Wallet-sendPayment-nav"><a href="Wallet.html#sendPayment">sendPayment</a></li></ul></li></ul><h3>Modules</h3><ul><li id="util-nav"><a href="module-util.html">util</a><ul class='methods'><li data-type="method" id="util-isEntropy-nav"><a href="module-util.html#~isEntropy">isEntropy</a></li><li data-type="method" id="util-isMnemonic-nav"><a href="module-util.html#~isMnemonic">isMnemonic</a></li><li data-type="method" id="util-isValidPublicAddress-nav"><a href="module-util.html#~isValidPublicAddress">isValidPublicAddress</a></li><li data-type="method" id="util-isValidWIF-nav"><a href="module-util.html#~isValidWIF">isValidWIF</a></li><li data-type="method" id="util-toBase58-nav"><a href="module-util.html#~toBase58">toBase58</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        Wallet.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>import bip39 from 'bip39'
+
+import Coin from './Coin'
+import networks from './networks'
+
+import TransactionBuilder from './TransactionBuilder'
+import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
+
+const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
+
+/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
+class Wallet {
+	/**
+	 * Create a new [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) wallet with the supplied settings
+	 *
+	 * ##### Examples
+	 * Create wallet with Random Mnemonic
+	 * ```
+	 * var wallet = new Wallet()
+	 * ```
+	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic
+	 * ```
+	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+	 * ```
+	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy
+	 * ```
+	 * var wallet = new Wallet('00000000000000000000000000000000')
+	 * ```
+	 * Create wallet from Seed Hex
+	 * ```
+	 * var wallet = new Wallet("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4")
+	 * ```
+	 * Create wallet from Seed Buffer
+	 * ```
+	 * var wallet = new Wallet(new Buffer("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4", "hex"))
+	 * ```
+	 * 
+	 * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
+	 * @param  {Object} [settings] - Wallet settings
+	 * @param {boolean} [settings.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
+	 * @param {Array.&lt;string>} [settings.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
+	 * @param {Array.&lt;CoinInfo>} [settings.networks] - An array containing a custom coins network info
+	 *
+	 * @example &lt;caption>Create wallet using Mnemonic&lt;/caption>
+	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+	 * 
+	 * @return {Wallet}
+	 */
+	constructor(seed, options){
+		// Check if seed is a string or buffer, if not, create a new BIP39 Mnemonic
+		if (isMnemonic(seed)){
+			this.fromMnemonic(seed)
+		} else if (isEntropy(seed)) {
+			this.fromEntropy(seed)
+		} else if (seed) {
+			this.fromSeed(seed);
+		} else {
+			this.fromMnemonic(bip39.generateMnemonic());
+		}
+
+		// Set the networks to the imported defaults
+		this.networks = networks;
+
+		// Check for custom options
+		if (options &amp;&amp; typeof options === "object"){
+			// Check if the user has defined their own supported coins for the wallet
+			if (options.supported_coins){
+				if (typeof options.supported_coins === "string") {
+					this.supported_coins = [options.supported_coins]
+				} else if (Array.isArray(options.supported_coins)) {
+					this.supported_coins = options.supported_coins
+				}
+			}
+			// Check if the user has defined any custom networks that should be imported
+			if (options.networks &amp;&amp; typeof options.networks === "object"){
+				// Attach each passed in network, overwrite if needed
+				for (var node in options.networks){
+					this.networks[node] = options.networks[node];
+				}
+			}
+		}
+
+		// If we were not passed in a supported coin array by the options, then set it to the defailt options.
+		if (!this.supported_coins || !Array.isArray(this.supported_coins))
+			this.supported_coins = DEFAULT_SUPPORTED_COINS;
+
+		// The array to hold the live coin objects
+		this.coins = {};
+
+		// An optional variable to say if we should auto run address discovery on Account Chains
+		if (options &amp;&amp; (options.discover || options.discover === false))
+			this.discover = options.discover
+		else
+			this.discover = true
+
+		// Validate that each supported coin has a pair network
+		for (var coin of this.supported_coins){
+			for (var coinNet in this.networks){
+				// If we have found a pair, attach a live coin object
+				if (coin === coinNet){
+					this.coins[coin] = new Coin(this.seed, this.networks[coinNet], this.discover)
+				}
+			}
+		}
+	}
+	/**
+	 * Get a specific Coin
+	 * @param  {string} coin - The coin "name" as defined in CoinInfo.name
+	 * @example
+	 * var wallet = new Wallet();
+	 * var coin = wallet.getCoin("bitcoin")
+	 * @return {Coin} Returns the requested Coin
+	 */
+	getCoin(coin){
+		for (var c in this.coins){
+			if (c === coin)
+				return this.coins[c]
+		}
+	}
+	/**
+	 * Get all Coins running inside the Wallet
+	 * @example
+	 * var wallet = new Wallet();
+	 * var coins = wallet.getCoins();
+	 * // coins = {
+	 * //	"bitcoin": Coin, 
+	 * //	"litecoin": Coin, 
+	 * //	"flo": Coin
+	 * // }
+	 * @return {...Coin} Object containing all coins
+	 */
+	getCoins(){
+		return this.coins;
+	}
+	/**
+	 * Init Wallet from BIP39 Mnemonic
+	 * @param  {string} mnemonic - A BIP39 Mnemonic String
+	 * @example
+	 * var wallet = new Wallet();
+	 * wallet.fromMnemonic("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+	 * @return {Boolean} Returns if the operation was successful
+	 */
+	fromMnemonic(mnemonic){
+		if (isMnemonic(mnemonic)){
+			this.mnemonic = mnemonic;
+			this.entropy = bip39.mnemonicToEntropy(this.mnemonic);
+			this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
+
+			return true
+		}
+
+		return false
+	}
+	/**
+	 * Get the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, if defined
+	 * @example
+	 * var wallet = new Wallet('00000000000000000000000000000000');
+	 * var mnemonic = wallet.getMnemonic()
+	 * // mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+	 * @return {string} 
+	 */
+	getMnemonic(){
+		return this.mnemonic
+	}
+	/**
+	 * Init Wallet from BIP39 Entropy
+	 * @param  {string} entropy - A BIP39 Entropy String
+	 * @example
+	 * var wallet = new Wallet();
+	 * wallet.fromEntropy('00000000000000000000000000000000')
+	 * @return {Boolean} Returns if the operation was successful
+	 */
+	fromEntropy(entropy){
+		if (isEntropy(entropy)){
+			this.entropy = entropy;
+			this.mnemonic = bip39.entropyToMnemonic(this.entropy);
+			this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
+			return true
+		}
+
+		return false
+	}
+	/**
+	 * Get the Entropy value used to generate the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic.
+	 * Note that the Entropy will only be defined if we are creating 
+	 * a wallet from Entropy or a Mnemonic, not off of just the Seed Hex
+	 * 
+	 * @example
+	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about");
+	 * var entropy = wallet.getEntropy()
+	 * // entropy = '00000000000000000000000000000000'
+	 * @return {string}
+	 */
+	getEntropy(){
+		return this.entropy
+	}
+	/**
+	 * Init Wallet from a Seed
+	 * @param  {string|Buffer} seed
+	 * @example
+	 * var wallet = new Wallet();
+	 * wallet.fromSeed("example-seed");
+	 * @return {Boolean} Returns if the operation was successful
+	 */
+	fromSeed(seed){
+		if (seed instanceof Buffer){
+			this.seed = seed.toString('hex');
+			return true;
+		} else if (typeof seed === "string"){
+			this.seed = seed;
+			return true;
+		}
+
+		return false
+	}
+	/**
+	 * Get the Encoded Seed hex string
+	 * @example
+	 * var wallet = new Wallet('00000000000000000000000000000000');
+	 * var seedHex = wallet.getSeed()
+	 * // seedHex = '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4'
+	 * @return {string} The hex string of the seed buffer
+	 */
+	getSeed(){
+		return this.seed
+	}
+	/**
+	 * @param  {Object} options - Options about the payment you wish to send
+	 * @param {OutputAddress|Array.&lt;OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {OutputAddress|Array.&lt;OutputAddress>} [options.coin] - Define which coin you would like to send from
+	 * @param {string|Array.&lt;string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
+	 * @param {number|Array.&lt;number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
+	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
+	 * @return {Promise&lt;string>} Returns a promise that will resolve to the success TXID
+	 */
+	sendPayment(options){
+		return new Promise((resolve, reject) => {
+			if (!options)
+				reject(new Error("You must define payment options!"))
+
+			if (!options.to)
+				reject(new Error("You must define your payment outputs!"))
+
+			// Check if the user defined a coin name to send from
+			if (options.coin){
+				if (typeof options.coin !== "string")
+					reject(new Error("Send From Coin option must be the string name of the Coin!"))
+
+				if (this.getCoin(options.coin)){
+					this.getCoin(options.coin).sendPayment(options).then(resolve)
+				}
+			} else {
+				// If coin name is not passed, attempt to match addresses to a Coin!
+				var coinMatch = "";
+				var singleMatch = false;
+
+				if (Array.isArray(options.to)){
+					for (var coin in this.networks){
+						var allMatchCoin = true;
+
+						for (var toAdr of options.to){
+							for (var adr in toAdr){
+								if (isValidPublicAddress(adr, this.networks[coin].network)){
+									coinMatch = this.networks[coin].name;
+								} else {
+									allMatchCoin = false;
+								}
+							}
+						}
+
+						// If not all addresses are valid, don't match to coin
+						if (!allMatchCoin &amp;&amp; coinMatch === this.networks[coin].name)
+							coinMatch = "";
+					}
+				} else {
+					for (var coin in this.networks){
+						for (var adr in options.to){
+							if (isValidPublicAddress(adr, this.networks[coin].network)){
+								coinMatch = this.networks[coin].name;
+								singleMatch = true;
+							}
+						}
+					}
+				}
+
+				if (coinMatch !== ""){
+					if (this.getCoin(coinMatch))
+						this.getCoin(coinMatch).sendPayment(options).then(resolve)
+					else
+						reject(new Error("Cannot get Coin for matched network! " + coinMatch))
+				} else {
+					reject(new Error("Not all to addresses match any Coin network! Please check your outputs."))
+				}
+			}
+		})
+	}
+}
+
+module.exports = Wallet</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+  
+</body>
+</html>

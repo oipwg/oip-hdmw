@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      Account.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.3.0/highlightjs-line-numbers.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <link type="text/css" rel="stylesheet" href="styles/monokai-sublime.css">
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      OIP HDMW
+    </h3>
+
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChains-nav"><a href="Account.html#discoverChains">discoverChains</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getAddresses-nav"><a href="Account.html#getAddresses">getAddresses</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Address-nav"><a href="Address.html">Address</a><ul class='methods'><li data-type="method" id="Address-addSpentTransaction-nav"><a href="Address.html#addSpentTransaction">addSpentTransaction</a></li><li data-type="method" id="Address-fromJSON-nav"><a href="Address.html#fromJSON">fromJSON</a></li><li data-type="method" id="Address-getBalance-nav"><a href="Address.html#getBalance">getBalance</a></li><li data-type="method" id="Address-getECPair-nav"><a href="Address.html#getECPair">getECPair</a></li><li data-type="method" id="Address-getPrivateAddress-nav"><a href="Address.html#getPrivateAddress">getPrivateAddress</a></li><li data-type="method" id="Address-getPublicAddress-nav"><a href="Address.html#getPublicAddress">getPublicAddress</a></li><li data-type="method" id="Address-getTotalReceived-nav"><a href="Address.html#getTotalReceived">getTotalReceived</a></li><li data-type="method" id="Address-getTotalSent-nav"><a href="Address.html#getTotalSent">getTotalSent</a></li><li data-type="method" id="Address-getUnconfirmedBalance-nav"><a href="Address.html#getUnconfirmedBalance">getUnconfirmedBalance</a></li><li data-type="method" id="Address-getUnspent-nav"><a href="Address.html#getUnspent">getUnspent</a></li><li data-type="method" id="Address-removeSpent-nav"><a href="Address.html#removeSpent">removeSpent</a></li><li data-type="method" id="Address-toJSON-nav"><a href="Address.html#toJSON">toJSON</a></li><li data-type="method" id="Address-updateState-nav"><a href="Address.html#updateState">updateState</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-discoverAccounts-nav"><a href="Coin.html#discoverAccounts">discoverAccounts</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getAccounts-nav"><a href="Coin.html#getAccounts">getAccounts</a></li><li data-type="method" id="Coin-getAddress-nav"><a href="Coin.html#getAddress">getAddress</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="TransactionBuilder-nav"><a href="TransactionBuilder.html">TransactionBuilder</a><ul class='methods'><li data-type="method" id="TransactionBuilder-addFrom-nav"><a href="TransactionBuilder.html#addFrom">addFrom</a></li><li data-type="method" id="TransactionBuilder-addTo-nav"><a href="TransactionBuilder.html#addTo">addTo</a></li><li data-type="method" id="TransactionBuilder-buildInputsAndOutputs-nav"><a href="TransactionBuilder.html#buildInputsAndOutputs">buildInputsAndOutputs</a></li><li data-type="method" id="TransactionBuilder-buildTX-nav"><a href="TransactionBuilder.html#buildTX">buildTX</a></li><li data-type="method" id="TransactionBuilder-discoverChange-nav"><a href="TransactionBuilder.html#discoverChange">discoverChange</a></li><li data-type="method" id="TransactionBuilder-getUnspents-nav"><a href="TransactionBuilder.html#getUnspents">getUnspents</a></li><li data-type="method" id="TransactionBuilder-parseOptions-nav"><a href="TransactionBuilder.html#parseOptions">parseOptions</a></li><li data-type="method" id="TransactionBuilder-sendTX-nav"><a href="TransactionBuilder.html#sendTX">sendTX</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-fromEntropy-nav"><a href="Wallet.html#fromEntropy">fromEntropy</a></li><li data-type="method" id="Wallet-fromMnemonic-nav"><a href="Wallet.html#fromMnemonic">fromMnemonic</a></li><li data-type="method" id="Wallet-fromSeed-nav"><a href="Wallet.html#fromSeed">fromSeed</a></li><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li><li data-type="method" id="Wallet-sendPayment-nav"><a href="Wallet.html#sendPayment">sendPayment</a></li></ul></li></ul><h3>Modules</h3><ul><li id="util-nav"><a href="module-util.html">util</a><ul class='methods'><li data-type="method" id="util-isEntropy-nav"><a href="module-util.html#~isEntropy">isEntropy</a></li><li data-type="method" id="util-isMnemonic-nav"><a href="module-util.html#~isMnemonic">isMnemonic</a></li><li data-type="method" id="util-isValidPublicAddress-nav"><a href="module-util.html#~isValidPublicAddress">isValidPublicAddress</a></li><li data-type="method" id="util-isValidWIF-nav"><a href="module-util.html#~isValidWIF">isValidWIF</a></li><li data-type="method" id="util-toBase58-nav"><a href="module-util.html#~toBase58">toBase58</a></li></ul></li></ul><h3 id="global-nav"><a href="global.html">Global</a></h3>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        Account.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>import bitcoin from 'bitcoinjs-lib'
+import bip32 from 'bip32'
+import bip32utils from 'bip32-utils'
+
+import Address from './Address'
+import TransactionBuilder from './TransactionBuilder'
+import { toBase58, isValidPublicAddress, discovery } from './util'
+
+// Helper CONSTS (used in other consts)
+const SECOND = 1000;
+const MINUTE = 60 * SECOND;
+
+// Class Constants
+const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE;
+const GAP_LIMIT = 20;
+
+const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
+	return { address: node, network: network }
+}
+
+/**
+ * A BIP32 Node that manages Derivation of Chains and Addresses. This is created from the [`bip32` npm package managed by `bitcoinjs`](https://github.com/bitcoinjs/bip32).
+ * @typedef {Object} bip32
+ * @example &lt;caption>Spawn a Bitcoin bip32 Node&lt;/caption>
+ * import bip32 from 'bip32';
+ * 
+ * var bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+ * @example &lt;caption>Spawn a Flo bip32 Node&lt;/caption>
+ * import bip32 from 'bip32';
+ * import { Networks } from 'oip-hdmw';
+ * 
+ * var bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+ */
+
+/**
+ * A BIP32 Chain manager. This is created from the [`bip32-utils` npm package managed by `bitcoinjs`](https://github.com/bitcoinjs/bip32-utils).
+ * @typedef {Object} bip32utilschain
+ * @example
+ * import bip32 from 'bip32';
+ * import bip32utils from 'bip32-utils';
+ * 
+ * var bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+ * var chain = new bip32utils.Chain(bip32Node)
+ */
+
+/**
+ * Manages Chains and Addresses for a specific BIP32/BIP44 Account
+ */
+class Account {
+	/**
+	 * Create a new Account to manage Chains and Addresses for based on a BIP32 Node
+	 *
+	 * ##### Examples
+	 * Create a Bitcoin Account
+	 * ```
+	 * import { Account, Networks } from 'oip-hdmw';
+	 *
+	 * var account_master = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+	 *
+	 * var account = new Account(account_master, Networks.bitcoin);
+	 * ```
+	 * Create a Flo Account
+	 * ```
+	 * import { Account, Networks } from 'oip-hdmw';
+	 *
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo);
+	 * ```
+	 * @param  {bip32} account_master - The BIP32 Node to derive Chains and Addresses from.
+	 * @param  {CoinInfo} coin - The CoinInfo for the Account
+	 * @param  {boolean} [discover=true] - Should the Account auto-discover Chains and Addresses
+	 * @return {Account}
+	 */
+	constructor(account_master, coin, discover){
+		this.account_master = account_master;
+		this.coin = coin || {};
+
+		var external = this.account_master.derive(0)
+		var internal = this.account_master.derive(1)
+
+		this.account = new bip32utils.Account([
+			new bip32utils.Chain(external, undefined, CUSTOM_ADDRESS_FUNCTION),
+			new bip32utils.Chain(internal, undefined, CUSTOM_ADDRESS_FUNCTION)
+		])
+
+		this.addresses = {}
+
+		this.discovery = {
+			0: {
+				index: 0,
+				lastUpdate: 0
+			},
+			1: {
+				index: 1,
+				lastUpdate: 0
+			}
+		}
+
+		this.discover = true;
+
+		if (discover !== undefined)
+			this.discover = discover
+
+		// Discover both External and Internal chains
+		if (this.discover){
+			this.discoverChains()
+		}
+	}
+	/**
+	 * Get the Main Address for a specified Chain and Index on the Chain.
+	 * @param  {number}	[chain_number=0] - Number of the specific chain you want to get the Main Address for
+	 * @param  {number} [main_address_number=0] - Index of the Main Address on the specified chain
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var address = account.getMainAddress()
+	 * // address.getPublicAddress() = FPznv9i9iHX5vt4VMbH9x2LgUcrjtSn4cW
+	 * @return {Address}
+	 */
+	getMainAddress(chain_number, main_address_number){
+		return this.getAddress(chain_number, main_address_number)
+	}
+	/**
+	 * Get the Address for a specified Chain and Index on the Chain.
+	 * @param  {number}	[chain_number=0] - Number of the specific chain you want to get the Address from
+	 * @param  {number} [address_number=0] - Index of the Address on the specified chain
+	 * @example &lt;caption>Get the address on Chain `0` at Index `10`&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var address = account.getAddress(0, 10)
+	 * // address.getPublicAddress() = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+	 * @return {Address}
+	 */
+	getAddress(chain_number, address_number){
+		var addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
+		
+		return new Address(addr, this.coin, false)
+	}
+	/**
+	 * Get the All Used Address (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
+	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
+	 * @example &lt;caption>Get all Used Addresses on the Account&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getAddresses()
+	 * // addresses = [Address, Address, Address]
+	 * @example &lt;caption>Get the addresses on Chain `0`&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getAddresses(0)
+	 * // addresses = [Address, Address, Address]
+	 * @return {Array.&lt;Address>}
+	 */
+	getAddresses(chain_number){
+		var addrs = [];
+
+		if (chain_number &amp;&amp; !isNaN(chainNumber)){
+			for (var addr in this.addresses){
+				var chain = this.account.getChain(chain_number);
+				var addresses = chain.addresses.map((ad) => {
+					return new Address(ad, this.coin, false)
+				})
+				for (var adr of addresses){
+					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()){
+						addrs.push(this.addresses[addr])
+					}
+				}
+			}
+		} else {
+			for (var addr in this.addresses){
+				addrs.push(this.addresses[addr])
+			}
+		}
+
+		return addrs
+	}
+	/**
+	 * Get the Balance for the entire Account
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * account.getBalance({ discover: true }).then((balance) => {
+	 * 	console.log(balance);
+	 * })
+	 * @param {Object} [options] Specific options defining what balance to get back
+	 * @param {Boolean} [options.discover=true] - Should the Account discover Chains and Addresses
+	 * @param {string|Array.&lt;string>} [options.addresses] - Address, or Addresses to get the balance of
+	 * @param {number} [options.id] - The ID number to return when the Promise resolves
+	 * @return {Promise&lt;number>} - Returns a Promise that will resolve to the total balance.
+	 */
+	getBalance(options){
+		return new Promise((resolve, reject) => {
+			var getBalances = () => {
+				var totBal = 0;
+
+				for (var addr in this.addresses){
+					if (options &amp;&amp; options.addresses &amp;&amp; typeof options.addresses === "string"){
+						if (addr === options.addresses){
+							totBal += this.addresses[addr].getBalance()
+						}
+					} else if (options &amp;&amp; options.addresses &amp;&amp; Array.isArray(options.addresses)){
+						for (var ad of options.addresses){
+							if (addr === ad){
+								totBal += this.addresses[addr].getBalance()
+							}
+						}
+					} else {
+						totBal += this.addresses[addr].getBalance()
+					}
+				}
+
+				var id;
+
+				if (options &amp;&amp; options.id)
+					id = options.id;
+
+				resolve(totBal, id);
+			}
+
+			var discovery = this.discover;
+
+			if (options &amp;&amp; options.discover !== undefined)
+				discovery = options.discover;
+
+			if (discovery){
+				this.discoverChains().then(getBalances)
+			} else {
+				getBalances()
+			}
+		})
+	}
+	/**
+	 * Get the Next Chain Address for a specified chain
+	 * @param  {number} [chain_number=0] - The specific chain that you want to get the next address from
+	 * @example &lt;caption>Get the next Chain Address on Chain #1&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var address = account.getNextChainAddress(1)
+	 * @return {Address}
+	 */
+	getNextChainAddress(chain_number){
+		return new Address(this.account.getChain(chain_number || 0).next(), this.coin, false);
+	}
+	/**
+	 * Get the Next Change Address from the "Internal" chain
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var address = account.getNextChangeAddress()
+	 * @return {Address}
+	 */
+	getNextChangeAddress(){
+		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
+		return this.getNextChainAddress(1)
+	}
+	/**
+	 * Send a Payment to specified Addresses and Amounts
+	 * @param  {Object} options - the options for the specific transaction being sent
+	 * @param {OutputAddress|Array.&lt;OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {string|Array.&lt;string>} [options.from=All Addresses in Account] - Define what public address(es) you wish to send from
+	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
+	 * @return {Promise&lt;string>} - Returns a promise that will resolve to the success TXID
+	 */
+	sendPayment(options){
+		return new Promise((resolve, reject) => {
+			if (!options)
+				reject(new Error("You must define your payment options!"))
+
+			var processPayment = () => {
+				var sendFrom = [];
+
+				var allAddresses = this.getAddresses();
+
+				// Check if we define what address we wish to send from
+				if (options.from) {
+					if (typeof options.from === "string") {
+						for (var address of allAddresses){
+							if (address.getPublicAddress() === options.from){
+								sendFrom.push(address);
+							}
+						}
+					} else if (Array.isArray(options.from)) {
+						for (var adr of options.from){
+							for (var address of allAddresses){
+								if (address.getPublicAddress() === adr){
+									sendFrom.push(address);
+								}
+							}
+						}
+					}
+				// else add all the addresses on the Account that have recieved any txs
+				} else {
+					sendFrom = allAddresses;
+				}
+
+				if (sendFrom.length === 0){
+					reject(new Error("No Addresses match defined options.from Addresses!"))
+					return;
+				}
+
+				var newOpts = options;
+
+				newOpts.from = sendFrom;
+
+				var txb = new TransactionBuilder(this.coin, newOpts);
+
+				txb.sendTX().then(resolve);
+			}
+
+			if (options.discover === false){
+				processPayment();
+			} else {
+				this.discoverChains().then(processPayment)
+			}
+		})
+	}
+	/**
+	 * Get the Extended Private Key for the Account
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var extPrivateKey = account.getExtendedPrivateKey()
+	 * // extPrivateKey = Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC
+	 * @return {string}
+	 */
+	getExtendedPrivateKey(){
+		return this.account_master.toBase58()
+	}
+	/**
+	 * Get the Extended Public Key for the Account
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var extPublicKey = account.getExtendedPublicKey()
+	 * // extPublicKey = Fpub1BPo8vEQqDkoDQmDqcJ8WFHD331AMpd7VU7atCJsix8xbHwN6K9wfDLjZKnW9fUw5uJg8UJMLhQ5W7gTxv6DbkfPoeJbBpMaUHrULxzVnSy
+	 * @return {string}
+	 */
+	getExtendedPublicKey(){
+		return this.account_master.neutered().toBase58()
+	}
+	/**
+	 * Get the specified Chain number
+	 * @param {number} chain_number - The number of the chain you are requesting
+	 * @example &lt;caption>Get Chain 0&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var chain = account.getChain(0)
+	 * @return {bip32utilschain}
+	 */
+	getChain(chainNumber){
+		return this.account.getChain(chainNumber)
+	}
+	_discoverChain(chainNumber, gapLimit, queryCallback, callback) {
+		var chains = this.account.getChains()
+		var chain = chains[chainNumber].clone()
+
+		discovery(chain, gapLimit, queryCallback, chainNumber, (err, used, checked, chainIndex) => {
+			if (err) return callback(err)
+
+			// throw away EACH unused address AFTER the last unused address
+			var unused = checked - used
+			for (var j = 1; j &lt; unused; ++j) chain.pop()
+
+			// override the internal chain
+			this.account.chains[chainIndex] = chain
+
+			callback(err, used, checked)
+		})
+	}
+	/**
+	 * Discover Used and Unused addresses for a specified Chain number
+	 * @param  {number} chain_number - The number of the chain you wish to discover
+	 * @example &lt;caption>Discover Chain 0&lt;/caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * account.discoverChain(0).then((acc) => {
+	 * 	console.log(acc.getChain(0).addresses)
+	 * })
+	 * @return {Promise&lt;Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
+	 */
+	discoverChain(chain_number){
+		return new Promise((resolve, reject) => {
+			this._discoverChain(chain_number, GAP_LIMIT, (addresses, callback) => {
+				var results = {};
+
+				var checkComplete = () => {
+					var done = true;
+					for (var a of addresses){
+						if (results[toBase58(a.address.publicKey, this.coin.network.pubKeyHash)] === undefined){
+							done = false
+						}
+					}
+
+					if (done){
+						callback(null, results);
+					}
+				}
+
+				for (var addr of addresses){
+					var address = new Address(addr, this.coin, false);
+
+					address.updateState().then((ad) => {
+						if (ad.getTotalReceived() > 0){
+							results[ad.getPublicAddress()] = true
+
+							this.addresses[ad.getPublicAddress()] = ad;
+						} else {
+							results[ad.getPublicAddress()] = false
+						}
+
+						checkComplete()
+					}).catch(callback)
+				}
+			}, (err, used, checked) => {
+				if (err) 
+					reject(err)
+
+				this.discovery[chain_number] = { lastUpdate: Date.now() }
+
+				resolve(this, chain_number)
+			})
+		})
+	}
+	/**
+	 * Discover all Chains
+	 * @example
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * account.discoverChains().then((acc) => {
+	 * 	console.log(acc.getChain(0).addresses)
+	 * 	console.log(acc.getChain(1).addresses)
+	 * })
+	 * @return {Promise&lt;Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
+	 */
+	discoverChains(){
+		return new Promise((resolve, reject) => {
+			var chainsToDiscover = [0, 1]
+
+			var checkIfComplete = () => {
+				if (chainsToDiscover.length === 0)
+					resolve(this);
+			}
+
+			for (var c of chainsToDiscover){
+				this.discoverChain(c).then((account, chainNumber) => {
+					chainsToDiscover.splice(chainsToDiscover.indexOf(chainNumber))
+					checkIfComplete();
+				}).catch(reject);
+			}
+		})
+	}
+}
+
+module.exports = Account</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+  
+</body>
+</html>
