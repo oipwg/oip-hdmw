@@ -66,3 +66,23 @@ test('Wallet can return all coins', () => {
 	expect(coins.flo).toBeDefined()
 	expect(coins.bitcoin_testnet).toBeUndefined()
 })
+
+// test('Wallet sendPayment', (done) => {
+// 	var w = new Wallet('00000000000000000000000000000000', { 
+// 		discover: false,
+// 		supported_coins: ['flo_testnet', 'bitcoin', 'litecoin', 'flo']
+// 	})
+
+// 	w.sendPayment({
+// 		from: "odqpABssS7twQfwqNhQdb58c8RiG6awnCh",
+// 		to:  { oPHTT8kciUGjeqKrMYDHh4gL8DFBaNF1xL: 0.000001 },
+// 		floData: "oip-hdmw Wallet Payment!"
+// 	}).then((txid) => {
+// 		console.log(txid);
+// 		expect(txid).toBeDefined()
+// 		done()
+// 	}).catch((error) => {
+// 		expect(error).toBeUndefined()
+// 		done()
+// 	})
+// }, 20000);

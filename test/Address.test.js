@@ -121,7 +121,7 @@ test('get utxo for address', (done) => {
 test('get utxo for address (remove spent)', (done) => {
 	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, {
 		addrStr: 'oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S', 
-		spentTransactions: ["dcf88fa15cabf64555d8a0da18ffa1d57256ca0cbb877882bd6de2f2bc4f8e9b"]
+		spentTransactions: ["2420d859f3b064ff89f503a0a5175b828338055ee73c325dc46a2d04a78be6b0"]
 	});
 
 	address.getUnspent().then((utxos) => {
@@ -129,3 +129,15 @@ test('get utxo for address (remove spent)', (done) => {
 		done()
 	})
 }, 10000)
+
+// test('test send payment on Address', (done) => {
+// 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
+// 	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S = cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1
+// 	var address = new Address("cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc", Networks.flo_testnet, false);
+
+// 	address.sendPayment({oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S: 0.000001}).then((txid) => {
+// 		console.log(txid);
+// 		expect(txid).toBeDefined()
+// 		done()
+// 	})
+// }, 10000)

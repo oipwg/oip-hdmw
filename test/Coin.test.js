@@ -73,3 +73,18 @@ test('Coin, getCoinInfo', () => {
 
 	expect(flo_testnet.getCoinInfo()).toEqual(Networks.flo_testnet)
 })
+
+// test('Test send payment (with from account)', (done) => {
+// 	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, false)
+
+// 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh
+// 	flo_testnet.sendPayment({
+// 		from: "odqpABssS7twQfwqNhQdb58c8RiG6awnCh",
+// 		to:  { oPHTT8kciUGjeqKrMYDHh4gL8DFBaNF1xL: 0.000001 },
+// 		floData: "oip-hdmw Coin Payment!"
+// 	}).then((txid) => {
+// 		console.log(txid);
+// 		expect(txid).toBeDefined()
+// 		done()
+// 	})
+// }, 20000)

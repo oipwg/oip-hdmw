@@ -20,7 +20,7 @@ test('Get Account Balance of all Chain Addresses', (done) => {
 		expect(totalBalance).toBeGreaterThan(0)
 		done()
 	})
-}, 10000)
+}, 20000)
 
 test('Discover Chain on Account', (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -34,4 +34,19 @@ test('Discover Chain on Account', (done) => {
 		expect(acc.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)
 		done();
 	})
-}, 10000)
+}, 20000)
+
+// test('Test send payment', (done) => {
+// 	var accountMaster = bip32.fromBase58("Fprt4gUYQvk1qawUgc4X6a5w3Qry67xXZEMwa1uKmfwMfWre1SP26Eaq1eEr9M9k29oc2qxChcstqqEDh6SWpnysXDeCuRAzyBGFXLi8ewVWrk3", Networks.flo_testnet.network)
+	
+// 	var account = new Account(accountMaster, Networks.flo_testnet, false);
+
+// 	account.sendPayment({
+// 		to:  { oPHTT8kciUGjeqKrMYDHh4gL8DFBaNF1xL: 0.000001 },
+// 		floData: "oip-hdmw Account Payment!"
+// 	}).then((txid) => {
+// 		console.log(txid);
+// 		expect(txid).toBeDefined()
+// 		done()
+// 	})
+// }, 20000)
