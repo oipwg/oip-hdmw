@@ -3,7 +3,8 @@ import bip39 from 'bip39'
 import Coin from './Coin'
 import networks from './networks'
 
-import { isEntropy, isMnemonic } from './util'
+import TransactionBuilder from './TransactionBuilder'
+import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
 
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
 
@@ -222,6 +223,77 @@ class Wallet {
 	 */
 	getSeed(){
 		return this.seed
+	}
+	/**
+	 * @param  {Object} options - Options about the payment you wish to send
+	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {OutputAddress|Array.<OutputAddress>} [options.coin] - Define which coin you would like to send from
+	 * @param {string|Array.<string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
+	 * @param {number|Array.<number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
+	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
+	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
+	 */
+	sendPayment(options){
+		return new Promise((resolve, reject) => {
+			if (!options)
+				reject(new Error("You must define payment options!"))
+
+			if (!options.to)
+				reject(new Error("You must define your payment outputs!"))
+
+			// Check if the user defined a coin name to send from
+			if (options.coin){
+				if (typeof options.coin !== "string")
+					reject(new Error("Send From Coin option must be the string name of the Coin!"))
+
+				if (this.getCoin(options.coin)){
+					this.getCoin(options.coin).sendPayment(options).then(resolve)
+				}
+			} else {
+				// If coin name is not passed, attempt to match addresses to a Coin!
+				var coinMatch = "";
+				var singleMatch = false;
+
+				if (Array.isArray(options.to)){
+					for (var coin in this.networks){
+						var allMatchCoin = true;
+
+						for (var toAdr of options.to){
+							for (var adr in toAdr){
+								if (isValidPublicAddress(adr, this.networks[coin].network)){
+									coinMatch = this.networks[coin].name;
+								} else {
+									allMatchCoin = false;
+								}
+							}
+						}
+
+						// If not all addresses are valid, don't match to coin
+						if (!allMatchCoin && coinMatch === this.networks[coin].name)
+							coinMatch = "";
+					}
+				} else {
+					for (var coin in this.networks){
+						for (var adr in options.to){
+							if (isValidPublicAddress(adr, this.networks[coin].network)){
+								coinMatch = this.networks[coin].name;
+								singleMatch = true;
+							}
+						}
+					}
+				}
+
+				if (coinMatch !== ""){
+					if (this.getCoin(coinMatch))
+						this.getCoin(coinMatch).sendPayment(options).then(resolve)
+					else
+						reject(new Error("Cannot get Coin for matched network! " + coinMatch))
+				} else {
+					reject(new Error("Not all to addresses match any Coin network! Please check your outputs."))
+				}
+			}
+		})
 	}
 }
 
