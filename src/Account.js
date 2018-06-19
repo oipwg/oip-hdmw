@@ -3,6 +3,7 @@ import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
 
 import Address from './Address'
+import TransactionBuilder from './TransactionBuilder'
 import { toBase58, isValidPublicAddress, discovery } from './util'
 
 // Helper CONSTS (used in other consts)
@@ -282,10 +283,10 @@ class Account {
 		return this.getNextChainAddress(1)
 	}
 	/**
-	 * Send a Payment to specified Addresses and Amounts, NOT YET IMPLEMENTED
+	 * Send a Payment to specified Addresses and Amounts
 	 * @param  {Object} options - the options for the specific transaction being sent
-	 * @param {string|Array.<string>} options.from - Define what public address(es) you wish to send from
 	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
+	 * @param {string|Array.<string>} [options.from=All Addresses in Account] - Define what public address(es) you wish to send from
 	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
 	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
 	 * @return {Promise<string>} - Returns a promise that will resolve to the success TXID
@@ -300,6 +301,7 @@ class Account {
 
 				var allAddresses = this.getAddresses();
 
+				// Check if we define what address we wish to send from
 				if (options.from) {
 					if (typeof options.from === "string") {
 						for (var address of allAddresses){
@@ -316,8 +318,14 @@ class Account {
 							}
 						}
 					}
+				// else add all the addresses on the Account that have recieved any txs
 				} else {
 					sendFrom = allAddresses;
+				}
+
+				if (sendFrom.length === 0){
+					reject(new Error("No Addresses match defined options.from Addresses!"))
+					return;
 				}
 
 				var newOpts = options;
@@ -487,7 +495,7 @@ class Account {
 				this.discoverChain(c).then((account, chainNumber) => {
 					chainsToDiscover.splice(chainsToDiscover.indexOf(chainNumber))
 					checkIfComplete();
-				}).catch(console.error);
+				}).catch(reject);
 			}
 		})
 	}
