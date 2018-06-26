@@ -1,13 +1,13 @@
 {
   "name": "oip-hdmw",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run compile && jest",
     "compile": "./node_modules/.bin/babel --presets es2015 -d lib/ src/",
-    "prepare": "npm run compile",
-    "generate-docs": "node_modules/.bin/jsdoc --package ./package.json --readme ./README.md -c jsdoc.json"
+    "prepare": "npm run generate-docs && npm run compile",
+    "generate-docs": "node_modules/.bin/jsdoc --readme ./README.md -c jsdoc.json"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "bip39": "^2.5.0",
     "bip44-constants": "^5.0.0",
     "bitcoinjs-lib": "git+https://github.com/bitcoinjs/bitcoinjs-lib.git",
+    "coininfo": "^4.0.1",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "insight-explorer": "^1.0.0",
     "varuint-bitcoin": "^1.1.0",
