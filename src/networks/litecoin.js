@@ -1,10 +1,10 @@
 import { Insight } from 'insight-explorer'
-import { networks } from 'bitcoinjs-lib'
+import coininfo from 'coininfo'
 import bip44constants from 'bip44-constants'
 
 var litecoinFeePerKb = 100000
 
-var n = networks.litecoin;
+var n = coininfo.litecoin.main.toBitcoinJS();
 
 n.slip44 = bip44constants.LTC;
 

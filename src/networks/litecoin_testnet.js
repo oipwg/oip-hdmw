@@ -1,5 +1,4 @@
 import { Insight } from 'insight-explorer'
-import { networks } from 'bitcoinjs-lib'
 
 var litecoinFeePerKb = 100000
 
