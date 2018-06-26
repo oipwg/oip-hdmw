@@ -94,13 +94,14 @@ class Address {
 	 * @return {Address}
 	 */
 	constructor(address, coin, discovery){
-		if (address.network){
+		if (address.network !== undefined){
 			this.fromBIP32 = true
 
-			if (address.address)
+			if (address.address){
 				this.address = address.address
-			else if (address.index && address.depth)
+			} else if (address.index !== undefined && address.depth !== undefined){
 				this.address = address
+			}
 
 			// Make sure that the networks match and throw an error if they don't
 			if (address.network.pubKeyHash !== coin.network.pubKeyHash){
