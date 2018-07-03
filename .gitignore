@@ -59,3 +59,7 @@ typings/
 
 .DS_Store
 lib/
+.idea/*
+.idea/vcs.xml
+.idea/vcs.xml
+*.xml
