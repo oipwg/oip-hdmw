@@ -311,8 +311,6 @@ class Coin {
 	 * // }
 	 * @return {...Account} Returns a JSON object with accounts
 	 */
-
-
 	getAccounts(){
 		return this.accounts;
 	}
