@@ -59,7 +59,7 @@ class Coin {
 		}
 	}
 	/**
-	 * Get the balance for the entire coin, or a specific address/array of addresses, NOT YET IMPLEMENTED!
+	 * Get the balance for the entire coin, or a specific address/array of addresses
 	 * @param  {Object} [options] - Specific options defining what balance to get back
 	 * @param {Boolean} [options.discover=true] - Should the Coin discover Accounts
 	 * @param {number|Array.<number>} [options.accounts=All Accounts in Coin] - Get Balance for defined Accounts
