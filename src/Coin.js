@@ -131,7 +131,7 @@ class Coin {
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
 				    console.log(`Error on line 132 in Coin.js: ${err}`)
-                    // reject(err)
+                    reject(err)
                 })
 			}
 		})
@@ -414,6 +414,7 @@ class Coin {
 			// Get the Account #0 and start discovery there.
 			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch( err => {
 			    console.log(`Error on line 410 in Coin.js: ${err}`);
+			    reject(err)
             })
 		})
 	}
