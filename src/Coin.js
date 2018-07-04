@@ -120,7 +120,7 @@ class Coin {
 							id: accNum
 						}).then(addBalance).catch( (err) => {
 						    console.log(`Error on line 121 in Coin.js: ${err}`);
-                            reject();
+                            // reject();
                         })
 					}
 				}
@@ -131,7 +131,7 @@ class Coin {
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
 				    console.log(`Error on line 132 in Coin.js: ${err}`)
-                    reject(err)
+                    // reject(err)
                 })
 			}
 		})
@@ -248,7 +248,9 @@ class Coin {
 			if (options.discover === false){
 				processPayment();
 			} else {
-				this.discoverAccounts().then(processPayment)
+				this.discoverAccounts().then(processPayment).catch( err => {
+                    console.log(`Error on line 252 in Coin.js: ${err}`);
+                })
 			}
 		})
 	}
