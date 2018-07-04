@@ -118,7 +118,10 @@ class Coin {
 							discover: disc,
 							addresses: addrsToSearch,
 							id: accNum
-						}).then(addBalance)
+						}).then(addBalance).catch( (err) => {
+						    console.log(`Error on line 121 in Coin.js: ${err}`);
+                            reject();
+                        })
 					}
 				}
 			}
@@ -126,7 +129,10 @@ class Coin {
 			if (options && options.discover === false){
 				countBalance();
 			} else {
-				this.discoverAccounts().then(countBalance)
+				this.discoverAccounts().then(countBalance).catch( (err) => {
+				    console.log(`Error on line 132 in Coin.js: ${err}`)
+                    reject(err)
+                })
 			}
 		})
 	}
@@ -392,7 +398,9 @@ class Coin {
 				if (this.accounts[highestAccountNumber].getAddresses().length > 0){
 					var account = this.getAccount(highestAccountNumber + 1, false)
 
-					account.discoverChains().then(checkIfDiscoveryComplete)
+					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
+                        console.log(`Error on line 402 in Coin.js: ${err}`);
+                    })
 				} else {
 					resolve(discoveredAccounts)
 				}
@@ -402,7 +410,9 @@ class Coin {
 			this.accounts = {};
 
 			// Get the Account #0 and start discovery there.
-			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete)
+			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch( err => {
+			    console.log(`Error on line 410 in Coin.js: ${err}`);
+            })
 		})
 	}
 }

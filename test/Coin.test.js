@@ -50,7 +50,7 @@ test('Coin, get main address (single coin)', () => {
 	expect(flo_testnet.getMainAddress(1).getPublicAddress()).toBe("odqpABssS7twQfwqNhQdb58c8RiG6awnCh");
 })
 
-test('Coin, get balance', (done) => {
+test('Coin, get flo_testnet balance', (done) => {
 	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, false)
 
 	flo_testnet.getBalance().then((balance) => {
@@ -59,13 +59,21 @@ test('Coin, get balance', (done) => {
 	})
 }, 10000)
 
+test('Coin, catch error on bitcoin.getBalance()', async () => {
+    let bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, false)
+    expect(bitcoin.getBalance({discover: true})).rejects.toMatch('error');
+})
+
 test('Coin, discover accounts', (done) => {
 	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, false)
 
 	flo_testnet.discoverAccounts().then((accounts) => {
 		expect(accounts.length).toBeGreaterThan(2);
 		done()
-	})
+	}).catch(err => {
+	    expect(err).toMatch('error')
+        done()
+    })
 }, 10000)
 
 test('Coin, getCoinInfo', () => {
