@@ -119,7 +119,7 @@ class Coin {
 							addresses: addrsToSearch,
 							id: accNum
 						}).then(addBalance).catch( (err) => {
-						    console.log(`Error on addBalance.js: ${err}`);
+						    console.log(`Coin.js: while adding balance ${err}`);
                             // reject(err);
                         })
 					}
@@ -130,7 +130,7 @@ class Coin {
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
-				    console.log(`Error on countBalance() Coin.js: ${err}`)
+				    console.log(` Coin.js: while counting balance: ${err}`)
                     reject(err)
                 })
 			}
