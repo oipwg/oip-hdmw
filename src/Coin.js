@@ -119,7 +119,7 @@ class Coin {
 							addresses: addrsToSearch,
 							id: accNum
 						}).then(addBalance).catch( (err) => {
-						    console.log(`Coin.js: while adding balance ${err}`);
+						    console.log(`addBalance(): ${err}`);
                             // reject(err);
                         })
 					}
@@ -130,7 +130,7 @@ class Coin {
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
-				    console.log(` Coin.js: while counting balance: ${err}`)
+				    console.log(`countBalance(): ${err}`)
                     reject(err)
                 })
 			}
@@ -249,7 +249,7 @@ class Coin {
 				processPayment();
 			} else {
 				this.discoverAccounts().then(processPayment).catch( err => {
-                    console.log(`Error in Coin.js: ${err}`);
+                    console.log(`sendPayment(): ${err}`);
                 })
 			}
 		})
@@ -401,7 +401,7 @@ class Coin {
 					var account = this.getAccount(highestAccountNumber + 1, false)
 
 					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
-                        console.log(`Coin.js: Error while checking discovery completion: ${err}`);
+                        console.log(`discoverAccounts(): ${err}`);
                         reject(err)
                     })
 				} else {
@@ -414,7 +414,7 @@ class Coin {
 
 			// Get the Account #0 and start discovery there.
 			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch( err => {
-			    console.log(`Coin.js: Error while checking disovery completion: ${err}`);
+			    console.log(`discoverAccounts(): ${err}`);
 			    reject(err)
             })
 		})
