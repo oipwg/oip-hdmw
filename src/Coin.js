@@ -120,7 +120,7 @@ class Coin {
 							id: accNum
 						}).then(addBalance).catch( (err) => {
 						    console.log(`Error on line 121 in Coin.js: ${err}`);
-                            // reject();
+                            reject(err);
                         })
 					}
 				}
@@ -401,7 +401,8 @@ class Coin {
 					var account = this.getAccount(highestAccountNumber + 1, false)
 
 					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
-                        console.log(`Error on line 402 in Coin.js: ${err}`);
+                        console.log(`Error in Coin.js: ${err}`);
+                        reject(err)
                     })
 				} else {
 					resolve(discoveredAccounts)
@@ -413,7 +414,7 @@ class Coin {
 
 			// Get the Account #0 and start discovery there.
 			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch( err => {
-			    console.log(`Error on line 410 in Coin.js: ${err}`);
+			    console.log(`Error in Coin.js: ${err}`);
 			    reject(err)
             })
 		})
