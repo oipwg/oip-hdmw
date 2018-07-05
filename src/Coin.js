@@ -401,7 +401,7 @@ class Coin {
 					var account = this.getAccount(highestAccountNumber + 1, false)
 
 					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
-                        console.log(`Coin.js: Error while checking disovery completion: ${err}`);
+                        console.log(`Coin.js: Error while checking discovery completion: ${err}`);
                         reject(err)
                     })
 				} else {
