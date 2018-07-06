@@ -168,6 +168,9 @@ class Coin {
 	 */
 	getBalance(options){
 		return new Promise((resolve, reject) => {
+			if (options &amp;&amp; options.test_error)
+				reject(new Error("Testing error thrown in getBalance, check your options for test_error and remove it if you are getting this on accident!"))
+
 			var countBalance = () => {
 				var accounts_to_search = [];
 
@@ -211,7 +214,9 @@ class Coin {
 							discover: disc,
 							addresses: addrsToSearch,
 							id: accNum
-						}).then(addBalance)
+						}).then(addBalance).catch( (err) => {
+                            reject(err);
+                        })
 					}
 				}
 			}
@@ -219,7 +224,9 @@ class Coin {
 			if (options &amp;&amp; options.discover === false){
 				countBalance();
 			} else {
-				this.discoverAccounts().then(countBalance)
+				this.discoverAccounts().then(countBalance).catch( (err) => {
+                    reject(err)
+                })
 			}
 		})
 	}
@@ -335,7 +342,7 @@ class Coin {
 			if (options.discover === false){
 				processPayment();
 			} else {
-				this.discoverAccounts().then(processPayment)
+				this.discoverAccounts().then(processPayment).catch(reject)
 			}
 		})
 	}
@@ -485,7 +492,9 @@ class Coin {
 				if (this.accounts[highestAccountNumber].getAddresses().length > 0){
 					var account = this.getAccount(highestAccountNumber + 1, false)
 
-					account.discoverChains().then(checkIfDiscoveryComplete)
+					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
+                        resolve(discoveredAccounts)
+                    })
 				} else {
 					resolve(discoveredAccounts)
 				}
@@ -495,7 +504,7 @@ class Coin {
 			this.accounts = {};
 
 			// Get the Account #0 and start discovery there.
-			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete)
+			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(reject)
 		})
 	}
 }
