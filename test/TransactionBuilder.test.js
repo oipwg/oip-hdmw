@@ -1,8 +1,8 @@
 var bip32 = require('bip32');
-var TransactionBuilder = require('../lib').TransactionBuilder;
-var Networks = require('../lib').Networks;
-var Account = require('../lib').Account;
-var Address = require('../lib').Address;
+var TransactionBuilder = require('../src').TransactionBuilder;
+var Networks = require('../src').Networks;
+var Account = require('../src').Account;
+var Address = require('../src').Address;
 
 test("TransactionBuilder should load a From Address", () => {
 	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
@@ -90,7 +90,7 @@ test("TransactionBuilder should be able build tx hex", (done) => {
 		expect(hex).toBe("0200000001b0e68ba7042d6ac45d323ce75e053883825b17a5a003f589ff64b0f359d82024010000006b483045022100c49f832fbab9fed571b5b635dab11bf2fa095af891b646b22f01daee9e71bdc1022073783dc2f5c59fb4319831d9860ce603ac4c9c2003759f2797a372d2c5da562e012102a7451395735369f2ecdfc829c0f774e88ef1303dfe5b2f04dbaab30a535dfdd6ffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac7027f405000000001976a9143a2d4145a4f098523b3e8127f1da87cfc55b8e7988ac0000000000")
 		done()
 	}).catch(console.error)
-}, 20000)
+}, 10000)
 
 test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
 	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S
@@ -106,7 +106,7 @@ test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
 		expect(hex).toBe("0200000001b0e68ba7042d6ac45d323ce75e053883825b17a5a003f589ff64b0f359d82024010000006a47304402204a30747e876763784a1fe641d851123ea722ef0dde761c86620e172ccc96a3450220292df86ec60de85bd01e78c0077756824b5226718f46b77960ce94d141c298c4012102a7451395735369f2ecdfc829c0f774e88ef1303dfe5b2f04dbaab30a535dfdd6ffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac7027f405000000001976a9143a2d4145a4f098523b3e8127f1da87cfc55b8e7988ac000000001154657374696e67206f69702d68646d7721")
 		done()
 	}).catch(console.error)
-}, 20000)
+}, 10000)
 
 // https://livenet.flocha.in/tx/46d7d1f5dc9afb7501c4243a0bc6ab6945430648203c38a2e942da5af2adff2b
 // test("TransactionBuilder should be able build & send tx hex", (done) => {

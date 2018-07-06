@@ -1,4 +1,4 @@
-var Wallet = require('../lib').Wallet;
+var Wallet = require('../src').Wallet;
 
 test('Wallet can be created from nothing', () => {
 	// Discover false is passed to prevent tons of extra async calls

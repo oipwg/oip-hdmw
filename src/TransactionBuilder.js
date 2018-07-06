@@ -215,7 +215,7 @@ class TransactionBuilder {
 
 		return this.coin.explorer.getAddressesUtxo(addresses).then((utxos) => {
 			return utxos
-		})
+		}).catch(console.error)
 	}
 	/**
 	 * Get calculated Inputs and Outputs (and Fee) for From and To Addresses
@@ -268,8 +268,8 @@ class TransactionBuilder {
 					extraBytesLength = extraBytes.length
 
 				return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
-			})
-		})
+			}).catch(console.error)
+		}).catch(console.error)
 	}
 	/**
 	 * Discover the used change addresses if we were passed an Account to discover from.
@@ -298,7 +298,7 @@ class TransactionBuilder {
 			if (this.account){
 				this.account.discoverChain(1).then(() => {
 					resolve()
-				})
+				}).catch(console.error)
 			} else {
 				resolve()
 			}
@@ -377,7 +377,12 @@ class TransactionBuilder {
 				}
 			}
 
-			var builtHex = txb.build().toHex();
+			try {
+				var builtHex = txb.build().toHex();
+			} catch (e) {
+				console.error(e);
+				return
+			}
 
 			var extraBytes = this.coin.getExtraBytes(this.passedOptions)
 
@@ -385,7 +390,7 @@ class TransactionBuilder {
 				builtHex += extraBytes
 
 			return builtHex
-		})
+		}).catch(console.error)
 	}
 	/**
 	 * Build & Send the Transaction that we have been forming
@@ -418,12 +423,12 @@ class TransactionBuilder {
 					console.log("BroadcastHex: " + hex)
 					this.coin.explorer.broadcastRawTransaction(hex).then((res) => {
 						resolve(res.txid)
-					})
+					}).catch(console.error)
 				} else {
 					reject(new Error("TransactionBuilder.buildTX() did not create hex!"))
 				}
-			})
-		})
+			}).catch(console.error)
+		}).catch(console.error)
 	}
 }
 

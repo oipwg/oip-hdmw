@@ -5,6 +5,8 @@ let bcrypto = bitcoin.crypto;
 let bscript = bitcoin.script;
 let btemplates = bitcoin.script;
 let scriptTypes = btemplates.types;
+let ECSignature = btemplates.ecsignature;
+
 
 var EMPTY_SCRIPT = Buffer.allocUnsafe(0)
 var ONE = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001', 'hex')
@@ -197,19 +199,26 @@ function prepareInput (input, kpPubKey, redeemScript, witnessValue, witnessScrip
 }
 
 function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashType, witnessValue, witnessScript){
-  if (!transactionBuilder.__inputs[vin])
+  if (!transactionBuilder.inputs[vin])
     throw new Error("No input at index: " + vin)
 
   hashType = hashType || bitcoin.Transaction.SIGHASH_ALL
 
-  var input = transactionBuilder.__inputs[vin]
+  var input = transactionBuilder.inputs[vin]
 
   // if redeemScript was previously provided, enforce consistency
   if (input.redeemScript !== undefined && redeemScript && !input.redeemScript.equals(redeemScript)) {
     throw new Error('Inconsistent redeemScript')
   }
 
-  var kpPubKey = keyPair.publicKey || keyPair.getPublicKey()
+  var kpPubKey = keyPair.publicKey
+
+  // Check both publickKey, getPublicKey, and getPublicKeyBuffer to support all HDNode types (bitcoinjs-lib v3 & bip32 npm & bitcoinjs-lib v4 when it comes out)
+  if (!kpPubKey && keyPair.getPublicKey)
+    kpPubKey = keyPair.getPublicKey()
+  else if (!kpPubKey && keyPair.getPublicKeyBuffer)
+    kpPubKey = keyPair.getPublicKeyBuffer()
+
   if (!canSign(input)) {
     if (witnessValue !== undefined) {
       if (input.value !== undefined && input.value !== witnessValue)
@@ -225,10 +234,14 @@ function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashTy
 
   var signatureHash
   if (input.witness) {
-    signatureHash = transactionBuilder.__tx.hashForWitnessV0(vin, input.signScript, input.value, hashType)
+    signatureHash = transactionBuilder.tx.hashForWitnessV0(vin, input.signScript, input.value, hashType)
+    // Will need to turn to the following when bitcoinjs-lib v4 comes out
+    // signatureHash = transactionBuilder.__tx.hashForWitnessV0(vin, input.signScript, input.value, hashType)
   } else {
-    // signatureHash = transactionBuilder.__tx.hashForSignature(vin, input.signScript, hashType)
-    signatureHash = hashForSignature(transactionBuilder.__tx, extraBytes, vin, input.signScript, hashType)
+    // signatureHash = transactionBuilder.tx.hashForSignature(vin, input.signScript, hashType)
+    signatureHash = hashForSignature(transactionBuilder.tx, extraBytes, vin, input.signScript, hashType)
+    // Will need to turn to the following when bitcoinjs-lib v4 comes out
+    // signatureHash = hashForSignature(transactionBuilder.__tx, extraBytes, vin, input.signScript, hashType)
   }
 
   var signed = input.pubKeys.some(function (pubKey, i) {
@@ -242,7 +255,13 @@ function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashTy
     )) throw new Error('BIP143 rejects uncompressed public keys in P2WPKH or P2WSH')
 
     let signature = keyPair.sign(signatureHash)
-    input.signatures[i] = bscript.signature.encode(signature, hashType)
+
+    if (Buffer.isBuffer(signature)) 
+      signature = ECSignature.fromRSBuffer(signature)
+
+    input.signatures[i] = signature.toScriptSignature(hashType)
+    // Will need to turn to the following when bitcoinjs-lib v4 comes out
+    // input.signatures[i] = bscript.signature.encode(signature, hashType)
     return true
   })
 

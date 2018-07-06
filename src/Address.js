@@ -148,7 +148,19 @@ class Address {
 	 * @return {string}
 	 */
 	getPublicAddress(){
-		return this.fromBIP32 ? toBase58(this.address.publicKey, this.coin.network.pubKeyHash) : this.pubAddress
+		var public_key
+		
+		if (this.fromBIP32 && this.address){
+			public_key = this.address.publicKey
+
+			if (!public_key && this.address.getPublicKey)
+				public_key = this.address.getPublicKey()
+
+			if (!public_key && this.address.getPublicKeyBuffer)
+				public_key = this.address.getPublicKeyBuffer()
+		}
+
+		return this.fromBIP32 ? toBase58(public_key, this.coin.network.pubKeyHash) : this.pubAddress
 	}
 	/**
 	 * Get the Base58 sharable Private Address (WIF)

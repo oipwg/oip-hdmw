@@ -1,6 +1,6 @@
 var bip32 = require('bip32');
-var Account = require('../lib').Account;
-var Networks = require('../lib').Networks;
+var Account = require('../src').Account;
+var Networks = require('../src').Networks;
 
 test('Account keys generated from Mnemonic Match', () => {
 	var accountMaster = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
