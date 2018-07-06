@@ -11,7 +11,24 @@ test('Address is able to check its balance from String', (done) => {
 	})
 }, 10000)
 
-test('Address is able to check its balance from BIP32', (done) => {
+test('Address is able to check its balance from BIP32 (auto-discovery)', (done) => {
+	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+
+	var address = new Address(node, Networks.flo);
+
+	var checkIfComplete = () => {
+		if (address.getTotalReceived() > 0){
+			expect(address.getTotalReceived()).toBeGreaterThan(0)
+			done()
+		} else {
+			setTimeout(checkIfComplete, 1000)
+		}
+	}
+
+	setTimeout(checkIfComplete, 1000)
+})
+
+test('Address is able to check its balance from BIP32 (manual discovery)', (done) => {
 	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
 
 	var address = new Address(node, Networks.flo, false);
@@ -28,6 +45,20 @@ test('Address to PublicAddress (bitcoin)', () => {
 	var address = new Address(node, Networks.bitcoin, false);
 
 	expect(address.getPublicAddress()).toBe("1NjxqbA9aZWnh17q1UW3rB4EPu79wDXj7x")
+})
+
+test('Address error on mismatching network', () => {
+	var node = bip32.fromBase58("xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM", Networks.bitcoin.network)
+	var address
+
+	try {
+		address = new Address(node, Networks.flo, false);
+	} catch(e) {
+		expect(e).toBeDefined()
+	}
+
+	expect(address).toBe(undefined)
+
 })
 
 test('Address to WIF (bitcoin)', () => {

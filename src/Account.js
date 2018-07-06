@@ -171,7 +171,7 @@ class Account {
 	getAddresses(chain_number){
 		var addrs = [];
 
-		if (chain_number && !isNaN(chainNumber)){
+		if (chain_number && typeof chain_number === "number"){
 			for (var addr in this.addresses){
 				var chain = this.account.getChain(chain_number);
 				var addresses = chain.addresses.map((ad) => {

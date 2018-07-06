@@ -149,12 +149,9 @@ class Address {
 	 */
 	getPublicAddress(){
 		var public_key
-		
+
 		if (this.fromBIP32 && this.address){
 			public_key = this.address.publicKey
-
-			if (!public_key && this.address.getPublicKey)
-				public_key = this.address.getPublicKey()
 
 			if (!public_key && this.address.getPublicKeyBuffer)
 				public_key = this.address.getPublicKeyBuffer()
