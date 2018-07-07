@@ -122,6 +122,7 @@ class Coin {
 							addresses: addrsToSearch,
 							id: accNum
 						}).then(addBalance).catch( (err) => {
+						    console.log(`Error in getBalances() on line 125`)
                             reject(err);
                         })
 					}
@@ -132,6 +133,7 @@ class Coin {
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
+                    console.log(`Error in getBalances() on line 136`)
                     reject(err)
                 })
 			}
@@ -411,7 +413,10 @@ class Coin {
 			this.accounts = {};
 
 			// Get the Account #0 and start discovery there.
-			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(reject)
+			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(err => {
+                console.log(`Error in disovery on line 417`)
+                reject(err)
+            })
 		})
 	}
 }
