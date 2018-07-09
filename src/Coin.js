@@ -244,7 +244,7 @@ class Coin {
 				newOpts.from = sendFrom;
 
 				var txb = new TransactionBuilder(this.coin, newOpts);
-
+				console.log(`Think I made it this far?: ${newOpts}`)
 				txb.sendTX().then(resolve);
 			}
 
