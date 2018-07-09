@@ -250,7 +250,8 @@ class TransactionBuilder {
 						txId: utxo.txid,
 						vout: utxo.vout,
 						scriptPubKey: utxo.scriptPubKey,
-						value: utxo.satoshis
+						value: utxo.satoshis,
+						confirmations: utxo.confirmations
 					}
 				})
 
@@ -267,7 +268,15 @@ class TransactionBuilder {
 				if (extraBytes)
 					extraBytesLength = extraBytes.length
 
-				return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+				var utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
+
+				var selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+
+				// Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
+				if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee)
+					return selected
+				else // else, build with the regular ones
+					return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
 			}).catch(err => {throw new Error(err)})
 		}).catch(err => {throw new Error(err)})
 	}
