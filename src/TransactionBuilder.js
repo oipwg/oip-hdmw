@@ -392,7 +392,6 @@ class TransactionBuilder {
 			return builtHex
 		}).catch(err => {
 		    console.log(`Caught error in TXB on method: .buildTX(): ${err}`)
-            reject(err)
         })
 	}
 	/**
@@ -434,10 +433,7 @@ class TransactionBuilder {
 			    console.log(`Caught error in TXB on: .buildTX in .sendTX: ${err}`)
                 // reject(err)
             })
-		}).catch(err => {
-            console.log(`Caught error in TXB on: .sendTX: ${err}`);
-            // reject(err)
-        })
+		}).catch(console.error)
 	}
 }
 
