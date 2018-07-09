@@ -380,7 +380,7 @@ class TransactionBuilder {
 			try {
 				var builtHex = txb.build().toHex();
 			} catch (e) {
-				console.log(`Caught error while trying to build HEX: ${e});
+				console.log(`Caught error while trying to build HEX: ${e}`);
 				return
 			}
 
