@@ -227,7 +227,7 @@ class Wallet {
 	/**
 	 * @param  {Object} options - Options about the payment you wish to send
 	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
-	 * @param {OutputAddress|Array.<OutputAddress>} [options.coin] - Define which coin you would like to send from
+	 * @param {string|Array.<string>} [options.coin] - Define which coin you would like to send from
 	 * @param {string|Array.<string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
 	 * @param {number|Array.<number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
 	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
