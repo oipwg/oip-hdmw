@@ -244,7 +244,6 @@ class Coin {
 				newOpts.from = sendFrom;
 
 				var txb = new TransactionBuilder(this.coin, newOpts);
-				console.log(`About to call sendTx method on txb with: ${JSON.stringify(newOpts, null, 4)}`)
 				txb.sendTX().then(resolve).catch(err => {
 				    console.log(`ERR in transaction builder on .sendTX: ${err}`)
                     reject(err)
