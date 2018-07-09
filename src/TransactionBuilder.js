@@ -428,9 +428,7 @@ class TransactionBuilder {
 					reject(new Error("TransactionBuilder.buildTX() did not create hex!"))
 				}
 			}).catch(reject)
-		}).catch(err => {
-		    console.log(err);
-        })
+		}).catch(err => {throw new Error(err)})
 	}
 }
 
