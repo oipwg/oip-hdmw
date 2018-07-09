@@ -235,6 +235,7 @@ class Wallet {
 	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
 	 */
 	async sendPayment(options){
+	    console.log(`Wallet.sendPayment() option parameters: ${JSON.stringify(options, null, 4)}`)
 		if (!options)
 			throw new Error("You must define payment options!")
 
@@ -247,6 +248,7 @@ class Wallet {
 				throw new Error("Send From Coin option must be the string name of the Coin!")
 
 			if (this.getCoin(options.coin)){
+                console.log(`this.getCoin(options.coin): ${JSON.stringify(this.getCoin(options.coin), null, 4)}`)
 				return this.getCoin(options.coin).sendPayment(options)
 			}
 		} else {
@@ -276,6 +278,7 @@ class Wallet {
 				for (var coin in this.networks){
 					for (var adr in options.to){
 						if (isValidPublicAddress(adr, this.networks[coin].network)){
+						    console.log(`isValidPublicAddress: ${isValidPublicAddress(adr, this.networks[coin].network)}`)
 							coinMatch = this.networks[coin].name;
 							singleMatch = true;
 						}
@@ -284,8 +287,10 @@ class Wallet {
 			}
 
 			if (coinMatch !== ""){
-				if (this.getCoin(coinMatch))
-					return this.getCoin(coinMatch).sendPayment(options)
+				if (this.getCoin(coinMatch)) {
+				    console.log(`coinmatch: ${this.getCoin(coinMatch)}`)
+                    return this.getCoin(coinMatch).sendPayment(options)
+                }
 				else
 					throw new Error("Cannot get Coin for matched network! " + coinMatch)
 			} else {
