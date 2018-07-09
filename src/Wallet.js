@@ -273,6 +273,7 @@ class Wallet {
 						coinMatch = "";
 				}
 			} else {
+			    console.log(`options.to is not array`)
 				for (var coin in this.networks){
 					for (var adr in options.to){
 						if (isValidPublicAddress(adr, this.networks[coin].network)){
@@ -283,7 +284,7 @@ class Wallet {
 					}
 				}
 			}
-
+            console.log(`Coin match: ${coinMatch}`)
 			if (coinMatch !== ""){
 				if (this.getCoin(coinMatch)) {
 				    console.log(`coinmatch: ${this.getCoin(coinMatch)}`)
