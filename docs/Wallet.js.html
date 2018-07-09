@@ -320,7 +320,7 @@ class Wallet {
 	/**
 	 * @param  {Object} options - Options about the payment you wish to send
 	 * @param {OutputAddress|Array.&lt;OutputAddress>} options.to - Define outputs for the Payment
-	 * @param {OutputAddress|Array.&lt;OutputAddress>} [options.coin] - Define which coin you would like to send from
+	 * @param {string|Array.&lt;string>} [options.coin] - Define which coin you would like to send from
 	 * @param {string|Array.&lt;string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
 	 * @param {number|Array.&lt;number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
 	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
@@ -340,7 +340,9 @@ class Wallet {
 				throw new Error("Send From Coin option must be the string name of the Coin!")
 
 			if (this.getCoin(options.coin)){
-				return this.getCoin(options.coin).sendPayment(options)
+			    try {
+                    return this.getCoin(options.coin).sendPayment(options)
+                } catch (err) {throw new Error(err)}
 			}
 		} else {
 			// If coin name is not passed, attempt to match addresses to a Coin!
@@ -375,10 +377,12 @@ class Wallet {
 					}
 				}
 			}
-
 			if (coinMatch !== ""){
-				if (this.getCoin(coinMatch))
-					return this.getCoin(coinMatch).sendPayment(options)
+				if (this.getCoin(coinMatch)) {
+				    try {
+                        return this.getCoin(coinMatch).sendPayment(options)
+                    } catch (err) {throw new Error(err)}
+                }
 				else
 					throw new Error("Cannot get Coin for matched network! " + coinMatch)
 			} else {

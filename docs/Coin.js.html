@@ -215,6 +215,7 @@ class Coin {
 							addresses: addrsToSearch,
 							id: accNum
 						}).then(addBalance).catch( (err) => {
+						    console.log(`Error in getBalances() on line 125`)
                             reject(err);
                         })
 					}
@@ -225,6 +226,7 @@ class Coin {
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
+                    console.log(`Error in getBalances() on line 136`)
                     reject(err)
                 })
 			}
@@ -320,7 +322,7 @@ class Coin {
 							}
 						}
 					}
-				// else add all the addresses on the Account that have recieved any txs
+				// else add all the addresses on the Account that have received any txs
 				} else {
 					sendFrom = allAddresses;
 				}
@@ -335,8 +337,7 @@ class Coin {
 				newOpts.from = sendFrom;
 
 				var txb = new TransactionBuilder(this.coin, newOpts);
-
-				txb.sendTX().then(resolve);
+				txb.sendTX().then(resolve).catch(reject);
 			}
 
 			if (options.discover === false){
@@ -504,7 +505,10 @@ class Coin {
 			this.accounts = {};
 
 			// Get the Account #0 and start discovery there.
-			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(reject)
+			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(err => {
+                console.log(`Error in disovery on line 417`)
+                reject(err)
+            })
 		})
 	}
 }

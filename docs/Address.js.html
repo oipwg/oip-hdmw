@@ -242,12 +242,9 @@ class Address {
 	 */
 	getPublicAddress(){
 		var public_key
-		
+
 		if (this.fromBIP32 &amp;&amp; this.address){
 			public_key = this.address.publicKey
-
-			if (!public_key &amp;&amp; this.address.getPublicKey)
-				public_key = this.address.getPublicKey()
 
 			if (!public_key &amp;&amp; this.address.getPublicKeyBuffer)
 				public_key = this.address.getPublicKeyBuffer()
