@@ -1,11 +1,11 @@
 import bitcoin from 'bitcoinjs-lib';
 
-let Transaction = bitcoin.Transaction
+let Transaction = bitcoin.Transaction;
+let ECSignature = bitcoin.ECSignature;
 let bcrypto = bitcoin.crypto;
 let bscript = bitcoin.script;
 let btemplates = bitcoin.script;
 let scriptTypes = btemplates.types;
-let ECSignature = btemplates.ecsignature;
 
 
 var EMPTY_SCRIPT = Buffer.allocUnsafe(0)
