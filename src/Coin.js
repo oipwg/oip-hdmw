@@ -229,7 +229,7 @@ class Coin {
 							}
 						}
 					}
-				// else add all the addresses on the Account that have recieved any txs
+				// else add all the addresses on the Account that have received any txs
 				} else {
 					sendFrom = allAddresses;
 				}

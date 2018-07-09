@@ -256,6 +256,7 @@ function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashTy
 
     let signature = keyPair.sign(signatureHash)
 
+
     if (Buffer.isBuffer(signature)) 
       signature = ECSignature.fromRSBuffer(signature)
 

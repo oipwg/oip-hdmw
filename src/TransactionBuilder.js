@@ -268,8 +268,8 @@ class TransactionBuilder {
 					extraBytesLength = extraBytes.length
 
 				return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
-			}).catch(console.error)
-		}).catch(console.error)
+			}).catch(err => {throw new Error(err)})
+		}).catch(err => {throw new Error(err)})
 	}
 	/**
 	 * Discover the used change addresses if we were passed an Account to discover from.
@@ -337,7 +337,6 @@ class TransactionBuilder {
 			// inputs and outputs will be undefined if no solution was found
 			if (!inputs || !outputs) {
 				throw new Error("No Inputs or Outputs selected! Fail!")
-				return
 			}
 
 			let txb = new bitcoin.TransactionBuilder(this.coin.network)
@@ -351,12 +350,10 @@ class TransactionBuilder {
 				if (!output.address){
 					// Check if we have access to an account to get the change address from
 					if (this.account){
-						var changeAddress = this.account.getNextChangeAddress().getPublicAddress();
-						output.address = changeAddress
+                        output.address = this.account.getNextChangeAddress().getPublicAddress();
 					} else {
 						// If the change is undefined, send change to the first from address
-						var changeAddress = this.from[0].getPublicAddress();
-						output.address = changeAddress
+                        output.address = this.from[0].getPublicAddress();
 					}
 				}
 
@@ -380,7 +377,7 @@ class TransactionBuilder {
 			try {
 				var builtHex = txb.build().toHex();
 			} catch (e) {
-			    console.errer(e);
+			    throw new Error(e)
 				return
 			}
 
