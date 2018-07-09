@@ -235,7 +235,6 @@ class Wallet {
 	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
 	 */
 	async sendPayment(options){
-	    console.log(`Wallet.sendPayment() option parameters: ${JSON.stringify(options, null, 4)}`)
 		if (!options)
 			throw new Error("You must define payment options!")
 
@@ -248,7 +247,6 @@ class Wallet {
 				throw new Error("Send From Coin option must be the string name of the Coin!")
 
 			if (this.getCoin(options.coin)){
-                console.log(`this.getCoin(options.coin): ${JSON.stringify(this.getCoin(options.coin), null, 4)}`)
 				return this.getCoin(options.coin).sendPayment(options)
 			}
 		} else {
