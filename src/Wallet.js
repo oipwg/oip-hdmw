@@ -247,7 +247,9 @@ class Wallet {
 				throw new Error("Send From Coin option must be the string name of the Coin!")
 
 			if (this.getCoin(options.coin)){
-				return this.getCoin(options.coin).sendPayment(options)
+			    try {
+                    return this.getCoin(options.coin).sendPayment(options)
+                } catch (err) {throw new Error(err)}
 			}
 		} else {
 			// If coin name is not passed, attempt to match addresses to a Coin!
@@ -284,7 +286,9 @@ class Wallet {
 			}
 			if (coinMatch !== ""){
 				if (this.getCoin(coinMatch)) {
-                    return this.getCoin(coinMatch).sendPayment(options)
+				    try {
+                        return this.getCoin(coinMatch).sendPayment(options)
+                    } catch (err) {throw new Error(err)}
                 }
 				else
 					throw new Error("Cannot get Coin for matched network! " + coinMatch)

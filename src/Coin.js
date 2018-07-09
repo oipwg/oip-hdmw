@@ -246,7 +246,7 @@ class Coin {
 				var txb = new TransactionBuilder(this.coin, newOpts);
 				txb.sendTX().then(resolve).catch(err => {
 				    console.log(`Caught error in Coin on txb.sendTX: ${err}`)
-                    // reject(err)
+                    reject(err)
                 });
 			}
 
