@@ -390,10 +390,7 @@ class TransactionBuilder {
 				builtHex += extraBytes
 
 			return builtHex
-		}).catch(err => {
-		    console.log(`Caught error in TXB on method: .buildTX(): ${err}`)
-            // throw new Error(err)
-        })
+		}).catch(err => {throw new Error(`TransactionBuilder.buildTX() did not create hex: ${err}`)})
 	}
 	/**
 	 * Build & Send the Transaction that we have been forming
@@ -430,12 +427,9 @@ class TransactionBuilder {
 				} else {
 					reject(new Error("TransactionBuilder.buildTX() did not create hex!"))
 				}
-			}).catch(err => {
-			    console.log(`Caught error on buildTX: ${err}`)
-                reject(err)
-            })
+			}).catch(reject)
 		}).catch(err => {
-		    console.log(`catching error on promise for sendTX in TXB: ${err}`);
+		    console.log(err);
         })
 	}
 }
