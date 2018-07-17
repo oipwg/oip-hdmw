@@ -199,7 +199,7 @@ class Wallet {
      * }
      */
     async getExchangeRates(coins_array, fiat = "usd"){
-        let coins =  coins_array || Object.keys(this.getCoins());
+        let coins = coins_array || Object.keys(this.getCoins());
         let rates = {};
         let promiseArray = {};
 
@@ -219,6 +219,40 @@ class Wallet {
         }
         // console.log(`Exchange rates: ${JSON.stringify(rates, null, 4)}`)
         return rates;
+    }
+    /**
+     * Calculate Balance of coins after exchange rate conversion
+     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get exchange rates for. If none are given, an array of all available coins will be used.
+     * @param  {string} [fiat="usd"]     - The fiat currency you wish to check against. If none is given, "usd" is defaulted.
+     * @return {Object} exchange_rates
+     * @example
+     * let wallet = new Wallet(...)
+     * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
+     *
+     * //returns
+     * {
+     *      "flo": expect.any(Number) || "error",
+     *      "bitcoin": expect.any(Number) || "error",
+     *      "litecoin": expect.any(Number) || "error"
+     * }
+     */
+    async getFiatBalances(coins_array, fiat = "usd"){
+        let xrBalances = {}, balances = {}, xrates = {};
+        try {
+            balances = await this.getCoinBalances(coins_array);
+            xrates = await this.getExchangeRates(coins_array, fiat);
+        } catch (err) {console.log("Error trying to fetch balances/xrates: ", err)}
+
+        for (let coinB in balances) {
+            for (let coinX in xrates) {
+                if (coinB === coinX) {
+                    if (!isNaN(balances[coinB]) && !isNaN(xrates[coinX])) {
+                        xrBalances[coinB] = balances[coinB] * xrates[coinX]
+                    }
+                }
+            }
+        }
+        return xrBalances
     }
 	/**
 	 * Init Wallet from BIP39 Mnemonic
