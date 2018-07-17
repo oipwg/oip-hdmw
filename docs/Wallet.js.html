@@ -282,7 +282,7 @@ class Wallet {
      * @return {Object} exchange_rates
      * @example
      * let wallet = new Wallet(...)
-     * wallet.getCoinBalances(["flo", "bitcoin", "litecoin"], "usd")
+     * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
      *
      * //returns
      * {
@@ -317,7 +317,7 @@ class Wallet {
      * Calculate Balance of coins after exchange rate conversion
      * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get exchange rates for. If none are given, an array of all available coins will be used.
      * @param  {string} [fiat="usd"]     - The fiat currency you wish to check against. If none is given, "usd" is defaulted.
-     * @return {Object} exchange_rates
+     * @return {Object} fiatBalances
      * @example
      * let wallet = new Wallet(...)
      * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
@@ -330,7 +330,7 @@ class Wallet {
      * }
      */
     async getFiatBalances(coins_array, fiat = "usd"){
-        let xrBalances = {}, balances = {}, xrates = {};
+        let fiatBalances = {}, balances = {}, xrates = {};
         try {
             balances = await this.getCoinBalances(coins_array);
             xrates = await this.getExchangeRates(coins_array, fiat);
@@ -340,12 +340,12 @@ class Wallet {
             for (let coinX in xrates) {
                 if (coinB === coinX) {
                     if (!isNaN(balances[coinB]) &amp;&amp; !isNaN(xrates[coinX])) {
-                        xrBalances[coinB] = balances[coinB] * xrates[coinX]
+                        fiatBalances[coinB] = balances[coinB] * xrates[coinX]
                     }
                 }
             }
         }
-        return xrBalances
+        return fiatBalances
     }
 	/**
 	 * Init Wallet from BIP39 Mnemonic
