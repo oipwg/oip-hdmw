@@ -67,6 +67,16 @@ test('Wallet can return all coins', () => {
 	expect(coins.bitcoin_testnet).toBeUndefined()
 })
 
+test('Wallet getCoinBalances', async () => {
+    var w = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+    let balances = await w.getCoinBalances()
+
+    expect(balances).toHaveProperty("flo");
+    expect(balances).toHaveProperty("bitcoin");
+    expect(balances).toHaveProperty("litecoin");
+    
+}, 100000)
+
 // test('Wallet sendPayment', (done) => {
 // 	var w = new Wallet('00000000000000000000000000000000', { 
 // 		discover: false,

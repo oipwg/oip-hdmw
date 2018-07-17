@@ -62,7 +62,7 @@ class Wallet {
 		this.networks = networks;
 
 		// Check for custom options
-		if (options && typeof options === "object"){
+		if (options && typeof options === "object"){3
 			// Check if the user has defined their own supported coins for the wallet
 			if (options.supported_coins){
 				if (typeof options.supported_coins === "string") {
@@ -132,6 +132,55 @@ class Wallet {
 	getCoins(){
 		return this.coins;
 	}
+    /**
+     * Get Coin Balances
+     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get the balances for. If no coins are given, an array of all available coins will be used.
+     * @return {object} coin_balances
+     * @example
+     * let wallet = new Wallet()
+     * wallet.getCoinBalances(["flo", "bitcoin", "litecoin"])
+     *
+     * //example return
+     * {
+     *      "flo": 2.16216,
+     *      "bitcoin": "error fetching balance",
+     *      "litecoin": 3.32211
+     * }
+     */
+    async getCoinBalances(coins_array){
+        const coins = coins_array || Object.keys(this.getCoins());
+        let _coins = this.getCoins();
+        // console.log(`Check to see coin_array: ${coins_array} -- ${coins} -- ${_coins}`)
+
+        let coinPromises = {};
+        let coin_balances = {};
+
+        for (let coin of coins) {
+            try {
+                coinPromises[coin] = _coins[coin].getBalance({discover: true})
+            } catch (err) {
+                coinPromises[coin] = `${err}`;
+                // console.log(`Error on fetching promise for ${coin}: ${err}`)
+            }
+        }
+
+        for (let coin in coinPromises) {
+            try {
+                coin_balances[coin] = await coinPromises[coin];
+                // console.log(`${coin}: resolved balance: ${coin_balances[coin]}`)
+
+            } catch (err) {
+                coin_balances[coin] = "error fetching balance";
+                // console.log(`Error while trying to resolve the balance of ${coin}: ${err}`)
+
+                if (err.response && err.response.statusText) {
+                    // console.log("error response status text: ", err.response.statusText)
+                }
+            }
+        }
+        // console.log(`Coin balances: ${JSON.stringify(coin_balances, null, 4)}`);
+        return coin_balances
+    }
 	/**
 	 * Init Wallet from BIP39 Mnemonic
 	 * @param  {string} mnemonic - A BIP39 Mnemonic String
