@@ -1,5 +1,6 @@
 ![](https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master)
 [![](https://img.shields.io/npm/v/oip-hdmw.svg)](https://www.npmjs.com/package/oip-hdmw)
+[![Coverage Status](https://coveralls.io/repos/github/oipwg/oip-hdmw/badge.svg?branch=master)](https://coveralls.io/github/oipwg/oip-hdmw?branch=master)
 # OIP HD-MultiWallet
 `oip-hdmw` is a [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Javascript Lite Wallet. You can spawn and recover the entire wallet for each coin using just a single [BIP-39 Mnemonic](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki). We use an [`insight-api`](https://github.com/bitpay/insight-api) server as the source of truth for Wallet balances and unspent outputs instead of syncing Block Headers like most SPV wallets do. 
 
