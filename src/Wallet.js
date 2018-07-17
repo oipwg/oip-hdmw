@@ -1,4 +1,5 @@
 import bip39 from 'bip39'
+const Exchange = require("oip-exchange-rate");
 
 import Coin from './Coin'
 import networks from './networks'
@@ -137,7 +138,7 @@ class Wallet {
      * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get the balances for. If no coins are given, an array of all available coins will be used.
      * @return {object} coin_balances
      * @example
-     * let wallet = new Wallet()
+     * let wallet = new Wallet(...)
      * wallet.getCoinBalances(["flo", "bitcoin", "litecoin"])
      *
      * //example return
@@ -180,6 +181,44 @@ class Wallet {
         }
         // console.log(`Coin balances: ${JSON.stringify(coin_balances, null, 4)}`);
         return coin_balances
+    }
+    /**
+     * Calculate Exchange Rates for supported coins
+     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get exchange rates for. If none are given, an array of all available coins will be used.
+     * @param  {string} [fiat="usd"]     - The fiat currency you wish to check against. If none is given, "usd" is defaulted.
+     * @return {Object} exchange_rates
+     * @example
+     * let wallet = new Wallet(...)
+     * wallet.getCoinBalances(["flo", "bitcoin", "litecoin"], "usd")
+     *
+     * //returns
+     * {
+     *      "flo": expect.any(Number) || "error",
+     *      "bitcoin": expect.any(Number) || "error",
+     *      "litecoin": expect.any(Number) || "error"
+     * }
+     */
+    async getExchangeRates(coins_array, fiat = "usd"){
+        let coins =  coins_array || Object.keys(this.getCoins());
+        let rates = {};
+        let promiseArray = {};
+
+        if (!coins) throw new Error("No coins found to fetch exchange rates");
+        let _exchange = new Exchange()
+        for (let coin of coins) {
+            promiseArray[coin] = _exchange.getExchangeRate(coin, fiat);
+        }
+
+        for (let coin in promiseArray) {
+            try {
+                let rate = await promiseArray[coin];
+                rates[coin] = rate;
+            } catch (err) {
+                rates[coin] = "error fetching rate";
+            }
+        }
+        // console.log(`Exchange rates: ${JSON.stringify(rates, null, 4)}`)
+        return rates;
     }
 	/**
 	 * Init Wallet from BIP39 Mnemonic

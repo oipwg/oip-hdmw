@@ -40,6 +40,7 @@
     "coininfo": "^4.0.1",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "insight-explorer": "^1.0.0",
+    "oip-exchange-rate": "^1.0.6",
     "varuint-bitcoin": "^1.1.0",
     "wif": "^2.0.6"
   },

@@ -77,6 +77,16 @@ test('Wallet getCoinBalances', async () => {
     
 }, 100000)
 
+test('Wallet getExchangeRates', async () => {
+    var w = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+    let rates = await w.getExchangeRates()
+    console.log(rates)
+    expect(rates).toHaveProperty("flo");
+    expect(rates).toHaveProperty("bitcoin");
+    expect(rates).toHaveProperty("litecoin");
+
+}, 100000)
+
 // test('Wallet sendPayment', (done) => {
 // 	var w = new Wallet('00000000000000000000000000000000', { 
 // 		discover: false,
