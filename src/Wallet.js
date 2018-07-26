@@ -160,7 +160,7 @@ class Wallet {
             try {
                 coinPromises[coin] = _coins[coin].getBalance({discover: true})
             } catch (err) {
-                coinPromises[coin] = new Promise((resolve, reject) => {reject(err)});
+                // coinPromises[coin] = new Promise((resolve, reject) => {reject(err)});
                 // console.log(`Error on fetching promise for ${coin}: ${err}`)
             }
         }
@@ -179,6 +179,13 @@ class Wallet {
                 }
             }
         }
+
+        // If for some reason a coin was not set, set the error state here
+        for (let coin of coins){
+        	if (!coin_balances[coin])
+        		coin_balances[coin] = "error fetching balance";
+        }
+
         // console.log(`Coin balances: ${JSON.stringify(coin_balances, null, 4)}`);
         return coin_balances
     }
