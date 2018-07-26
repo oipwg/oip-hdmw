@@ -160,7 +160,7 @@ class Wallet {
             try {
                 coinPromises[coin] = _coins[coin].getBalance({discover: true})
             } catch (err) {
-                coinPromises[coin] = `${err}`;
+                coinPromises[coin] = new Promise((resolve, reject) => {reject(err)});
                 // console.log(`Error on fetching promise for ${coin}: ${err}`)
             }
         }
