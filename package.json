@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/oipwg/oip-hdmw#readme",
   "dependencies": {
-    "bip32": "^0.1.0",
+    "bip32": "1.0.2",
     "bip32-utils": "git+https://github.com/oipwg/bip32-utils.git",
     "bip39": "^2.5.0",
     "bip44-constants": "^5.0.0",
-    "bitcoinjs-lib": "3.3.2",
+    "bitcoinjs-lib": "git+https://github.com/oipwg/bitcoinjs-lib.git#export-classify",
     "coininfo": "^4.0.1",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "insight-explorer": "^1.0.0",
