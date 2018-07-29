@@ -215,7 +215,7 @@ class Coin {
 							addresses: addrsToSearch,
 							id: accNum
 						}).then(addBalance).catch( (err) => {
-						    console.log(`Error in getBalances() on line 125`)
+						    console.log(`Error getting account balance: ${err}`)
                             reject(err);
                         })
 					}
@@ -226,7 +226,7 @@ class Coin {
 				countBalance();
 			} else {
 				this.discoverAccounts().then(countBalance).catch( (err) => {
-                    console.log(`Error in getBalances() on line 136`)
+                    console.log(`Error discovering accounts in getBalance(): ${err}`)
                     reject(err)
                 })
 			}
