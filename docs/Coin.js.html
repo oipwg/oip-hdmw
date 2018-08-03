@@ -144,9 +144,6 @@ class Coin {
 
 		this.accounts = {}
 
-		// Default add account zero
-		this.addAccount(0);
-
 		if (this.discover){
 			this.discoverAccounts()
 		}
@@ -465,6 +462,15 @@ class Coin {
 	getCoinInfo(){
 		return this.coin
 	}
+	getHighestAccountNumber(){
+		var highestAccountNumber = 0;
+
+		for (var accNum in this.accounts)
+			if (accNum > highestAccountNumber)
+				highestAccountNumber = accNum
+
+		return highestAccountNumber
+	}
 	/**
 	 * Discover all Accounts for the Coin
 	 * @example
@@ -476,40 +482,24 @@ class Coin {
 	 * })
 	 * @return {Promise&lt;Array.&lt;Account>>} Returns a Promise that will resolve to an Array of Accounts once complete
 	 */
-	discoverAccounts(){
-		return new Promise((resolve, reject) => {
-			var checkIfDiscoveryComplete = () => {
-				var discoveredAccounts = [];
-				var highestAccountNumber = 0;
+	async discoverAccounts(){
 
-				for (var accNum in this.accounts){
-					discoveredAccounts.push(this.accounts[accNum]);
+		// Reset the internal accounts
+		this.accounts = {};
 
-					if (accNum > highestAccountNumber){
-						highestAccountNumber = accNum;
-					}
-				}
+		// Get the Account #0 and start discovery there.
+		await this.getAccount(0).discoverChains()
 
-				if (this.accounts[highestAccountNumber].getAddresses().length > 0){
-					var account = this.getAccount(highestAccountNumber + 1, false)
+		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0)
+			await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
 
-					account.discoverChains().then(checkIfDiscoveryComplete).catch(err => {
-                        resolve(discoveredAccounts)
-                    })
-				} else {
-					resolve(discoveredAccounts)
-				}
-			}
+		var discoveredAccounts = []
 
-			// Reset the internal accounts
-			this.accounts = {};
+		for (var accNum in this.accounts){
+			discoveredAccounts.push(this.accounts[accNum]);
+		}
 
-			// Get the Account #0 and start discovery there.
-			this.getAccount(0).discoverChains().then(checkIfDiscoveryComplete).catch(err => {
-                console.log(`Error in disovery on line 417`)
-                reject(err)
-            })
-		})
+		return discoveredAccounts
 	}
 }
 
