@@ -427,16 +427,20 @@ class Account {
 		for (var addr of addresses){
 			var address = new Address(addr, coin, false);
 
-			var addressPromise = address.updateState()
-
-			addressPromises.push(addressPromise);
+			addressPromises.push(address.updateState())
 		}
 
-		for (var prom of addressPromises){
+		for (var addressPromise of addressPromises){
+			let address
+			
 			try {
-				var address = await prom;
-			} catch (e) {
-				throw new Error(e)
+				address = await addressPromise
+			} catch(e) { 
+				// If we error out, add catches to all other promises (to prevent the "UnhandledPromiseRejectionWarning" issue)
+				for (var adP of addressPromises)
+					adP.catch((e) => { /* Do Nothing */ })
+
+				throw new Error("Unable to update Address state in _chainPromise \n" + e)
 			}
 
 			if (address.getTotalReceived() > 0){
