@@ -496,15 +496,12 @@ class Account {
 		var chainsToDiscover = [0, 1]
 
 		var account
-		var chainPromises = []
 
-		for (var c of chainsToDiscover)
-			chainPromises.push(this.discoverChain(c))
-
-		for (var prom of chainPromises){
+		// Do each chain one at a time in case it crashes and errors out.
+		for (var c of chainsToDiscover){
 			try {
-				account = await prom
-			} catch (e) { throw new Error(e) }
+				account = await this.discoverChain(c)
+			} catch (e) { throw new Error("Unable to discoverChains! \n" + e) }
 		}
 
 		return account
