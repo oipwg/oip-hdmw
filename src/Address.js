@@ -202,10 +202,12 @@ class Address {
 	 * })
 	 * @return {Promise<Address>} Returns a Promise that will resolve to the Address
 	 */
-	updateState(){
-		return this.coin.explorer.getAddress(this.getPublicAddress()).then((state) => {
-			return this.fromJSON(state)
-		})
+	async updateState(){
+		try {
+			var state = await this.coin.explorer.getAddress(this.getPublicAddress())
+		} catch(e) { throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + JSON.stringify(e, null, 4)) }
+
+		return this.fromJSON(state)
 	}
 	/**
 	 * Load Address state from an AddressState object
