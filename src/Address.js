@@ -205,7 +205,7 @@ class Address {
 	async updateState(){
 		try {
 			var state = await this.coin.explorer.getAddress(this.getPublicAddress())
-		} catch(e) { throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + JSON.stringify(e, null, 4)) }
+		} catch(e) { throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + e) }
 
 		return this.fromJSON(state)
 	}
