@@ -236,20 +236,28 @@ class Wallet {
      */
     async getFiatBalances(coins_array, fiat = "usd"){
         let fiatBalances = {}, balances = {}, xrates = {};
-        try {
-            balances = await this.getCoinBalances(coins_array);
-            xrates = await this.getExchangeRates(coins_array, fiat);
-        } catch (err) {console.log("Error trying to fetch balances/xrates: ", err)}
+
+        balances = await this.getCoinBalances(coins_array);
+        xrates = await this.getExchangeRates(coins_array, fiat);
 
         for (let coinB in balances) {
             for (let coinX in xrates) {
                 if (coinB === coinX) {
+                	// Both have been grabbed with no errors
                     if (!isNaN(balances[coinB]) && !isNaN(xrates[coinX])) {
                         fiatBalances[coinB] = balances[coinB] * xrates[coinX]
                     }
                 }
             }
         }
+
+        // Set the error state for coins not properly returned
+        for (var coin_name of this.supported_coins){
+        	if (!fiatBalances[coin_name]){
+        		fiatBalances[coin_name] = "error"
+        	}
+        }
+
         return fiatBalances
     }
 	/**
