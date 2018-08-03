@@ -149,41 +149,29 @@ class Wallet {
      * }
      */
     async getCoinBalances(coins_array){
-        const coins = coins_array || Object.keys(this.getCoins());
+        const coinnames = coins_array || Object.keys(this.getCoins());
         let _coins = this.getCoins();
         // console.log(`Check to see coin_array: ${coins_array} -- ${coins} -- ${_coins}`)
 
         let coinPromises = {};
         let coin_balances = {};
 
-        for (let coin of coins) {
-            try {
-                coinPromises[coin] = _coins[coin].getBalance({discover: true})
-            } catch (err) {
-                // coinPromises[coin] = new Promise((resolve, reject) => {reject(err)});
-                // console.log(`Error on fetching promise for ${coin}: ${err}`)
-            }
+        for (let name of coinnames) {
+            coinPromises[name] = _coins[name].getBalance({discover: true})
         }
 
         for (let coin in coinPromises) {
             try {
-                coin_balances[coin] = await coinPromises[coin];
-                // console.log(`${coin}: resolved balance: ${coin_balances[coin]}`)
-
+                coin_balances[coin] = await coinPromises[coin]
             } catch (err) {
                 coin_balances[coin] = "error fetching balance";
-                // console.log(`Error while trying to resolve the balance of ${coin}: ${err}`)
-
-                if (err.response && err.response.statusText) {
-                    // console.log("error response status text: ", err.response.statusText)
-                }
             }
         }
 
         // If for some reason a coin was not set, set the error state here
-        for (let coin of coins){
-        	if (!coin_balances[coin])
-        		coin_balances[coin] = "error fetching balance";
+        for (let name of coinnames){
+        	if (!coin_balances[name])
+        		coin_balances[name] = "error fetching balance";
         }
 
         // console.log(`Coin balances: ${JSON.stringify(coin_balances, null, 4)}`);
@@ -211,9 +199,12 @@ class Wallet {
         let promiseArray = {};
 
         if (!coins) throw new Error("No coins found to fetch exchange rates");
-        let _exchange = new Exchange()
+
+        if (!this._exchange)
+        	this._exchange = new Exchange()
+
         for (let coin of coins) {
-            promiseArray[coin] = _exchange.getExchangeRate(coin, fiat);
+            promiseArray[coin] = this._exchange.getExchangeRate(coin, fiat);
         }
 
         for (let coin in promiseArray) {
