@@ -135,11 +135,15 @@ class Wallet {
 	}
     /**
      * Get Coin Balances
-     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @return {object} coin_balances
+     * @param {Object} [options] - The options for searching the Balance of coins
+     * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+     * 
+     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
+     * 
      * @example
      * let wallet = new Wallet(...)
-     * wallet.getCoinBalances(["flo", "bitcoin", "litecoin"])
+     * wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
      *
      * //example return
      * {
@@ -148,17 +152,16 @@ class Wallet {
      *      "litecoin": 3.32211
      * }
      */
-    async getCoinBalances(coins_array){
-        const coinnames = coins_array || Object.keys(this.getCoins());
-        let _coins = this.getCoins();
-        // console.log(`Check to see coin_array: ${coins_array} -- ${coins} -- ${_coins}`)
+    async getCoinBalances(options = { discover: true }){
+        const coinnames = options.coins || Object.keys(this.getCoins());
 
         let coinPromises = {};
-        let coin_balances = {};
 
         for (let name of coinnames) {
-            coinPromises[name] = _coins[name].getBalance({discover: true})
+            coinPromises[name] = this.getCoin(name).getBalance(options)
         }
+
+        let coin_balances = {};
 
         for (let coin in coinPromises) {
             try {
@@ -169,19 +172,20 @@ class Wallet {
         }
 
         // If for some reason a coin was not set, set the error state here
-        for (let name of coinnames){
+        for (let name of coinnames)
         	if (!coin_balances[name])
         		coin_balances[name] = "error fetching balance";
-        }
 
-        // console.log(`Coin balances: ${JSON.stringify(coin_balances, null, 4)}`);
         return coin_balances
     }
     /**
      * Calculate Exchange Rates for supported coins
-     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get exchange rates for. If none are given, an array of all available coins will be used.
-     * @param  {string} [fiat="usd"]     - The fiat currency you wish to check against. If none is given, "usd" is defaulted.
-     * @return {Object} exchange_rates
+     * @param {Object} [options] - The options for getting the exchange rates
+     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+     *
+     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins exchange rate, along with errors if there are any
+     * 
      * @example
      * let wallet = new Wallet(...)
      * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
@@ -193,36 +197,44 @@ class Wallet {
      *      "litecoin": expect.any(Number) || "error"
      * }
      */
-    async getExchangeRates(coins_array, fiat = "usd"){
-        let coins = coins_array || Object.keys(this.getCoins());
-        let rates = {};
-        let promiseArray = {};
+    async getExchangeRates( options = {fiat: "usd"} ){
+        let coins = options.coins || Object.keys(this.getCoins());
 
         if (!coins) throw new Error("No coins found to fetch exchange rates");
 
+        // Initialize an Exchange object
         if (!this._exchange)
         	this._exchange = new Exchange()
 
-        for (let coin of coins) {
-            promiseArray[coin] = this._exchange.getExchangeRate(coin, fiat);
+        let promiseArray = {};
+
+        for (let coinname of coins) {
+            promiseArray[coinname] = this._exchange.getExchangeRate(coinname, options.fiat);
         }
 
-        for (let coin in promiseArray) {
+        let rates = {};
+
+        for (let coinname in promiseArray) {
             try {
-                let rate = await promiseArray[coin];
-                rates[coin] = rate;
+                let rate = await promiseArray[coinname];
+                rates[coinname] = rate;
             } catch (err) {
-                rates[coin] = "error fetching rate";
+                rates[coinname] = "error fetching rate";
             }
         }
-        // console.log(`Exchange rates: ${JSON.stringify(rates, null, 4)}`)
+        
         return rates;
     }
     /**
      * Calculate Balance of coins after exchange rate conversion
-     * @param  {array} [coins_array=this.getCoins()]    - An array of coins you want to get exchange rates for. If none are given, an array of all available coins will be used.
-     * @param  {string} [fiat="usd"]     - The fiat currency you wish to check against. If none is given, "usd" is defaulted.
-     * @return {Object} fiatBalances
+     *
+     * * @param {Object} [options] - The options for getting the exchange rates
+     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+     * 
+     * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
+     * 
      * @example
      * let wallet = new Wallet(...)
      * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
@@ -234,11 +246,11 @@ class Wallet {
      *      "litecoin": expect.any(Number) || "error"
      * }
      */
-    async getFiatBalances(coins_array, fiat = "usd"){
+    async getFiatBalances(options){
         let fiatBalances = {}, balances = {}, xrates = {};
 
-        balances = await this.getCoinBalances(coins_array);
-        xrates = await this.getExchangeRates(coins_array, fiat);
+        balances = await this.getCoinBalances(options);
+        xrates = await this.getExchangeRates(options);
 
         for (let coinB in balances) {
             for (let coinX in xrates) {

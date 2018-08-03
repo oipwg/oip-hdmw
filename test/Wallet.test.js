@@ -67,17 +67,24 @@ test('Wallet can return all coins', () => {
 	expect(coins.bitcoin_testnet).toBeUndefined()
 })
 
-test('Wallet getCoinBalances', async () => {
+test('Wallet getCoinBalances & getFiatBalances', async (done) => {
     var w = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
     let balances = await w.getCoinBalances()
-    // console.log(balances)
+    
     expect(balances).toHaveProperty("flo");
     expect(balances).toHaveProperty("bitcoin");
     expect(balances).toHaveProperty("litecoin");
+
+    let fb = await w.getFiatBalances({discover: false})
     
+    expect(fb).toHaveProperty("flo");
+    expect(fb).toHaveProperty("bitcoin");
+    expect(fb).toHaveProperty("litecoin");
+    
+    done()
 }, 100000)
 
-test('Wallet getExchangeRates', async () => {
+test('Wallet getExchangeRates', async (done) => {
     var w = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
     let rates = await w.getExchangeRates()
     // console.log(rates)
@@ -85,16 +92,7 @@ test('Wallet getExchangeRates', async () => {
     expect(rates).toHaveProperty("bitcoin");
     expect(rates).toHaveProperty("litecoin");
 
-}, 100000)
-
-test('Wallet getFiatBalances', async () => {
-    var w = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
-    let fb = await w.getFiatBalances()
-    // console.log(fb)
-    expect(fb).toHaveProperty("flo");
-    expect(fb).toHaveProperty("bitcoin");
-    expect(fb).toHaveProperty("litecoin");
-
+    done()
 }, 100000)
 
 // test('Wallet sendPayment', (done) => {
