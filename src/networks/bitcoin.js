@@ -21,7 +21,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://insight.bitpay.com/api'),
+	explorer: new Insight('https://localbitcoinschain.com/api'),
 
 	getExtraBytes: function(options){ return },
 

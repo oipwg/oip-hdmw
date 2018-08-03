@@ -20,7 +20,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://test-insight.bitpay.com/api'),
+	explorer: new Insight('https://bitsight.mk1.alexandria.io/api'),
 
 	getExtraBytes: function(options){ return },
 
