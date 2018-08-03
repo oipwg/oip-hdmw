@@ -28,37 +28,37 @@ test('Account auto-discover by default', (done) => {
 	setTimeout(checkIfComplete, 1000)
 }, 20000)
 
-test('Get Account Balance of all Chain Addresses', (done) => {
+test('Get Account Balance of all Chain Addresses', async (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	
 	var account = new Account(accountMaster, Networks.flo, false);
 
-	account.getBalance({ discover: true }).then((totalBalance) => {
-		expect(totalBalance).toBeGreaterThan(0)
-		done()
-	})
+	var balance_obj = await account.getBalance({ discover: true })
+
+	expect(balance_obj.balance).toBeGreaterThan(0)
+	done()
 }, 20000)
 
-test('Account, Get Balance of single address', (done) => {
+test('Account, Get Balance of single address', async (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	
 	var account = new Account(accountMaster, Networks.flo, false);
 
-	account.getBalance({ discover: true, addresses: "F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp" }).then((totalBalance) => {
-		expect(totalBalance).toBeDefined()
-		done()
-	})
+	var balance_obj = await account.getBalance({ discover: true, addresses: "F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp" })
+	
+	expect(balance_obj.balance).toBeDefined()
+	done()
 }, 20000)
 
-test('Account, Get Balance of multiple addresses', (done) => {
+test('Account, Get Balance of multiple addresses', async (done) => {
 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	
 	var account = new Account(accountMaster, Networks.flo, false);
 
-	account.getBalance({ discover: true, addresses: ["F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", "FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu"] }).then((totalBalance) => {
-		expect(totalBalance).toBeDefined()
-		done()
-	})
+	var balance_obj = await account.getBalance({ discover: true, addresses: ["F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", "FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu"] })
+	
+	expect(balance_obj.balance).toBeDefined()
+	done()
 }, 20000)
 
 test('Discover Chain on Account', (done) => {

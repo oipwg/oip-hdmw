@@ -70,71 +70,53 @@ class Coin {
 	 * })
 	 * @return {Promise<number>} A Promise that will resolve to the balance of the entire Coin
 	 */
-	getBalance(options){
-		return new Promise((resolve, reject) => {
-			if (options && options.test_error)
-				reject(new Error("Testing error thrown in getBalance, check your options for test_error and remove it if you are getting this on accident!"))
+	async getBalance(options){
+		if (!options || (options && options.discover === undefined) || (options && options.discover === true)){
+			try {
+				await this.discoverAccounts()
+			} catch (e) { throw e }
+		}
 
-			var countBalance = () => {
-				var accounts_to_search = [];
+		var accounts_to_search = [];
 
-				// Check if we are an array (ex. [0,1,2]) or just a number (ex. 1)
-				if (options && Array.isArray(options.accounts)) {
-					for (var accNum of options.accounts) {
-						if (!isNaN(accNum)) {
-							accounts_to_search.push(accNum)
-						}
-					}
-				} else if (options && !isNaN(options.accounts)) {
-					accounts_to_search.push(options.accounts)
-				} else {
-					for (var accNum in this.accounts){
-						accounts_to_search.push(accNum)
-					}
-				}
-
-				var totalBalance = 0;
-
-				var addrsToSearch, disc;
-
-				if (options && options.discover === false)
-					disc = false;
-
-				if (options && options.addresses && (typeof options.addresses === "string" || Array.isArray(options.addresses))){
-					addrsToSearch = options.addresses
-				}
-
-				var addBalance = (balance, id) => {
-					accounts_to_search.splice(accounts_to_search.indexOf(id));
-					totalBalance += balance;
-
-					if (accounts_to_search.length === 0)
-						resolve(totalBalance);
-				}
-
-				for (accNum of accounts_to_search){
-					if (this.accounts[accNum]){
-						this.accounts[accNum].getBalance({
-							discover: disc,
-							addresses: addrsToSearch,
-							id: accNum
-						}).then(addBalance).catch( (err) => {
-						    console.log(`Error getting account balance: ${err}`)
-                            reject(err);
-                        })
-					}
+		// Check if we are an array (ex. [0,1,2]) or just a number (ex. 1)
+		if (options && Array.isArray(options.accounts)) {
+			for (var accNum of options.accounts) {
+				if (!isNaN(accNum)) {
+					accounts_to_search.push(accNum)
 				}
 			}
-
-			if (options && options.discover === false){
-				countBalance();
-			} else {
-				this.discoverAccounts().then(countBalance).catch( (err) => {
-                    console.log(`Error discovering accounts in getBalance(): ${err}`)
-                    reject(err)
-                })
+		} else if (options && !isNaN(options.accounts)) {
+			accounts_to_search.push(options.accounts)
+		} else {
+			for (var accNum in this.accounts){
+				accounts_to_search.push(accNum)
 			}
-		})
+		}
+
+		var totalBalance = 0;
+
+		var addrsToSearch;
+
+		if (options && options.addresses && (typeof options.addresses === "string" || Array.isArray(options.addresses))){
+			addrsToSearch = options.addresses
+		}
+
+		for (accNum of accounts_to_search){
+			if (this.accounts[accNum]){
+				try {
+					var balance_res = await this.accounts[accNum].getBalance({
+						discover: false,
+						addresses: addrsToSearch,
+						id: accNum
+					})
+
+					totalBalance += balance_res.balance
+				} catch(e) { throw new Error(e) }
+			}
+		}
+
+		return totalBalance
 	}
 	/**
 	 * Get a specific Address
@@ -395,10 +377,15 @@ class Coin {
 		this.accounts = {};
 
 		// Get the Account #0 and start discovery there.
-		await this.getAccount(0).discoverChains()
+		try {
+			await this.getAccount(0).discoverChains()
+		} catch (e) { throw e }
 
-		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0)
-			await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
+		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0){
+			try {
+				await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
+			} catch (e) { throw e }
+		}
 
 		var discoveredAccounts = []
 

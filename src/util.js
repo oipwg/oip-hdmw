@@ -104,7 +104,7 @@ async function discovery (chain, gapLimit, queryPromise, i, coin) {
 		try {
 			var queryResultSet = await queryPromise(batch, myCoin)
 		} catch (e) {
-			throw e
+			throw new Error(e)
 		}
 
 		for (var adr of queryResultSet.addresses)
@@ -130,10 +130,14 @@ async function discovery (chain, gapLimit, queryPromise, i, coin) {
 			chain.next()
 		}
 
-		return await cycle(myCoin)
+		try {
+			return await cycle(myCoin)
+		} catch (e) { throw new Error(e) }
 	}
 
-	return await cycle(coin)
+	try {
+		return await cycle(coin)
+	} catch (e) { throw new Error(e) }
 }
 
 /**

@@ -209,46 +209,48 @@ class Account {
 	 * @param {number} [options.id] - The ID number to return when the Promise resolves
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
-	getBalance(options){
-		return new Promise((resolve, reject) => {
-			var getBalances = () => {
-				var totBal = 0;
+	async getBalance(options){
+		var discovery = this.discover;
 
-				for (var addr in this.addresses){
-					if (options && options.addresses && typeof options.addresses === "string"){
-						if (addr === options.addresses){
-							totBal += this.addresses[addr].getBalance()
-						}
-					} else if (options && options.addresses && Array.isArray(options.addresses)){
-						for (var ad of options.addresses){
-							if (addr === ad){
-								totBal += this.addresses[addr].getBalance()
-							}
-						}
-					} else {
-						totBal += this.addresses[addr].getBalance()
+		if (options && options.discover !== undefined)
+			discovery = options.discover;
+
+		if (discovery){
+			try {
+				await this.discoverChains()
+			} catch (e) { throw new Error(e) }
+		}
+
+		var totalBal = 0;
+
+		// Iterate through each of the addresses we have found
+		for (var addr in this.addresses){
+			// Are we searching only for a single addresses balance?
+			if (options && options.addresses && typeof options.addresses === "string"){
+				if (addr === options.addresses){
+					totalBal += this.addresses[addr].getBalance()
+				}
+			// Are we searching for only the addresses in an array?
+			} else if (options && options.addresses && Array.isArray(options.addresses)){
+				for (var ad of options.addresses){
+					if (addr === ad){
+						totalBal += this.addresses[addr].getBalance()
 					}
 				}
-
-				var id;
-
-				if (options && options.id)
-					id = options.id;
-
-				resolve(totBal, id);
-			}
-
-			var discovery = this.discover;
-
-			if (options && options.discover !== undefined)
-				discovery = options.discover;
-
-			if (discovery){
-				this.discoverChains().then(getBalances)
+			// If not the first two, then just add them all up :)
 			} else {
-				getBalances()
+				totalBal += this.addresses[addr].getBalance()
 			}
-		})
+		}
+
+		var balance_data = {
+			balance: totalBal
+		}
+
+		if (options && options.id)
+			balance_data.id = options.id;
+
+		return balance_data
 	}
 	/**
 	 * Get the Next Chain Address for a specified chain
@@ -401,7 +403,7 @@ class Account {
 		try {
 			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
 		} catch(e){
-			throw e
+			throw new Error(e)
 		}
 
 		// throw away EACH unused address AFTER the last unused address
@@ -434,7 +436,7 @@ class Account {
 			try {
 				var address = await prom;
 			} catch (e) {
-				throw e
+				throw new Error(e)
 			}
 
 			if (address.getTotalReceived() > 0){
@@ -463,7 +465,9 @@ class Account {
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
 	async discoverChain(chain_number){
-		var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
+		try {
+			var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
+		} catch (e) { throw new Error(e) }
 
 		this.discovery[chain_number] = { lastUpdate: Date.now() }
 
@@ -493,8 +497,11 @@ class Account {
 		for (var c of chainsToDiscover)
 			chainPromises.push(this.discoverChain(c))
 
-		for (var prom of chainPromises)
-			account = await prom
+		for (var prom of chainPromises){
+			try {
+				account = await prom
+			} catch (e) { throw new Error(e) }
+		}
 
 		return account
 	}
