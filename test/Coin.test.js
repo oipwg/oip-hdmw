@@ -80,7 +80,7 @@ test('Coin, get flo_testnet balance', (done) => {
 	})
 }, 10000)
 
-test('Coin, catch network request error', async (done) => {
+/*test('Coin, catch network request error', async (done) => {
     let bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, false)
 
     let myPromise = bitcoin.getBalance({discover: true, test_error: true })
@@ -99,18 +99,19 @@ test('Coin, catch network request error', async (done) => {
     expect(error).toBeTruthy()
     done()
 
-}, 10000)
+}, 10000)*/
 
-test('Coin, discover accounts', (done) => {
-	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, false)
+test('Coin, discover accounts', async (done) => {
+	let flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, false)
 
-	flo_testnet.discoverAccounts().then((accounts) => {
+	expect(flo_testnet.getCoinInfo()).toEqual(Networks.flo_testnet)
+
+	let accounts = await flo_testnet.discoverAccounts()
+
+	if (accounts){
 		expect(accounts.length >= 2).toBe(true);
 		done()
-	}).catch(err => {
-	    expect(err).toMatch('error')
-        done()
-    })
+	}
 }, 10000)
 
 test('Coin, getCoinInfo', () => {
