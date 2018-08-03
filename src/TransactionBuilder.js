@@ -210,12 +210,15 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise<Array.<utxo>>} Returns a Promise that will resolve to an Array of unspent utxos
 	 */
-	getUnspents(){
+	async getUnspents(){
 		var addresses = this.from.map((address) => { return address.getPublicAddress() });
 
-		return this.coin.explorer.getAddressesUtxo(addresses).then((utxos) => {
-			return utxos
-		}).catch(console.error)
+		let utxos
+		try {
+			utxos = await this.coin.explorer.getAddressesUtxo(addresses)
+		} catch (e) { throw new Error("Unable to get Unspents \n" + e) }
+
+		return utxos
 	}
 	/**
 	 * Get calculated Inputs and Outputs (and Fee) for From and To Addresses
@@ -241,44 +244,50 @@ class TransactionBuilder {
 	 * })
 	 * @return {SelectedInputOutput} 
 	 */
-	buildInputsAndOutputs(){
-		return this.discoverChange().then(() => { 
-			return this.getUnspents().then((utxos) => {
-				var formattedUtxos = utxos.map((utxo) => {
-					return {
-						address: utxo.address,
-						txId: utxo.txid,
-						vout: utxo.vout,
-						scriptPubKey: utxo.scriptPubKey,
-						value: utxo.satoshis,
-						confirmations: utxo.confirmations
-					}
-				})
+	async buildInputsAndOutputs(){
+		try {
+			await this.discoverChange()
+		} catch(e) { throw new Error("Unable to Discover Change Addresses \n" + e) }
 
-				var targets = this.to.map((toObj) => {
-					return {
-						address: toObj.address,
-						value: Math.floor(toObj.value * this.coin.satPerCoin)
-					}
-				})
+		let utxos
 
-				var extraBytesLength = 0;
-				var extraBytes = this.coin.getExtraBytes(this.passedOptions);
+		try {
+			utxos = await this.getUnspents()
+		} catch(e) { throw new Error("Unable to get Unspents for Addresses \n" + e) }
 
-				if (extraBytes)
-					extraBytesLength = extraBytes.length
+		var formattedUtxos = utxos.map((utxo) => {
+			return {
+				address: utxo.address,
+				txId: utxo.txid,
+				vout: utxo.vout,
+				scriptPubKey: utxo.scriptPubKey,
+				value: utxo.satoshis,
+				confirmations: utxo.confirmations
+			}
+		})
 
-				var utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
+		var targets = this.to.map((toObj) => {
+			return {
+				address: toObj.address,
+				value: Math.floor(toObj.value * this.coin.satPerCoin)
+			}
+		})
 
-				var selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+		var extraBytesLength = 0;
+		var extraBytes = this.coin.getExtraBytes(this.passedOptions);
 
-				// Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
-				if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee)
-					return selected
-				else // else, build with the regular ones
-					return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
-			}).catch(err => {throw new Error(err)})
-		}).catch(err => {throw new Error(err)})
+		if (extraBytes)
+			extraBytesLength = extraBytes.length
+
+		var utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
+
+		var selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+
+		// Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
+		if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee)
+			return selected
+		else // else, build with the regular ones
+			return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
 	}
 	/**
 	 * Discover the used change addresses if we were passed an Account to discover from.
@@ -302,16 +311,15 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise}
 	 */
-	discoverChange(){
-		return new Promise((resolve, reject) => {
-			if (this.account){
-				this.account.discoverChain(1).then(() => {
-					resolve()
-				}).catch(console.error)
-			} else {
-				resolve()
-			}
-		})
+	async discoverChange(){
+		if (this.account){
+			try {
+				await this.account.discoverChain(1)
+				return
+			} catch (e) { throw new Error("Unable to Discover Chain \n" + e) }
+		} else {
+			return
+		}
 	}
 	/**
 	 * Build the Transaction hex for the From and To addresses
@@ -337,66 +345,73 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise<string>} Returns a Promise that resolves to the calculated Transaction Hex
 	 */
-	buildTX(){
-		return this.buildInputsAndOutputs().then((selected) => {
-			var inputs = selected.inputs;
-			var outputs = selected.outputs;
-			var fee = selected.fee;
+	async buildTX(){
+		let selected
 
-			// inputs and outputs will be undefined if no solution was found
-			if (!inputs || !outputs) {
-				throw new Error("No Inputs or Outputs selected! Fail!")
+		try {
+			selected = await this.buildInputsAndOutputs()
+		} catch (e) {
+			throw new Error("Unable to select inputs and outputs \n" + e)
+		}
+
+		let inputs = selected.inputs;
+		let outputs = selected.outputs;
+		let fee = selected.fee;
+
+		// inputs and outputs will be undefined if no solution was found
+		if (!inputs || !outputs) {
+			throw new Error("No Inputs or Outputs selected! Fail!")
+		}
+
+		let txb = new bitcoin.TransactionBuilder(this.coin.network)
+
+		txb.setVersion(this.coin.txVersion)
+
+		inputs.forEach(input => txb.addInput(input.txId, input.vout))
+		outputs.forEach(output => {
+			// watch out, outputs may have been added that you need to provide
+			// an output address/script for
+			if (!output.address){
+				// Check if we have access to an account to get the change address from
+				if (this.account){
+                    output.address = this.account.getNextChangeAddress().getPublicAddress();
+				} else {
+					// If the change is undefined, send change to the first from address
+                    output.address = this.from[0].getPublicAddress();
+				}
 			}
 
-			let txb = new bitcoin.TransactionBuilder(this.coin.network)
+			txb.addOutput(output.address, output.value)
+		})
 
-			txb.setVersion(this.coin.txVersion)
+		for (let i in inputs){
+			for (let addr of this.from){
+				if (addr.getPublicAddress() === inputs[i].address){
+					let extraBytes = this.coin.getExtraBytes(this.passedOptions);
 
-			inputs.forEach(input => txb.addInput(input.txId, input.vout))
-			outputs.forEach(output => {
-				// watch out, outputs may have been added that you need to provide
-				// an output address/script for
-				if (!output.address){
-					// Check if we have access to an account to get the change address from
-					if (this.account){
-                        output.address = this.account.getNextChangeAddress().getPublicAddress();
+					if (extraBytes){
+						sign(txb, extraBytes, parseInt(i), addr.getECPair())
 					} else {
-						// If the change is undefined, send change to the first from address
-                        output.address = this.from[0].getPublicAddress();
-					}
-				}
-
-				txb.addOutput(output.address, output.value)
-			})
-
-			for (var i in inputs){
-				for (var addr of this.from){
-					if (addr.getPublicAddress() === inputs[i].address){
-						var extraBytes = this.coin.getExtraBytes(this.passedOptions);
-
-						if (extraBytes){
-							sign(txb, extraBytes, parseInt(i), addr.getECPair())
-						} else {
-							txb.sign(parseInt(i), addr.getECPair())
-						}
+						txb.sign(parseInt(i), addr.getECPair())
 					}
 				}
 			}
+		}
 
-			try {
-				var builtHex = txb.build().toHex();
-			} catch (e) {
-			    throw new Error(e)
-				return
-			}
+		let builtHex
 
-			var extraBytes = this.coin.getExtraBytes(this.passedOptions)
+		try {
+			builtHex = txb.build().toHex();
+		} catch (e) {
+		    throw new Error("Unable to build Transaction Hex! \n" + e)
+		}
 
-			if (extraBytes)
-				builtHex += extraBytes
+		let extraBytes = this.coin.getExtraBytes(this.passedOptions)
 
-			return builtHex
-		}).catch(err => {throw new Error(`TransactionBuilder.buildTX() did not create hex: ${err}`)})
+		if (extraBytes)
+			builtHex += extraBytes
+
+		return builtHex
 	}
 	/**
 	 * Build & Send the Transaction that we have been forming
@@ -422,19 +437,26 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
 	 */
-	sendTX(){
-		return new Promise((resolve, reject) => {
-			this.buildTX().then((hex) => {
-				if (hex){
-					console.log("BroadcastHex: " + hex)
-					this.coin.explorer.broadcastRawTransaction(hex).then((res) => {
-						resolve(res.txid)
-					}).catch(console.error)
-				} else {
-					reject(new Error("TransactionBuilder.buildTX() did not create hex!"))
-				}
-			}).catch(reject)
-		}).catch(err => {throw new Error(err)})
+	async sendTX(){
+		let hex
+		try {
+			hex = await this.buildTX()
+		} catch(e) { throw new Error("Unable to build Transaction \n" + e) }
+
+		if (hex){
+			console.log("BroadcastHex: " + hex)
+
+			let response
+			try {
+				response = await this.coin.explorer.broadcastRawTransaction(hex)
+			} catch(e) { throw new Error("Unable to Broadcast Transaction hex! \n" + e) }
+
+			// @ToDo: Add txid to spentTransactions for each Address spent from (this.from)
+			
+			return response.txid
+		} else {
+			throw new Error("TransactionBuilder.buildTX() did not create any hex!")
+		}
 	}
 }
 
