@@ -193,6 +193,24 @@ test('get utxo for address (remove spent)', (done) => {
 	})
 }, 10000)
 
+test('Address, test (mock) websocket update', (done) => {
+	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, false);
+
+	var test_msg = {
+		updated_data: {
+			balanceSat: 12340000
+		}
+	}
+
+	address.onWebsocketUpdate((addr) => {
+		expect(addr.getBalance()).toEqual(0.1234)
+		done()
+	})
+
+	// Force an update instead of waiting for websocket updates :)
+	address._processWebsocketUpdate(test_msg)
+})
+
 // test('test send payment on Address', (done) => {
 // 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
 // 	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S = cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1

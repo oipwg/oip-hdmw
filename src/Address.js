@@ -3,12 +3,11 @@ import bip32 from 'bip32'
 import wif from 'wif'
 import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
+import EventEmitter from 'eventemitter3';
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 
 const ECPair = bitcoin.ECPair;
-
-const GAP_LIMIT = 20;
 
 /**
  * [bitcoinjs-lib ECPair](https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/ecpair.js#L16)
@@ -120,6 +119,7 @@ class Address {
 
 		this.coin = coin || { satPerCoin: 1e8 }
 
+		// Setup internal variables
 		this.transactions = [];
 
 		this.balanceSat = 0;
@@ -130,6 +130,12 @@ class Address {
 		this.lastUpdated = 0;
 
 		this.spentTransactions = []
+
+		// Setup EventEmitter to notify when we have changed
+		this.event_emitter = new EventEmitter()
+
+		// Setup Websocket Address updates to keep us always up to date
+		this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate)
 		
 		if (discovery || discovery === false){
 			this.fromJSON(discovery)
@@ -205,9 +211,27 @@ class Address {
 	async updateState(){
 		try {
 			var state = await this.coin.explorer.getAddress(this.getPublicAddress())
-		} catch(e) { throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + e) }
+		} catch(e) { 
+			throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + e) 
+		}
 
 		return this.fromJSON(state)
+	}
+	/**
+	 * Internal function used to process updates streaming in from Websockets,
+	 * emits an update that can be subscribed to in onWebsocketUpdate
+	 * @param  {Object} update - Websocket Update Data
+	 */
+	_processWebsocketUpdate(update){
+		// If there is no data available, just ignore it
+		if (!update)
+			return
+
+		// If there is updated data, go ahead and set ourselves to it
+		if (update.updated_data){
+			var addr = this.fromJSON(update.updated_data)
+			this.event_emitter.emit("websocket_update", addr)
+		}
 	}
 	/**
 	 * Load Address state from an AddressState object
@@ -430,6 +454,21 @@ class Address {
 	 */
 	addSpentTransaction(txid){
 		this.spentTransactions.push(txid);
+	}
+	/**
+	 * Subscribe to events that are emitted when an update is recieved by Websockets
+	 * @param  {function} subscriber_function - The function you want called when there is an update
+	 *
+	 * @example
+	 * import { Address, Networks } from 'oip-hdmw';
+	 *
+	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+	 * address.onWebsocketUpdate((address) => {
+	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+	 * })
+	 */
+	onWebsocketUpdate(subscriber_function){
+		this.event_emitter.on("websocket_update", subscriber_function)
 	}
 }
 
