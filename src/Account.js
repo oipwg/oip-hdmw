@@ -403,7 +403,7 @@ class Account {
 		try {
 			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
 		} catch(e){
-			throw new Error(e)
+			throw new Error("Discovery error in _discoverChain #" + chainNumber + " \n" + e)
 		}
 
 		// throw away EACH unused address AFTER the last unused address
@@ -471,7 +471,7 @@ class Account {
 	async discoverChain(chain_number){
 		try {
 			var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
-		} catch (e) { throw new Error(e) }
+		} catch (e) { throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e) }
 
 		this.discovery[chain_number] = { lastUpdate: Date.now() }
 

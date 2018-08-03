@@ -379,12 +379,12 @@ class Coin {
 		// Get the Account #0 and start discovery there.
 		try {
 			await this.getAccount(0).discoverChains()
-		} catch (e) { throw e }
+		} catch (e) { throw new Error("Unable to discoverAccounts! \n" + e) }
 
 		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0){
 			try {
 				await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
-			} catch (e) { throw e }
+			} catch (e) { throw new Error("Unable to discover account #" + (this.getHighestAccountNumber() + 1) + "\n" + e) }
 		}
 
 		var discoveredAccounts = []
