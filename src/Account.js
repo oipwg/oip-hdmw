@@ -392,22 +392,60 @@ class Account {
 	getChain(chainNumber){
 		return this.account.getChain(chainNumber)
 	}
-	_discoverChain(chainNumber, gapLimit, queryCallback, callback) {
+	async _discoverChain(chainNumber, gapLimit) {
 		var chains = this.account.getChains()
 		var chain = chains[chainNumber].clone()
 
-		discovery(chain, gapLimit, queryCallback, chainNumber, (err, used, checked, chainIndex) => {
-			if (err) return callback(err)
+		var discovered
 
-			// throw away EACH unused address AFTER the last unused address
-			var unused = checked - used
-			for (var j = 1; j < unused; ++j) chain.pop()
+		try {
+			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
+		} catch(e){
+			throw e
+		}
 
-			// override the internal chain
-			this.account.chains[chainIndex] = chain
+		// throw away EACH unused address AFTER the last unused address
+		var unused = discovered.checked - discovered.used
+		for (var j = 1; j < unused; ++j) chain.pop()
 
-			callback(err, used, checked)
-		})
+		// override the internal chain
+		this.account.chains[discovered.chainIndex] = chain
+
+		for (let adrr of discovered.addresses)
+			this.addresses[adrr.getPublicAddress()] = adrr
+
+		return discovered
+	}
+	async _chainPromise(addresses, coin){
+		var results = {};
+		var foundAddresses = []
+
+		var addressPromises = [];
+
+		for (var addr of addresses){
+			var address = new Address(addr, coin, false);
+
+			var addressPromise = address.updateState()
+
+			addressPromises.push(addressPromise);
+		}
+
+		for (var prom of addressPromises){
+			try {
+				var address = await prom;
+			} catch (e) {
+				throw e
+			}
+
+			if (address.getTotalReceived() > 0){
+				foundAddresses.push(address)
+				results[address.getPublicAddress()] = true
+			} else {
+				results[address.getPublicAddress()] = false
+			}
+		}
+
+		return {results: results, addresses: foundAddresses}
 	}
 	/**
 	 * Discover Used and Unused addresses for a specified Chain number
@@ -424,48 +462,12 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	discoverChain(chain_number){
-		return new Promise((resolve, reject) => {
-			this._discoverChain(chain_number, GAP_LIMIT, (addresses, callback) => {
-				var results = {};
+	async discoverChain(chain_number){
+		var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
 
-				var checkComplete = () => {
-					var done = true;
-					for (var a of addresses){
-						if (results[toBase58(a.address.publicKey, this.coin.network.pubKeyHash)] === undefined){
-							done = false
-						}
-					}
+		this.discovery[chain_number] = { lastUpdate: Date.now() }
 
-					if (done){
-						callback(null, results);
-					}
-				}
-
-				for (var addr of addresses){
-					var address = new Address(addr, this.coin, false);
-
-					address.updateState().then((ad) => {
-						if (ad.getTotalReceived() > 0){
-							results[ad.getPublicAddress()] = true
-
-							this.addresses[ad.getPublicAddress()] = ad;
-						} else {
-							results[ad.getPublicAddress()] = false
-						}
-
-						checkComplete()
-					}).catch(callback)
-				}
-			}, (err, used, checked) => {
-				if (err) 
-					reject(err)
-
-				this.discovery[chain_number] = { lastUpdate: Date.now() }
-
-				resolve(this, chain_number)
-			})
-		})
+		return this
 	}
 	/**
 	 * Discover all Chains
@@ -482,22 +484,19 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	discoverChains(){
-		return new Promise((resolve, reject) => {
-			var chainsToDiscover = [0, 1]
+	async discoverChains(){
+		var chainsToDiscover = [0, 1]
 
-			var checkIfComplete = () => {
-				if (chainsToDiscover.length === 0)
-					resolve(this);
-			}
+		var account
+		var chainPromises = []
 
-			for (var c of chainsToDiscover){
-				this.discoverChain(c).then((account, chainNumber) => {
-					chainsToDiscover.splice(chainsToDiscover.indexOf(chainNumber))
-					checkIfComplete();
-				}).catch(reject);
-			}
-		})
+		for (var c of chainsToDiscover)
+			chainPromises.push(this.discoverChain(c))
+
+		for (var prom of chainPromises)
+			account = await prom
+
+		return account
 	}
 }
 

@@ -85,47 +85,55 @@ function isValidPublicAddress (address, network) {
 }
 
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account-discovery
-function discovery (chain, gapLimit, queryCb, i, done) {
-  var gap = 0
-  var checked = 0
+async function discovery (chain, gapLimit, queryPromise, i, coin) {
+	var gap = 0
+	var checked = 0
+	var allAddresses = []
 
-  function cycle () {
-    var batch = [chain.get()]
-    checked++
+	let cycle = async (myCoin) => {
+		var batch = [chain.get()]
+		checked++
 
-    while (batch.length < gapLimit) {
-      chain.next()
-      batch.push(chain.get())
+		while (batch.length < gapLimit) {
+			chain.next()
+			batch.push(chain.get())
 
-      checked++
-    }
+			checked++
+		}
 
-    queryCb(batch, function (err, queryResultSet) {
-      if (Array.isArray(queryResultSet)) return done(new TypeError('Expected query set, not Array'))
-      if (err) return done(err)
+		try {
+			var queryResultSet = await queryPromise(batch, myCoin)
+		} catch (e) {
+			throw e
+		}
 
-      // iterate batch, guarantees order agnostic of queryCb result ordering
-      batch.forEach(function (a) {
-        if (queryResultSet[toBase58(a.address.publicKey, a.network.pubKeyHash)]) {
-          gap = 0
-        } else {
-          gap += 1
-        }
-      })
+		for (var adr of queryResultSet.addresses)
+			allAddresses.push(adr);
 
-      if (gap >= gapLimit) {
-        var used = checked - gap
+		if (Array.isArray(queryResultSet.results)) 
+			throw new TypeError('Expected query set, not Array')
 
-        return done(undefined, used, checked, i)
-      } else {
-        chain.next()
-      }
+		// iterate batch, guarantees order agnostic of queryPromise result ordering
+		batch.forEach(function (a) {
+			if (queryResultSet.results[toBase58(a.address.publicKey, a.network.pubKeyHash)]) {
+				gap = 0
+			} else {
+				gap += 1
+			}
+		})
 
-      cycle()
-    })
-  }
+		if (gap >= gapLimit) {
+			var used = checked - gap
 
-  cycle()
+			return {used: used, checked: checked, chainIndex: i, addresses: allAddresses}
+		} else {
+			chain.next()
+		}
+
+		return await cycle(myCoin)
+	}
+
+	return await cycle(coin)
 }
 
 /**
