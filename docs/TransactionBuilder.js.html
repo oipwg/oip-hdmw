@@ -306,9 +306,10 @@ class TransactionBuilder {
 	async getUnspents(){
 		var addresses = this.from.map((address) => { return address.getPublicAddress() });
 
+		let utxos
 		try {
-			var utxos = await this.coin.explorer.getAddressesUtxo(addresses)
-		} catch (e) { throw new Error(e) }
+			utxos = await this.coin.explorer.getAddressesUtxo(addresses)
+		} catch (e) { throw new Error("Unable to get Unspents \n" + e) }
 
 		return utxos
 	}
@@ -341,8 +342,10 @@ class TransactionBuilder {
 			await this.discoverChange()
 		} catch(e) { throw new Error("Unable to Discover Change Addresses \n" + e) }
 
+		let utxos
+
 		try {
-			let utxos = await this.getUnspents()
+			utxos = await this.getUnspents()
 		} catch(e) { throw new Error("Unable to get Unspents for Addresses \n" + e) }
 
 		var formattedUtxos = utxos.map((utxo) => {
@@ -436,15 +439,17 @@ class TransactionBuilder {
 	 * @return {Promise&lt;string>} Returns a Promise that resolves to the calculated Transaction Hex
 	 */
 	async buildTX(){
+		let selected
+
 		try {
-			let selected = await this.buildInputsAndOutputs()
+			selected = await this.buildInputsAndOutputs()
 		} catch (e) {
 			throw new Error("Unable to select inputs and outputs \n" + e)
 		}
 
-		var inputs = selected.inputs;
-		var outputs = selected.outputs;
-		var fee = selected.fee;
+		let inputs = selected.inputs;
+		let outputs = selected.outputs;
+		let fee = selected.fee;
 
 		// inputs and outputs will be undefined if no solution was found
 		if (!inputs || !outputs) {
@@ -472,10 +477,10 @@ class TransactionBuilder {
 			txb.addOutput(output.address, output.value)
 		})
 
-		for (var i in inputs){
-			for (var addr of this.from){
+		for (let i in inputs){
+			for (let addr of this.from){
 				if (addr.getPublicAddress() === inputs[i].address){
-					var extraBytes = this.coin.getExtraBytes(this.passedOptions);
+					let extraBytes = this.coin.getExtraBytes(this.passedOptions);
 
 					if (extraBytes){
 						sign(txb, extraBytes, parseInt(i), addr.getECPair())
@@ -486,13 +491,15 @@ class TransactionBuilder {
 			}
 		}
 
+		let builtHex
+
 		try {
-			var builtHex = txb.build().toHex();
+			builtHex = txb.build().toHex();
 		} catch (e) {
 		    throw new Error("Unable to build Transaction Hex! \n" + e)
 		}
 
-		var extraBytes = this.coin.getExtraBytes(this.passedOptions)
+		let extraBytes = this.coin.getExtraBytes(this.passedOptions)
 
 		if (extraBytes)
 			builtHex += extraBytes
@@ -524,15 +531,20 @@ class TransactionBuilder {
 	 * @return {Promise&lt;string>} Returns a promise that will resolve to the success TXID
 	 */
 	async sendTX(){
+		let hex
 		try {
-			let hex = await this.buildTX()
+			hex = await this.buildTX()
 		} catch(e) { throw new Error("Unable to build Transaction \n" + e) }
 
 		if (hex){
 			console.log("BroadcastHex: " + hex)
+
+			let response
 			try {
-				let response = await this.coin.explorer.broadcastRawTransaction(hex)
+				response = await this.coin.explorer.broadcastRawTransaction(hex)
 			} catch(e) { throw new Error("Unable to Broadcast Transaction hex! \n" + e) }
+
+			// @ToDo: Add txid to spentTransactions for each Address spent from (this.from)
 			
 			return response.txid
 		} else {

@@ -1,6 +1,6 @@
 {
   "name": "oip-hdmw",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
@@ -40,7 +40,7 @@
     "coininfo": "^4.0.1",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "eventemitter3": "^3.1.0",
-    "insight-explorer": "^1.0.6",
+    "insight-explorer": "^1.0.7",
     "oip-exchange-rate": "^1.0.7",
     "varuint-bitcoin": "^1.1.0",
     "wif": "^2.0.6"

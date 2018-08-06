@@ -496,7 +496,7 @@ class Account {
 		try {
 			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
 		} catch(e){
-			throw new Error(e)
+			throw new Error("Discovery error in _discoverChain #" + chainNumber + " \n" + e)
 		}
 
 		// throw away EACH unused address AFTER the last unused address
@@ -520,16 +520,20 @@ class Account {
 		for (var addr of addresses){
 			var address = new Address(addr, coin, false);
 
-			var addressPromise = address.updateState()
-
-			addressPromises.push(addressPromise);
+			addressPromises.push(address.updateState())
 		}
 
-		for (var prom of addressPromises){
+		for (var addressPromise of addressPromises){
+			let address
+			
 			try {
-				var address = await prom;
-			} catch (e) {
-				throw new Error(e)
+				address = await addressPromise
+			} catch(e) { 
+				// If we error out, add catches to all other promises (to prevent the "UnhandledPromiseRejectionWarning" issue)
+				for (var adP of addressPromises)
+					adP.catch((e) => { /* Do Nothing */ })
+
+				throw new Error("Unable to update Address state in _chainPromise \n" + e)
 			}
 
 			if (address.getTotalReceived() > 0){
@@ -560,7 +564,7 @@ class Account {
 	async discoverChain(chain_number){
 		try {
 			var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
-		} catch (e) { throw new Error(e) }
+		} catch (e) { throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e) }
 
 		this.discovery[chain_number] = { lastUpdate: Date.now() }
 
@@ -585,15 +589,12 @@ class Account {
 		var chainsToDiscover = [0, 1]
 
 		var account
-		var chainPromises = []
 
-		for (var c of chainsToDiscover)
-			chainPromises.push(this.discoverChain(c))
-
-		for (var prom of chainPromises){
+		// Do each chain one at a time in case it crashes and errors out.
+		for (var c of chainsToDiscover){
 			try {
-				account = await prom
-			} catch (e) { throw new Error(e) }
+				account = await this.discoverChain(c)
+			} catch (e) { throw new Error("Unable to discoverChains! \n" + e) }
 		}
 
 		return account
