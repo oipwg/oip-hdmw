@@ -21,7 +21,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://insight.litecore.io/api'),
+	explorer: new Insight('https://litesight.failover.alexandria.io/api'),
 
 	getExtraBytes: function(options){ return },
 
