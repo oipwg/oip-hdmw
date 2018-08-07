@@ -211,12 +211,16 @@ class TransactionBuilder {
 	 * @return {Promise<Array.<utxo>>} Returns a Promise that will resolve to an Array of unspent utxos
 	 */
 	async getUnspents(){
-		var addresses = this.from.map((address) => { return address.getPublicAddress() });
+		let utxos = []
 
-		let utxos
-		try {
-			utxos = await this.coin.explorer.getAddressesUtxo(addresses)
-		} catch (e) { throw new Error("Unable to get Unspents \n" + e) }
+		for (let addr of this.from){
+			try {
+				let tmp_utxos = await addr.getUnspent()
+
+				for (let utxo of tmp_utxos)
+					utxos.push(utxo)
+			} catch (e) { throw new Error("Unable to get Unspents \n" + e) }
+		}
 
 		return utxos
 	}
@@ -354,6 +358,8 @@ class TransactionBuilder {
 			throw new Error("Unable to select inputs and outputs \n" + e)
 		}
 
+		this.selected = selected
+
 		let inputs = selected.inputs;
 		let outputs = selected.outputs;
 		let fee = selected.fee;
@@ -451,9 +457,40 @@ class TransactionBuilder {
 				response = await this.coin.explorer.broadcastRawTransaction(hex)
 			} catch(e) { throw new Error("Unable to Broadcast Transaction hex! \n" + e) }
 
-			// @ToDo: Add txid to spentTransactions for each Address spent from (this.from)
+			var txid
+
+			// Handle { txid: "txid" }
+			if (response && typeof response.txid === "string")
+				txid = response.txid
+
+			/**
+			 * Handle
+			 * { 
+			 *    txid: { 
+			 *        result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
+			 *        error: null,
+			 *        id: 47070 
+			 *     } 
+			 * }
+			 */
+			if (response && response.txid && response.txid.result){
+				txid = response.txid.result
+			}
+
+			/**
+			 * Handle
+			 * { 
+			 *     result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
+			 *     error: null,
+			 *     id: 47070 
+			 * }
+			 */
+			if (response && response.result){
+				txid = response.result
+			}
+
 			
-			return response.txid
+			return txid
 		} else {
 			throw new Error("TransactionBuilder.buildTX() did not create any hex!")
 		}
