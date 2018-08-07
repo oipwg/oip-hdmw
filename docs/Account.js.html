@@ -311,7 +311,7 @@ class Account {
 		if (discovery){
 			try {
 				await this.discoverChains()
-			} catch (e) { throw new Error(e) }
+			} catch (e) { throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e) }
 		}
 
 		var totalBal = 0;
@@ -520,22 +520,28 @@ class Account {
 		for (var addr of addresses){
 			var address = new Address(addr, coin, false);
 
+			var prom = address.updateState()
+
+			// This will only be called for any rejections AFTER the first one,
+			// please take a look at the comment below for more info.
+			prom.catch((e) => {})
+
 			addressPromises.push(address.updateState())
 		}
 
-		for (var addressPromise of addressPromises){
-			let address
-			
-			try {
-				address = await addressPromise
-			} catch(e) { 
-				// If we error out, add catches to all other promises (to prevent the "UnhandledPromiseRejectionWarning" issue)
-				for (var adP of addressPromises)
-					adP.catch((e) => { /* Do Nothing */ })
+		let promiseResponses = []
 
-				throw new Error("Unable to update Address state in _chainPromise \n" + e)
-			}
+		try {
+			promiseResponses = await Promise.all(addressPromises)
+		} catch (e) {
+			// This will still be called even though we use prom.catch() above.
+			// The first promise rejection will be caught here, all other promises
+			// that reject AFTER the first, will be caught in the above prom.catch() function.
 
+			throw new Error("Unable to update Address state in _chainPromise \n" + e)
+		}
+
+		for (var address of promiseResponses){
 			if (address.getTotalReceived() > 0){
 				foundAddresses.push(address)
 				results[address.getPublicAddress()] = true

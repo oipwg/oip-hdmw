@@ -167,7 +167,7 @@ class Coin {
 		if (!options || (options &amp;&amp; options.discover === undefined) || (options &amp;&amp; options.discover === true)){
 			try {
 				await this.discoverAccounts()
-			} catch (e) { throw e }
+			} catch (e) { throw new Error("Unable to Discover Coin Accounts for getBalance! \n" + e) }
 		}
 
 		var accounts_to_search = [];
@@ -205,7 +205,7 @@ class Coin {
 					})
 
 					totalBalance += balance_res.balance
-				} catch(e) { throw new Error(e) }
+				} catch(e) { throw new Error("Unable to get Coin balance! \n" + e) }
 			}
 		}
 

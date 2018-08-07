@@ -515,24 +515,9 @@ class Address {
 				unspent.push(tx);
 		}
 
-		var spentMinusConfirmed = [];
-
-		for (var txid of this.spentTransactions){
-			var confirmed = true
-			for (var tx of unspentTransactions){
-				// Check if we are still in the unspent array
-				if (txid === tx.txid){
-					// If so, set confirmed so that this spent txid gets set back to the spentTransactions array
-					confirmed = false;
-				}
-			}
-
-			if (!confirmed){
-				spentMinusConfirmed.push(txid);
-			}
-		}
-
-		this.spentTransactions = spentMinusConfirmed
+		// @ToDo: Check if some spentTransactions txids are missing from the unspentTransactions array
+		// If the txid is missing from the unspentTransactions array, then remove it from the spentTransactions array
+		// This clears out any spentTransactions that have been confirmed as no longer unspent.
 
 		return unspent;
 	}
