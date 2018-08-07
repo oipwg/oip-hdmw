@@ -68,6 +68,7 @@ test('Coin, get main address (single coin)', () => {
 	expect(flo_testnet.getMainAddress().getPublicAddress()).toBe("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S");
 	expect(flo_testnet.getMainAddress(0).getPublicAddress()).toBe("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S");
 	expect(flo_testnet.getMainAddress(1).getPublicAddress()).toBe("odqpABssS7twQfwqNhQdb58c8RiG6awnCh");
+	expect(flo_testnet.getMainAddress(2).getPublicAddress()).toBe("oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL");
 })
 
 test('Coin, get flo_testnet balance', (done) => {

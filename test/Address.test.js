@@ -173,7 +173,7 @@ test('Test Serialization of Address with Spent Transactions (no discovery)', () 
 })
 
 test('get utxo for address', (done) => {
-	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, false);
+	var address = new Address("oNRs1nuR1vUAjWJwhMtxJPQoTFAm9MWz1G", Networks.flo_testnet, false);
 
 	address.getUnspent().then((utxos) => {
 		expect(utxos.length).toBeGreaterThan(0)
@@ -182,13 +182,20 @@ test('get utxo for address', (done) => {
 }, 10000)
 
 test('get utxo for address (remove spent)', (done) => {
-	var address = new Address("oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S", Networks.flo_testnet, {
-		addrStr: 'oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S', 
-		spentTransactions: ["2420d859f3b064ff89f503a0a5175b828338055ee73c325dc46a2d04a78be6b0"]
+	let address = new Address("oNRs1nuR1vUAjWJwhMtxJPQoTFAm9MWz1G", Networks.flo_testnet, {
+		addrStr: 'oNRs1nuR1vUAjWJwhMtxJPQoTFAm9MWz1G', 
+		spentTransactions: ["dcc20f48f78b53205f836a3602643b2afbf26ce11c37e65bcf56f57e6b14f987"]
 	});
 
 	address.getUnspent().then((utxos) => {
-		expect(utxos.length).toBe(0)
+		let spentRemoved = true
+
+		for (let utxo of utxos){
+			if (utxo.txid === "dcc20f48f78b53205f836a3602643b2afbf26ce11c37e65bcf56f57e6b14f987")
+				spentRemoved = false
+		}
+
+		expect(spentRemoved).toBe(true)
 		done()
 	})
 }, 10000)

@@ -108,23 +108,30 @@ test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
 	}).catch(console.error)
 }, 10000)
 
-// https://livenet.flocha.in/tx/46d7d1f5dc9afb7501c4243a0bc6ab6945430648203c38a2e942da5af2adff2b
 // test("TransactionBuilder should be able build & send tx hex", (done) => {
-// 	var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
-// 	var account = new Account(accountMaster, Networks.flo, false);
+// 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
+// 	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S = cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1
+// 	var address = new Address("cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc", Networks.flo_testnet, false);
 
-// 	// FQkUtNeQgBWFrxEfuTQ9hFzA23skfw1BwX
-// 	var address = new Address("RDdgBfYo8w2JZ6XcSxDMSmQwDDUiXp2as7jLcAVP4W1d4xDikUaa", Networks.flo, false);
-
-// 	var builder = new TransactionBuilder(Networks.flo, {
+// 	var builder = new TransactionBuilder(Networks.flo_testnet, {
 // 		from: address,
-// 		to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+// 		to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
 // 		floData: "Test!"
-// 	}, account)
+// 	})
 
 // 	builder.sendTX().then((txid) => {
 // 		expect(txid.length).toBeGreaterThan(10)
-// 		done()
+
+// 		var builder2 = new TransactionBuilder(Networks.flo_testnet, {
+// 			from: address,
+// 			to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
+// 			floData: "Test two!"
+// 		})
+
+// 		builder2.sendTX().then((txid) => {
+// 			expect(txid.length).toBeGreaterThan(10)
+// 			done()
+// 		}).catch(console.error)
 // 	}).catch(console.error)
 // }, 10000)
 
