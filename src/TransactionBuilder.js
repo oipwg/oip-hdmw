@@ -489,6 +489,14 @@ class TransactionBuilder {
 				txid = response.result
 			}
 
+			// Add txid to spentTransactions for each spent input
+			for (let inp of this.selected.inputs){
+				for (var addr of this.from){
+					if (addr.getPublicAddress() === inp.address){
+						addr.addSpentTransaction(inp.txId)
+					}
+				}
+			}
 			
 			return txid
 		} else {
