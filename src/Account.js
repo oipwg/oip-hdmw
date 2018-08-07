@@ -1,6 +1,7 @@
 import bitcoin from 'bitcoinjs-lib'
 import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
+import EventEmitter from 'eventemitter3'
 
 import Address from './Address'
 import TransactionBuilder from './TransactionBuilder'
@@ -96,6 +97,9 @@ class Account {
 				lastUpdate: 0
 			}
 		}
+
+		// Setup EventEmitter to notify when we have changed
+		this.event_emitter = new EventEmitter()
 
 		this.discover = true;
 
@@ -510,7 +514,44 @@ class Account {
 			} catch (e) { throw new Error("Unable to discoverChains! \n" + e) }
 		}
 
+		this._subscribeToAddressWebsocketUpdates()
+
 		return account
+	}
+	/**
+	 * Internal function used to subscribe to WebSocket updates for All Discovered Addresses
+	 */
+	_subscribeToAddressWebsocketUpdates(){
+		let allAddresses = this.getAddresses()
+
+		for (let address of allAddresses)
+			address.onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
+	}
+	/**
+	 * Internal function used to process Address updates streaming in from Websockets,
+	 * emits an update that can be subscribed to with onWebsocketUpdate
+	 * @param  {Object} update - Websocket Update Data
+	 */
+	_handleWebsocketUpdate(address){
+		this.event_emitter.emit("websocket_update", address)
+	}
+	/**
+	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * @param  {function} subscriber_function - The function you want called when there is an update
+	 *
+	 * @example
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * 
+	 * account.onWebsocketUpdate((address) => {
+	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+	 * })
+	 */
+	onWebsocketUpdate(subscriber_function){
+		this.event_emitter.on("websocket_update", subscriber_function)
 	}
 }
 

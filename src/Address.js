@@ -3,7 +3,7 @@ import bip32 from 'bip32'
 import wif from 'wif'
 import bip32utils from 'bip32-utils'
 import coinselect from 'coinselect'
-import EventEmitter from 'eventemitter3';
+import EventEmitter from 'eventemitter3'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 
@@ -135,7 +135,7 @@ class Address {
 		this.event_emitter = new EventEmitter()
 
 		// Setup Websocket Address updates to keep us always up to date
-		this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate)
+		this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate.bind(this))
 		
 		if (discovery || discovery === false){
 			this.fromJSON(discovery)
@@ -216,22 +216,6 @@ class Address {
 		}
 
 		return this.fromJSON(state)
-	}
-	/**
-	 * Internal function used to process updates streaming in from Websockets,
-	 * emits an update that can be subscribed to in onWebsocketUpdate
-	 * @param  {Object} update - Websocket Update Data
-	 */
-	_processWebsocketUpdate(update){
-		// If there is no data available, just ignore it
-		if (!update)
-			return
-
-		// If there is updated data, go ahead and set ourselves to it
-		if (update.updated_data){
-			var addr = this.fromJSON(update.updated_data)
-			this.event_emitter.emit("websocket_update", addr)
-		}
 	}
 	/**
 	 * Load Address state from an AddressState object
@@ -441,7 +425,23 @@ class Address {
 		this.spentTransactions.push(txid);
 	}
 	/**
-	 * Subscribe to events that are emitted when an update is recieved by Websockets
+	 * Internal function used to process updates streaming in from Websockets,
+	 * emits an update that can be subscribed to with onWebsocketUpdate
+	 * @param  {Object} update - Websocket Update Data
+	 */
+	_processWebsocketUpdate(update){
+		// If there is no data available, just ignore it
+		if (!update)
+			return
+
+		// If there is updated data, go ahead and set ourselves to it
+		if (update.updated_data){
+			var addr = this.fromJSON(update.updated_data)
+			this.event_emitter.emit("websocket_update", addr)
+		}
+	}
+	/**
+	 * Subscribe to events that are emitted when an Address update is recieved via Websockets
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example

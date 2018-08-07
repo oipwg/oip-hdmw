@@ -1,5 +1,6 @@
 import bip39 from 'bip39'
-const Exchange = require("oip-exchange-rate");
+import Exchange from 'oip-exchange-rate'
+import EventEmitter from 'eventemitter3'
 
 import Coin from './Coin'
 import networks from './networks'
@@ -37,10 +38,10 @@ class Wallet {
 	 * ```
 	 * 
 	 * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
-	 * @param  {Object} [settings] - Wallet settings
-	 * @param {boolean} [settings.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
-	 * @param {Array.<string>} [settings.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
-	 * @param {Array.<CoinInfo>} [settings.networks] - An array containing a custom coins network info
+	 * @param  {Object} [options] - Wallet settings
+	 * @param {boolean} [options.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
+	 * @param {Array.<string>} [options.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
+	 * @param {Array.<CoinInfo>} [options.networks] - An array containing a custom coins network info
 	 *
 	 * @example <caption>Create wallet using Mnemonic</caption>
 	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
@@ -58,6 +59,9 @@ class Wallet {
 		} else {
 			this.fromMnemonic(bip39.generateMnemonic());
 		}
+
+		// Setup EventEmitter to notify when we have changed
+		this.event_emitter = new EventEmitter()
 
 		// Set the networks to the imported defaults
 		this.networks = networks;
@@ -100,6 +104,7 @@ class Wallet {
 				// If we have found a pair, attach a live coin object
 				if (coin === coinNet){
 					this.coins[coin] = new Coin(this.seed, this.networks[coinNet], this.discover)
+					this.coins[coin].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
 				}
 			}
 		}
@@ -448,6 +453,30 @@ class Wallet {
 				throw new Error("Not all to addresses match any Coin network! Please check your outputs.")
 			}
 		}
+	}
+	/**
+	 * Internal function used to process Address updates streaming in from Websockets,
+	 * emits an update that can be subscribed to with onWebsocketUpdate
+	 * @param  {Object} update - Websocket Update Data
+	 */
+	_handleWebsocketUpdate(address){
+		this.event_emitter.emit("websocket_update", address)
+	}
+	/**
+	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * @param  {function} subscriber_function - The function you want called when there is an update
+	 *
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+	 * 
+	 * bitcoin.onWebsocketUpdate((address) => {
+	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+	 * })
+	 */
+	onWebsocketUpdate(subscriber_function){
+		this.event_emitter.on("websocket_update", subscriber_function)
 	}
 }
 

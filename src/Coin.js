@@ -1,5 +1,6 @@
 import bip32 from 'bip32'
 import bip32utils from 'bip32-utils'
+import EventEmitter from 'eventemitter3'
 
 import Account from './Account'
 import TransactionBuilder from './TransactionBuilder'
@@ -50,6 +51,9 @@ class Coin {
 		this.root = mainRoot.derivePath("m/44'/" + bip44Num + "'");
 
 		this.accounts = {}
+
+		// Setup EventEmitter to notify when we have changed
+		this.event_emitter = new EventEmitter()
 
 		if (this.discover){
 			this.discoverAccounts()
@@ -393,7 +397,42 @@ class Coin {
 			discoveredAccounts.push(this.accounts[accNum]);
 		}
 
+		this._subscribeToAccountWebsocketUpdates()
+
 		return discoveredAccounts
+	}
+	/**
+	 * Internal function used to subscribe to WebSocket updates for All Discovered Accounts
+	 */
+	_subscribeToAccountWebsocketUpdates(){
+		let accounts = this.getAccounts()
+
+		for (let index in accounts)
+			accounts[index].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
+	}
+	/**
+	 * Internal function used to process Address updates streaming in from Websockets,
+	 * emits an update that can be subscribed to with onWebsocketUpdate
+	 * @param  {Object} update - Websocket Update Data
+	 */
+	_handleWebsocketUpdate(address){
+		this.event_emitter.emit("websocket_update", address)
+	}
+	/**
+	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * @param  {function} subscriber_function - The function you want called when there is an update
+	 *
+	 * @example
+	 * import { Coin, Networks } from 'oip-hdmw'
+	 *
+	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
+	 * 
+	 * bitcoin.onWebsocketUpdate((address) => {
+	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+	 * })
+	 */
+	onWebsocketUpdate(subscriber_function){
+		this.event_emitter.on("websocket_update", subscriber_function)
 	}
 }
 
