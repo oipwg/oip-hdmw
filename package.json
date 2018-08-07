@@ -1,6 +1,6 @@
 {
   "name": "oip-hdmw",
-  "version": "1.0.13",
+  "version": "1.1.0",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
