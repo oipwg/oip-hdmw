@@ -133,6 +133,22 @@ class Wallet {
 	getCoins(){
 		return this.coins;
 	}
+	async _getCoinBalance(coin, options){
+		// This is a helper function to catch errors thrown by coin.getBalance() and return them
+		let balance
+
+		try {
+			balance = await coin.getBalance(options)
+		} catch (e) {
+			return {
+				error: new Error("Unable to get individual Coin Balance \n" + e)
+			}
+		}
+
+		return {
+			balance
+		}
+	}
     /**
      * Get Coin Balances
      * @param {Object} [options] - The options for searching the Balance of coins
@@ -158,23 +174,19 @@ class Wallet {
         let coinPromises = {};
 
         for (let name of coinnames) {
-            coinPromises[name] = this.getCoin(name).getBalance(options)
+            coinPromises[name] = this._getCoinBalance(this.getCoin(name), options)
         }
 
         let coin_balances = {};
 
         for (let coin in coinPromises) {
-            try {
-                coin_balances[coin] = await coinPromises[coin]
-            } catch (err) {
-                coin_balances[coin] = "error fetching balance";
-            }
-        }
+            let response = await coinPromises[coin]
 
-        // If for some reason a coin was not set, set the error state here
-        for (let name of coinnames)
-        	if (!coin_balances[name])
-        		coin_balances[name] = "error fetching balance";
+            if (response.balance)
+            	coin_balances[coin] = response.balance
+            else
+            	coin_balances[coin] = "error fetching balance";
+        }
 
         return coin_balances
     }
