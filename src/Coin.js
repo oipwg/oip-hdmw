@@ -29,18 +29,21 @@ class Coin {
 	 *```
 	 * @param  {string} seed - Master Seed hex (needs to be at least 128 bits)
 	 * @param  {CoinInfo} coin - The CoinInfo containing network & version variables
-	 * @param  {boolean} [discover=true] - Should the Coin auto-discover Accounts and Chains
+	 * @param  {Object} [options] - The Options for spawning the Coin
+	 * @param  {boolean} [options.discover=true] - Should the Coin auto-discover Accounts and Chains
+	 * @param  {Object} [options.serialized_data] - The Data to de-serialize from
 	 * @return {Coin}
 	 */
-	constructor(seed, coin, discover){
-		this.coin = coin;
+	constructor(seed, coin, options){
+		this.seed = seed
+		this.coin = coin
 
-		if (discover || discover === false)
-			this.discover = discover
-		else
-			this.discover = true
+		this.discover = true
 
-		var mainRoot = bip32.fromSeed(new Buffer(seed, "hex"), this.coin.network);
+		if (options && options.discover !== undefined)
+			this.discover = options.discover
+
+		var mainRoot = bip32.fromSeed(new Buffer(this.seed, "hex"), this.coin.network);
 
 		var bip44Num = this.coin.network.slip44;
 
@@ -55,8 +58,39 @@ class Coin {
 		// Setup EventEmitter to notify when we have changed
 		this.event_emitter = new EventEmitter()
 
+		if (options && options.serialized_data)
+			this.deserialize(options.serialized_data)
+
 		if (this.discover){
 			this.discoverAccounts()
+		}
+	}
+	serialize(){
+		let serialized_accounts = {}
+
+		for (let account_number in this.accounts){
+			serialized_accounts[account_number] = this.accounts[account_number].serialize()
+		}
+
+		return {
+			name: this.coin.name,
+			network: this.coin.network,
+			seed: this.seed,
+			accounts: serialized_accounts
+		}
+	}
+	deserialize(serialized_data){
+		if (serialized_data){
+			if (serialized_data.accounts){
+				for (let account_number in serialized_data.accounts){
+					let account_master = bip32.fromBase58(serialized_data.accounts[account_number].extended_private_key, this.coin.network)
+
+					this.accounts[account_number] = new Account(account_master, this.coin, {
+						discover: false, 
+						serialized_data: serialized_data.accounts[account_number]
+					})
+				}
+			}
 		}
 	}
 	/**
@@ -336,7 +370,7 @@ class Coin {
 		else
 			shouldDiscover = this.discover
 
-		var account = new Account(accountMaster, this.coin, shouldDiscover);
+		var account = new Account(accountMaster, this.coin, {discover: shouldDiscover});
 
 		this.accounts[num] = account;
 
@@ -362,7 +396,7 @@ class Coin {
 			if (accNum > highestAccountNumber)
 				highestAccountNumber = accNum
 
-		return highestAccountNumber
+		return parseInt(highestAccountNumber)
 	}
 	/**
 	 * Discover all Accounts for the Coin

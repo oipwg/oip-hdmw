@@ -6,8 +6,6 @@ var litecoinFeePerKb = 100000
 
 var n = coininfo.litecoin.main.toBitcoinJS();
 
-n.slip44 = bip44constants.LTC;
-
 module.exports = {
 	name: 'litecoin',
 	displayName: 'Litecoin',
@@ -25,5 +23,15 @@ module.exports = {
 
 	getExtraBytes: function(options){ return },
 
-	network: n
+	network: {
+		bip32: {
+			public: n.bip32.public,
+			private: n.bip32.private
+		},
+		slip44: bip44constants.LTC,
+		messagePrefix: n.messagePrefix,
+		pubKeyHash: n.pubKeyHash,
+		scriptHash: n.scriptHash,
+		wif: n.wif
+	}
 }
