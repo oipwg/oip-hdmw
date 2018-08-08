@@ -66,8 +66,8 @@ class Wallet {
 		// Set the networks to the imported defaults
 		this.networks = networks;
 
-		// Check for custom options
-		if (options && typeof options === "object"){3
+		// Check for custom coins/networks
+		if (options && typeof options === "object"){
 			// Check if the user has defined their own supported coins for the wallet
 			if (options.supported_coins){
 				if (typeof options.supported_coins === "string") {
@@ -98,15 +98,51 @@ class Wallet {
 		else
 			this.discover = true
 
-		// Validate that each supported coin has a pair network
-		for (var coin of this.supported_coins){
-			for (var coinNet in this.networks){
-				// If we have found a pair, attach a live coin object
-				if (coin === coinNet){
-					this.coins[coin] = new Coin(this.seed, this.networks[coinNet], this.discover)
-					this.coins[coin].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
+		// Attempt to deserialize if we were passed serialized data
+		if (options && options.serialized_data)
+			this.deserialize(options.serialized_data)
+
+		// Add all coins
+		for (var coin_name of this.supported_coins)
+			this.addCoin(coin_name)
+	}
+	serialize(){
+		let serialized_coins = {}
+
+		for (let name in this.coins){
+			serialized_coins[name] = this.coins[name].serialize()
+		}
+
+		return {
+			seed: this.getMnemonic() ? this.getMnemonic() : this.seed,
+			coins: serialized_coins
+		}
+	}
+	deserialize(serialized_data){
+		if (serialized_data) {
+			if (serialized_data.coins){
+				for (let name in serialized_data.coins){
+					this.addCoin(name, { serialized_data: serialized_data.coins[name] })
 				}
 			}
+		}
+	}
+	/**
+	 * Add a Coin to the Wallet
+	 * @param {String} name    - The coin "name" as defined in CoinInfo.name
+	 * @param {Object} [options] - Options you want passed to the coin being added
+	 */
+	addCoin(name, options){
+		let opts = options || {}
+
+		if (!opts.discover)
+			opts.discover = this.discover
+
+		// If the coin isn't already added AND we have access to a valid network, 
+		// then add the coin.
+		if (!this.coins[name] && this.networks[name]){
+			this.coins[name] = new Coin(this.seed, this.networks[name], opts)
+			this.coins[name].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
 		}
 	}
 	/**
