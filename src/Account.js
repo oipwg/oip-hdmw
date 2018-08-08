@@ -70,10 +70,12 @@ class Account {
 	 * ```
 	 * @param  {bip32} account_master - The BIP32 Node to derive Chains and Addresses from.
 	 * @param  {CoinInfo} coin - The CoinInfo for the Account
-	 * @param  {boolean} [discover=true] - Should the Account auto-discover Chains and Addresses
+	 * @param {Object} [options] - The Options of the Account
+	 * @param  {boolean} [options.discover=true] - Should the Account auto-discover Chains and Addresses
+	 * @param {Object} [options.serialized_data] - Serialized data to load the Account from
 	 * @return {Account}
 	 */
-	constructor(account_master, coin, discover){
+	constructor(account_master, coin, options){
 		this.account_master = account_master;
 		this.coin = coin || {};
 
@@ -87,7 +89,7 @@ class Account {
 
 		this.addresses = {}
 
-		this.discovery = {
+		this.chains = {
 			0: {
 				index: 0,
 				lastUpdate: 0
@@ -103,12 +105,48 @@ class Account {
 
 		this.discover = true;
 
-		if (discover !== undefined)
-			this.discover = discover
+		if (options && options.discover !== undefined)
+			this.discover = options.discover
 
 		// Discover both External and Internal chains
+		if (options && options.serialized_data)
+			this.deserialize(options.serialized_data)
+
 		if (this.discover){
 			this.discoverChains()
+		}
+	}
+	serialize(){
+		var addresses = this.getAddresses()
+
+		var serialized_addresses = addresses.map((address) => {
+			return address.serialize()
+		})
+
+		return {
+			extended_private_key: this.getExtendedPrivateKey(), 
+			addresses: serialized_addresses,
+			chains: this.chains
+		}
+	}
+	deserialize(serialized_data){
+		if (serialized_data){
+			// Rehydrate Addresses
+			if (serialized_data.addresses){
+				let rehydrated_addresses = []
+
+				for (let address of serialized_data.addresses){
+					rehydrated_addresses.push(new Address(address.wif, this.coin, address))
+				}
+
+				for (let address of rehydrated_addresses){
+					this.addresses[address.getPublicAddress()] = address
+				}
+			}
+			// Rehydrate Chain info
+			if (serialized_data.chains){
+				this.chains = serialized_data.chains
+			}
 		}
 	}
 	/**
@@ -147,7 +185,15 @@ class Account {
 	getAddress(chain_number, address_number){
 		var addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
 		
-		return new Address(addr, this.coin, false)
+		let tmpHydratedAddr = new Address(addr, this.coin, false)
+
+		// Attempt to match to address that we already have
+		if (this.addresses[tmpHydratedAddr.getPublicAddress()])
+			return this.addresses[tmpHydratedAddr.getPublicAddress()]
+		else
+			this.addresses[tmpHydratedAddr.getPublicAddress()] = tmpHydratedAddr
+
+		return tmpHydratedAddr
 	}
 	/**
 	 * Get the All Used Address (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
@@ -214,12 +260,12 @@ class Account {
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
 	async getBalance(options){
-		var discovery = this.discover;
+		var discover = this.discover;
 
 		if (options && options.discover !== undefined)
-			discovery = options.discover;
+			discover = options.discover;
 
-		if (discovery){
+		if (discover){
 			try {
 				await this.discoverChains()
 			} catch (e) { throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e) }
@@ -483,7 +529,7 @@ class Account {
 			var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
 		} catch (e) { throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e) }
 
-		this.discovery[chain_number] = { lastUpdate: Date.now() }
+		this.chains[chain_number] = { lastUpdate: Date.now() }
 
 		return this
 	}
