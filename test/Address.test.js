@@ -114,11 +114,11 @@ test('Address WIF to PublicAddress', () => {
 })
 
 // Add tests to confirm removeSpent and addSpent work properly and as expected.
-// Add tests for toJSON and fromJSON
+// Add tests for serialize and deserialize
 test('Test Serialization of Address (no discovery)', () => {
 	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
-	expect(address.toJSON()).toEqual({ 
+	expect(address.serialize()).toEqual({ 
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
         balanceSat: 0,
         totalReceivedSat: 0,
@@ -140,7 +140,7 @@ test('Test Serialization of Address (roundtrip, no discovery)', () => {
         lastUpdated: 456 
     });
 
-	expect(address.toJSON()).toEqual({ 
+	expect(address.serialize()).toEqual({ 
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
         balanceSat: 123,
         totalReceivedSat: 234,
@@ -157,7 +157,7 @@ test('Test Serialization of Address with Spent Transactions (no discovery)', () 
 		spentTransactions: ["aaaaaa"]
 	});
 
-	var got = address.toJSON()
+	var got = address.serialize()
 
 	var expected = { 
 		addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',

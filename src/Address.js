@@ -89,10 +89,10 @@ class Address {
 	 * ```
 	 * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
 	 * @param  {CoinInfo} coin - CoinInfo for the specific Address
-	 * @param  {boolean|AddressState} [discovery=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
+	 * @param  {boolean|AddressState} [discover=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
 	 * @return {Address}
 	 */
-	constructor(address, coin, discovery){
+	constructor(address, coin, discover){
 		if (address.network !== undefined){
 			this.fromBIP32 = true
 
@@ -137,9 +137,11 @@ class Address {
 		// Setup Websocket Address updates to keep us always up to date
 		this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate.bind(this))
 		
-		if (discovery || discovery === false){
-			this.fromJSON(discovery)
+		if (discover || discover === false){
+			// Load from serialized JSON
+			this.deserialize(discover)
 		} else {
+			// Update the state from the explorer
 			this.updateState()
 		}
 	}
@@ -215,17 +217,17 @@ class Address {
 			throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + e) 
 		}
 
-		return this.fromJSON(state)
+		return this.deserialize(state)
 	}
 	/**
-	 * Load Address state from an AddressState object
+	 * Hydrate an Address from the serialized JSON, or update the state
 	 * @param  {AddressState} state
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 	 * 
-	 * address.fromJSON({ 
+	 * address.deserialize({ 
 	 * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
      * 	balanceSat: 123,
      * 	totalReceivedSat: 234,
@@ -239,7 +241,7 @@ class Address {
      * // balance = 0.00000123
 	 * @return {Address}
 	 */
-	fromJSON(state){
+	deserialize(state){
 		if (!state)
 			return
 
@@ -277,13 +279,13 @@ class Address {
 		return this
 	}
 	/**
-	 * Get the current AddressState from the Address
+	 * Get a serialized version of the Address (dried out JSON)
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 	 *
-	 * var address_state = address.toJSON()
+	 * var address_state = address.serialize()
 	 * // address_state = { 
 	 * // 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
      * // 	balanceSat: 0,
@@ -295,9 +297,10 @@ class Address {
      * // }
 	 * @return {AddressState}
 	 */
-	toJSON(){
+	serialize(){
 		return {
 			addrStr: this.getPublicAddress(),
+			wif: this.getPrivateAddress(),
 			balanceSat: this.balanceSat,
 			totalReceivedSat: this.totalReceivedSat,
 			unconfirmedBalanceSat: this.unconfirmedBalanceSat,
@@ -436,7 +439,7 @@ class Address {
 
 		// If there is updated data, go ahead and set ourselves to it
 		if (update.updated_data){
-			var addr = this.fromJSON(update.updated_data)
+			var addr = this.deserialize(update.updated_data)
 			this.event_emitter.emit("websocket_update", addr)
 		}
 	}
