@@ -219,8 +219,6 @@ class Address {
 		let compressed = privatekey_ecpair.compressed || true;
 		let messagePrefix = this.coin.network.messagePrefix;
 
-		console.log(message, privateKeyBuffer, compressed, messagePrefix)
-
 		let signature_buffer
 		try {
 			signature_buffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)

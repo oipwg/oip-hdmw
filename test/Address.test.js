@@ -180,8 +180,6 @@ test('Address, from bip32, signMessage and verifySignature', () => {
 
 	let signature = address.signMessage(test_message)
 
-	console.log(signature)
-
 	expect(signature).toBeDefined()
 
 	expect(address.verifySignature(test_message, signature)).toBe(true)
