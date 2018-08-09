@@ -37,6 +37,7 @@
     "bip39": "^2.5.0",
     "bip44-constants": "^5.0.0",
     "bitcoinjs-lib": "git+https://github.com/oipwg/bitcoinjs-lib.git#export-classify",
+    "bitcoinjs-message": "^2.0.0",
     "coininfo": "^4.0.1",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "eventemitter3": "^3.1.0",

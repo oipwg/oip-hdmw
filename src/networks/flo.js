@@ -98,7 +98,7 @@ module.exports = {
 			private: 0x01343c31
 		},
 		slip44: 216,
-		messagePrefix: '\x1bFlorincoin Signed Message:\n',
+		messagePrefix: 'Florincoin Signed Message:\n',
 		pubKeyHash: 35,
 		scriptHash: 94,
 		wif: 163

@@ -172,6 +172,61 @@ test('Test Serialization of Address with Spent Transactions (no discovery)', () 
 	expect(got).toEqual(expected);
 })
 
+test('Address, from bip32, signMessage and verifySignature', () => {
+	var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+	var address = new Address(node, Networks.flo, false);
+
+	let test_message = "Message to be used for testing!"
+
+	let signature = address.signMessage(test_message)
+
+	console.log(signature)
+
+	expect(signature).toBeDefined()
+
+	expect(address.verifySignature(test_message, signature)).toBe(true)
+})
+
+test('Address, from wif, signMessage and verifySignature', () => {
+	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo, false);
+
+	let test_message = "Message to be used for testing!"
+
+	let signature = address.signMessage(test_message)
+
+	expect(signature).toBeDefined()
+
+	expect(address.verifySignature(test_message, signature)).toBe(true)
+})
+
+test('Address, from wif, signMessage and verifySignature fail on bad message', () => {
+	var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo, false);
+
+	let test_message = "Message to be used for testing!"
+
+	let signature = address.signMessage(test_message)
+
+	expect(signature).toBeDefined()
+
+	expect(address.verifySignature("Not the message up above", signature)).toBe(false)
+})
+
+test('Address, from pubAddress, signMessage, fail on no private key', () => {
+	var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+
+	let test_message = "Message to be used for testing!"
+
+	let signature, error
+	try {
+		signature = address.signMessage(test_message)
+	} catch(e) {
+		error = e
+	}
+
+	expect(error).toBeDefined()
+	expect(signature).toBeUndefined()
+})
+
 test('get utxo for address', (done) => {
 	var address = new Address("oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL", Networks.flo_testnet, false);
 

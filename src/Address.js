@@ -1,4 +1,5 @@
 import bitcoin from 'bitcoinjs-lib'
+import bitcoinMessage from 'bitcoinjs-message'
 import bip32 from 'bip32'
 import wif from 'wif'
 import bip32utils from 'bip32-utils'
@@ -198,6 +199,53 @@ class Address {
 	 */
 	getECPair(){
 		return this.address
+	}
+	/**
+	 * Get the signature of a specific message that can be verified by others
+	 * @param  {String} message - The message you wish to get the signature for
+	 * @return {String} Returns the base64 string of the created Signature
+	 */
+	signMessage(message){
+		if (!message || typeof message !== "string")
+			throw new Error("Message must be defined and a String!")
+
+		let privatekey_ecpair = this.getECPair()
+
+		if (!privatekey_ecpair) 
+			throw new Error("No Private Key available! Unable to sign message!")
+
+		let privateKeyBuffer = privatekey_ecpair.privateKey;
+
+		let compressed = privatekey_ecpair.compressed || true;
+		let messagePrefix = this.coin.network.messagePrefix;
+
+		console.log(message, privateKeyBuffer, compressed, messagePrefix)
+
+		let signature_buffer
+		try {
+			signature_buffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)
+		} catch (e) {
+			throw new Error("Unable to create signature! \n" + e)
+		}
+
+		return signature_buffer.toString('base64')
+	}
+	/**
+	 * Verify the signature of a given message
+	 * @param  {String} message   - The message you want to verify
+	 * @param  {String} signature - The signature of the message
+	 * @return {Boolean} Returns either `true` or `false` depending on if the signature and message match
+	 */
+	verifySignature(message, signature){
+		let valid 
+
+		try {
+			valid = bitcoinMessage.verify(message, this.getPublicAddress(), signature, this.coin.network.messagePrefix)
+		} catch (e) {
+			throw new Error("Unable to verify signature! \n" + e)
+		}
+
+		return valid
 	}
 	/**
 	 * Get the latest State for this address from the Blockchain Explorer
