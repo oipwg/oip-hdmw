@@ -84,7 +84,7 @@ test('Wallet Serialize and Deserialize', async (done) => {
 						"private":20200497
 					},
 					"slip44":216,
-					"messagePrefix":"Florincoin Signed Message:\n",
+					"messagePrefix":"\u001bFlorincoin Signed Message:\n",
 					"pubKeyHash":35,
 					"scriptHash":94,
 					"wif":163
