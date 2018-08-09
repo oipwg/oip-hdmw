@@ -374,6 +374,21 @@ class TransactionBuilder {
 		txb.setVersion(this.coin.txVersion)
 
 		inputs.forEach(input => txb.addInput(input.txId, input.vout))
+
+		// Check if we are paying to ourself, if so, merge the outputs to just a single output.
+		// Check if we only have one from address, and two outputs (i.e. pay to and change)
+		if (this.from.length === 1 && outputs.length === 2){
+			// If the first input is sending to the from address, and there is a change output,
+			// then merge the outputs.
+			if (outputs[0].address === this.from[0].getPublicAddress() && !outputs[1].address){
+				let totalToSend = outputs[0].value + outputs[1].value
+				outputs = [{
+					address: this.from[0].getPublicAddress(),
+					value: totalToSend
+				}]
+			}
+		}
+
 		outputs.forEach(output => {
 			// watch out, outputs may have been added that you need to provide
 			// an output address/script for

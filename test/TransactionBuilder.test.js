@@ -110,7 +110,7 @@ test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
 
 // test("TransactionBuilder should be able build & send tx hex", (done) => {
 // 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
-// 	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S = cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1
+// 	// Test sending to self
 // 	var address = new Address("cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc", Networks.flo_testnet, false);
 
 // 	var builder = new TransactionBuilder(Networks.flo_testnet, {
