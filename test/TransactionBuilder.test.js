@@ -47,8 +47,8 @@ test("TransactionBuilder should load a To Address from an Array", () => {
 })
 
 test("TransactionBuilder should be able to get unspents for From Addresses", (done) => {
-	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S
-	var address = new Address("cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1", Networks.flo_testnet, false);
+	// oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
+	var address = new Address("cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj", Networks.flo_testnet, false);
 
 	var builder = new TransactionBuilder(Networks.flo_testnet, {
 		from: address
@@ -60,9 +60,9 @@ test("TransactionBuilder should be able to get unspents for From Addresses", (do
 	}).catch(console.error)
 }, 20000)
 
-test("TransactionBuilder should be able to get unspents for From Addresses", (done) => {
-	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S
-	var address = new Address("cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1", Networks.flo_testnet, false);
+test("TransactionBuilder should be able to build inputs and outputs for From Addresses", (done) => {
+	// oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
+	var address = new Address("cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj", Networks.flo_testnet, false);
 
 	var builder = new TransactionBuilder(Networks.flo_testnet, {
 		from: address,
@@ -78,8 +78,8 @@ test("TransactionBuilder should be able to get unspents for From Addresses", (do
 }, 20000)
 
 test("TransactionBuilder should be able build tx hex", (done) => {
-	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S
-	var address = new Address("cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1", Networks.flo_testnet, false);
+	// oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
+	var address = new Address("cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj", Networks.flo_testnet, false);
 
 	var builder = new TransactionBuilder(Networks.flo_testnet, {
 		from: address,
@@ -87,14 +87,14 @@ test("TransactionBuilder should be able build tx hex", (done) => {
 	})
 
 	builder.buildTX().then((hex) => {
-		expect(hex).toBe("0200000001b0e68ba7042d6ac45d323ce75e053883825b17a5a003f589ff64b0f359d82024010000006b483045022100c49f832fbab9fed571b5b635dab11bf2fa095af891b646b22f01daee9e71bdc1022073783dc2f5c59fb4319831d9860ce603ac4c9c2003759f2797a372d2c5da562e012102a7451395735369f2ecdfc829c0f774e88ef1303dfe5b2f04dbaab30a535dfdd6ffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac7027f405000000001976a9143a2d4145a4f098523b3e8127f1da87cfc55b8e7988ac0000000000")
+		expect(hex).toBe("020000000140ed31c981fd258289a53073f76bc61794443b5a0e8318570320c62a86500a65000000006a473044022030e6fb170e58114dd4f3cf528229162a94d80150a7ec014618f957a018c6df7b02205c151be42942c281ceab9eda6f54521872918fa472e59632e84d7e8ce2337f7a012102fd32e0042afb858ebc63f93a0aed5f78d3f9031e6d1d79985f5916bf1588c1bfffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac9486f505000000001976a91408c15ab42488767228366ea3178eb32ac222ffb688ac0000000000")
 		done()
 	}).catch(console.error)
 }, 10000)
 
-test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
-	// oNAydz5TjkhdP3RPuu3nEirYQf49Jrzm4S
-	var address = new Address("cV6NTLu255SZ5iCNkVHezNGDH5qv6CanJpgBPqYgJU13NNKJhRs1", Networks.flo_testnet, false);
+test("TransactionBuilder with Flo Data should be able build tx hex", (done) => {
+	// oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
+	var address = new Address("cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj", Networks.flo_testnet, false);
 
 	var builder = new TransactionBuilder(Networks.flo_testnet, {
 		from: address,
@@ -103,7 +103,7 @@ test("TransactionBuilder should be able build tx hex with Flo Data", (done) => {
 	})
 
 	builder.buildTX().then((hex) => {
-		expect(hex).toBe("0200000001b0e68ba7042d6ac45d323ce75e053883825b17a5a003f589ff64b0f359d82024010000006a47304402204a30747e876763784a1fe641d851123ea722ef0dde761c86620e172ccc96a3450220292df86ec60de85bd01e78c0077756824b5226718f46b77960ce94d141c298c4012102a7451395735369f2ecdfc829c0f774e88ef1303dfe5b2f04dbaab30a535dfdd6ffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac7027f405000000001976a9143a2d4145a4f098523b3e8127f1da87cfc55b8e7988ac000000001154657374696e67206f69702d68646d7721")
+		expect(hex).toBe("020000000140ed31c981fd258289a53073f76bc61794443b5a0e8318570320c62a86500a65000000006b483045022100cf6dc78551daf5a3e679e52fd9b29468d398c6e59cac3f635320835c785e484002205bcfb207c934064deec7133336ab29e5175c36082ce7959cecda60f782ee80f1012102fd32e0042afb858ebc63f93a0aed5f78d3f9031e6d1d79985f5916bf1588c1bfffffffff02e8030000000000001976a914e60f738c04c7a82f47e81b79177e13c61a7dc4c488ac9486f505000000001976a91408c15ab42488767228366ea3178eb32ac222ffb688ac000000001154657374696e67206f69702d68646d7721")
 		done()
 	}).catch(console.error)
 }, 10000)
