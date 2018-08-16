@@ -29,7 +29,7 @@ module.exports = {
 			private: n.bip32.private
 		},
 		slip44: bip44constants.LTC,
-		messagePrefix: n.messagePrefix,
+		messagePrefix: "\u0018Litecoin Signed Message:\n",
 		pubKeyHash: n.pubKeyHash,
 		scriptHash: n.scriptHash,
 		wif: n.wif

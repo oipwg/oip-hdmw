@@ -20,7 +20,7 @@ module.exports = {
 	getExtraBytes: function(options){ return },
 
 	network: {
-		messagePrefix: '\x18Litecoin Signed Message:\n',
+		messagePrefix: "\u0018Litecoin Signed Message:\n",
 		bip32: {
 			public: 0x0436ef7d,
 			private: 0x0436f6e1
