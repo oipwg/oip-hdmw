@@ -48,7 +48,7 @@ test('Wallet Serialize and Deserialize', async (done) => {
 			"litecoin":{  
 				"name":"litecoin",
 				"network":{ 
-					"messagePrefix":null,
+					"messagePrefix":"\u0018Litecoin Signed Message:\n",
 					"bip32":{  
 						"public":27108450,
 						"private":27106558
