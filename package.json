@@ -1,6 +1,6 @@
 {
   "name": "oip-hdmw",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "bip32": "1.0.2",
     "bip32-utils": "git+https://github.com/oipwg/bip32-utils.git",
     "bip39": "^2.5.0",
-    "bip44-constants": "^5.0.0",
+    "bip44-constants": "5.0.0",
     "bitcoinjs-lib": "git+https://github.com/oipwg/bitcoinjs-lib.git#export-classify",
     "bitcoinjs-message": "^2.0.0",
     "coininfo": "^4.0.1",
