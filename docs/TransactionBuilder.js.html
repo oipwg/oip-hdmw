@@ -319,6 +319,7 @@ class TransactionBuilder {
 	}
 	/**
 	 * Get calculated Inputs and Outputs (and Fee) for From and To Addresses
+	 * @param {Array.&lt;utxo>} [manual_utxos] - Pass in utxos for the function to use. If not passed, it will call the function getUnspents()
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
@@ -341,16 +342,18 @@ class TransactionBuilder {
 	 * })
 	 * @return {SelectedInputOutput} 
 	 */
-	async buildInputsAndOutputs(){
+	async buildInputsAndOutputs(manual_utxos){
 		try {
 			await this.discoverChange()
 		} catch(e) { throw new Error("Unable to Discover Change Addresses \n" + e) }
 
-		let utxos
+		let utxos = manual_utxos
 
-		try {
-			utxos = await this.getUnspents()
-		} catch(e) { throw new Error("Unable to get Unspents for Addresses \n" + e) }
+		if (!utxos){
+			try {
+				utxos = await this.getUnspents()
+			} catch(e) { throw new Error("Unable to get Unspents for Addresses \n" + e) }
+		}
 
 		var formattedUtxos = utxos.map((utxo) => {
 			return {
@@ -420,6 +423,7 @@ class TransactionBuilder {
 	}
 	/**
 	 * Build the Transaction hex for the From and To addresses
+	 * @param {SelectedInputOutput} [manual_selected] - Inputs and Outputs to use. If not passed, the function buildInputsAndOutputs() is run.
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
@@ -442,13 +446,15 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise&lt;string>} Returns a Promise that resolves to the calculated Transaction Hex
 	 */
-	async buildTX(){
-		let selected
+	async buildTX(manual_selected){
+		let selected = manual_selected
 
-		try {
-			selected = await this.buildInputsAndOutputs()
-		} catch (e) {
-			throw new Error("Unable to select inputs and outputs \n" + e)
+		if (!selected){
+			try {
+				selected = await this.buildInputsAndOutputs()
+			} catch (e) {
+				throw new Error("Unable to select inputs and outputs \n" + e)
+			}
 		}
 
 		this.selected = selected
@@ -529,6 +535,7 @@ class TransactionBuilder {
 	}
 	/**
 	 * Build &amp; Send the Transaction that we have been forming
+	 * @param {String} [manual_hex] - The hex you wish to send the tx for. If not used, the hex is grabbed from buildTX().
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
@@ -551,11 +558,14 @@ class TransactionBuilder {
 	 * })
 	 * @return {Promise&lt;string>} Returns a promise that will resolve to the success TXID
 	 */
-	async sendTX(){
-		let hex
-		try {
-			hex = await this.buildTX()
-		} catch(e) { throw new Error("Unable to build Transaction \n" + e) }
+	async sendTX(manual_hex){
+		let hex = manual_hex
+
+		if (!hex){
+			try {
+				hex = await this.buildTX()
+			} catch(e) { throw new Error("Unable to build Transaction \n" + e) }
+		}
 
 		if (hex){
 			console.log("BroadcastHex: " + hex)

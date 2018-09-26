@@ -934,7 +934,7 @@ builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);</code></pre>
       </svg>
     </a>
     <h4 class="name" id="buildInputsAndOutputs">
-      <span class="type-signature">(async) </span>buildInputsAndOutputs<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#SelectedInputOutput">SelectedInputOutput</a>}</span>
+      <span class="type-signature">(async) </span>buildInputsAndOutputs<span class="signature">(manual_utxos<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#SelectedInputOutput">SelectedInputOutput</a>}</span>
     </h4>
   </span>
 
@@ -950,6 +950,73 @@ builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);</code></pre>
 
 
 
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>manual_utxos</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      Array.&lt;<a href="global.html#utxo">utxo</a>>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>Pass in utxos for the function to use. If not passed, it will call the function getUnspents()</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
 
 
 
@@ -986,7 +1053,7 @@ builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line251">line 251</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line252">line 252</a>
         </li>
       </ul>
     </dd>
@@ -1084,7 +1151,7 @@ builder.buildInputsAndOutputs().then((calculated) => {
       </svg>
     </a>
     <h4 class="name" id="buildTX">
-      <span class="type-signature">(async) </span>buildTX<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
+      <span class="type-signature">(async) </span>buildTX<span class="signature">(manual_selected<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
     </h4>
   </span>
 
@@ -1100,6 +1167,73 @@ builder.buildInputsAndOutputs().then((calculated) => {
 
 
 
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>manual_selected</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      <a href="global.html#SelectedInputOutput">SelectedInputOutput</a>
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>Inputs and Outputs to use. If not passed, the function buildInputsAndOutputs() is run.</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
 
 
 
@@ -1136,7 +1270,7 @@ builder.buildInputsAndOutputs().then((calculated) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line352">line 352</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line356">line 356</a>
         </li>
       </ul>
     </dd>
@@ -1290,7 +1424,7 @@ builder.buildTX().then((hex) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line318">line 318</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line321">line 321</a>
         </li>
       </ul>
     </dd>
@@ -1882,7 +2016,7 @@ builder.parseOptions({
       </svg>
     </a>
     <h4 class="name" id="sendTX">
-      <span class="type-signature">(async) </span>sendTX<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
+      <span class="type-signature">(async) </span>sendTX<span class="signature">(manual_hex<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span>
     </h4>
   </span>
 
@@ -1898,6 +2032,73 @@ builder.parseOptions({
 
 
 
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>manual_hex</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      String
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          <p>The hex you wish to send the tx for. If not used, the hex is grabbed from buildTX().</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
 
 
 
@@ -1934,7 +2135,7 @@ builder.parseOptions({
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line461">line 461</a>
+          <a href="TransactionBuilder.js.html">TransactionBuilder.js</a>, <a href="TransactionBuilder.js.html#line468">line 468</a>
         </li>
       </ul>
     </dd>

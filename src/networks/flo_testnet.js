@@ -16,7 +16,7 @@ module.exports = {
 
 	txVersion: 2,
 
-	explorer: new Insight('https://flosight.mk1.alexandria.io/api'),
+	explorer: new Insight('https://testnet.flocha.in/api'),
 
 	getExtraBytes: function(options){
 		var fData = options.floData || ""

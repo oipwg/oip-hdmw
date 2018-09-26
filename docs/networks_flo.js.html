@@ -182,7 +182,13 @@ module.exports = {
 
 	getExtraBytes: function(options){
 		var fData = options.floData || ""
-		return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
+
+		var string_buffer = Buffer.from(fData, 'utf8')
+		var length_buffer = varIntBuffer(string_buffer.length)
+
+		var built_string = length_buffer.toString("hex") + string_buffer.toString("hex")
+
+		return built_string
 	},
 
 	network: {
