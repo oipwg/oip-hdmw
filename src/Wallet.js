@@ -42,6 +42,7 @@ class Wallet {
 	 * @param {boolean} [options.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
 	 * @param {Array.<string>} [options.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
 	 * @param {Array.<CoinInfo>} [options.networks] - An array containing a custom coins network info
+	 * @param {Object} [options.serialized_data] - A previous Wallet state to reload from
 	 *
 	 * @example <caption>Create wallet using Mnemonic</caption>
 	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")

@@ -99,17 +99,18 @@
 <h2>Table of Contents</h2><ul>
 <li><a href="https://github.com/oipwg/oip-hdmw/#installation-instructions">Installation Instructions</a></li>
 <li><a href="https://github.com/oipwg/oip-hdmw/#getting-started">Getting Started</a><ul>
-<li><a href="https://github.com/oipwg/oip-hdmw/#">Creating your first Wallet</a></li>
-<li><a href="https://github.com/oipwg/oip-hdmw/#">Getting your first Address</a></li>
-<li><a href="https://github.com/oipwg/oip-hdmw/#">Sending your first Transaction</a></li>
+<li><a href="https://github.com/oipwg/oip-hdmw#creating-your-first-wallet">Creating your first Wallet</a></li>
+<li><a href="https://github.com/oipwg/oip-hdmw/#getting-your-first-address">Getting your first Address</a></li>
+<li><a href="https://github.com/oipwg/oip-hdmw/#sending-your-first-transaction">Sending your first Transaction</a></li>
+<li><a href="https://github.com/oipwg/oip-hdmw/#saving-and-reloading-the-wallet">Saving and Reloading the Wallet</a></li>
 </ul>
 </li>
 <li><a href="https://github.com/oipwg/oip-hdmw/#api-documentation">API Documentation</a><ul>
-<li><a href="https://oipwg.github.io/oip-hdmw/1.0.0/Wallet.html">Wallet</a></li>
-<li><a href="https://oipwg.github.io/oip-hdmw/1.0.0/Coin.html">Coin</a></li>
-<li><a href="https://oipwg.github.io/oip-hdmw/1.0.0/Account.html">Account</a></li>
-<li><a href="https://oipwg.github.io/oip-hdmw/1.0.0/Address.html">Address</a></li>
-<li><a href="https://oipwg.github.io/oip-hdmw/1.0.0/TransactionBuilder.html">TransactionBuilder</a></li>
+<li><a href="https://oipwg.github.io/oip-hdmw/Wallet.html">Wallet</a></li>
+<li><a href="https://oipwg.github.io/oip-hdmw/Coin.html">Coin</a></li>
+<li><a href="https://oipwg.github.io/oip-hdmw/Account.html">Account</a></li>
+<li><a href="https://oipwg.github.io/oip-hdmw/Address.html">Address</a></li>
+<li><a href="https://oipwg.github.io/oip-hdmw/TransactionBuilder.html">TransactionBuilder</a></li>
 </ul>
 </li>
 <li><a href="https://github.com/oipwg/oip-hdmw/#license">License</a></li>
@@ -157,6 +158,42 @@ myWallet.sendPayment({
     console.log(&quot;Successfully sent Transaction! &quot; + txid);
 }).catch(function(error){
     console.error(&quot;Unable to send Transaction!&quot;, error)
+})</code></pre><p>When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should recieve its initial confirmation, and you would be ok to send another transaction.</p>
+<p>If you wanted to send second transaction, before the first recieves its initial confirmation, you can do so by calling the same <code>Wallet</code> instance that you ran <code>sendPayment</code> on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction recieves a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to &quot;restart&quot; between sending transactions, it is suggested that you read the next section called &quot;Saving and Reloading the Wallet&quot;</p>
+<h3>Saving and Reloading the Wallet</h3><p>After you have loaded a wallet, you might want to save its current &quot;state&quot; so that on the next load, it can immediately know its balance and be ready to spend without having to &quot;re-discover&quot; the wallet addresses/state.</p>
+<p>Here is an example that, after sending a transaction, saves the current wallet state to a local file. Since I am using Node.js in this example, we are going to use the NPM module <a href="https://www.npmjs.com/package/node-localstorage">node-localstorage</a> in order to store the wallet state easily and effortlessly. If you are using a Browser however, you can use the Native &quot;LocalStorage&quot; using the same code.</p>
+<p>You can run this example again right after it finishes as well. Since it saves its &quot;Spent Transaction&quot; state, it doesn't need to wait for a confirmation on the Blockchain to send the next transaction.</p>
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+const Wallet = HDMW.Wallet;
+
+if (typeof localStorage === &quot;undefined&quot; || localStorage === null) {
+  const LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./storage');
+}
+
+let wallet_data = localStorage.getItem('oip-hdmw')
+
+if (wallet_data)
+    wallet_data = JSON.parse(wallet_data)
+
+let myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry', {
+    serialized_data: wallet_data
+});
+
+let send_a_payment = async () => {
+    let txid = await myWallet.sendPayment({
+        to: { &quot;12nP3k9tFKgQPJNkDDyNWqgjtm2bt3qq1b&quot;: 0.001 }
+    })
+
+    console.log(&quot;Successfully sent Transaction! &quot; + txid);
+
+    // Save the Wallet State
+    localStorage.setItem('oip-hdmw', JSON.stringify(myWallet.serialize(), null, 4))
+}
+
+// Run the payment send
+send_a_payment().catch(() => { 
+    console.error(&quot;Unable to send Transaction!&quot;, error) 
 })</code></pre><h3>Understanding the Wallet Topology</h3><p><img src="https://raw.githubusercontent.com/oipwg/oip-hdmw/master/docs/hdmw-topology.png" alt=""></p>
 <h2>API Documentation</h2><p>Learn more about how each Class works, or take a look at all functions available to you.</p>
 <ul>
