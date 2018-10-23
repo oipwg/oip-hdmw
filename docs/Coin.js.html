@@ -136,6 +136,7 @@ class Coin {
 		if (options &amp;&amp; options.discover !== undefined)
 			this.discover = options.discover
 
+		//index 0? master node unique to network params
 		var mainRoot = bip32.fromSeed(new Buffer(this.seed, "hex"), this.coin.network);
 
 		var bip44Num = this.coin.network.slip44;
