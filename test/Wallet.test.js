@@ -10,6 +10,7 @@ test('Wallet can be created from nothing', () => {
 
 test('Wallet Serialize and Deserialize', async (done) => {
 	var serialized = {  
+		"master_node": "xprv9s21ZrQH143K3HYAgqXMBtsXJbsSY1wcVBoGHjXh8rh5PsL9mfCNuiqL8mesxGyLo55neZf9sNLEfMMKozkXmgtoy139YaTks7bMpmUUGcX",
 		"seed":"siren comic spy donkey unknown license asset lens proud bus exhaust section",
 		"coins":{  
 			"bitcoin":{  
@@ -26,7 +27,7 @@ test('Wallet Serialize and Deserialize', async (done) => {
 					"wif":128,
 					"slip44":2147483648
 				},
-				"seed":"12410a4f9b170788b00b55dbc25909e08cf3a334c3cc282b7cd38c487218a8d6b968d86de9772481442de41b1c267ccfe848bbb0a55761ffb77692cb1605931f",
+				"seed":"xprv9uvNqaLC9GTaoEELKRZvDSmTP2HFKpJJkm9a1SBe4WhM1JfnK3RyYCJ9XdNN2v6DpimfZgh6pLCfMGtJ4NQTadibva7tUom76JqE6B2AJY1",
 				"accounts":{  
 					"0":{  
 						"extended_private_key":"xprv9yohZYidpyKFSuLkW79iwKzZNPTrHKtPS5jrtmB7awBiqVUb1he7ck5hQPbbKXKAX5htnhyXNxJGkyrYrRmep9grqoxty3GF4dX4XybZPkQ",
@@ -58,7 +59,7 @@ test('Wallet Serialize and Deserialize', async (done) => {
 					"wif":176,
 					"slip44":2147483650
 				},
-				"seed":"12410a4f9b170788b00b55dbc25909e08cf3a334c3cc282b7cd38c487218a8d6b968d86de9772481442de41b1c267ccfe848bbb0a55761ffb77692cb1605931f",
+				"seed":"xprv9uvNqaLC9GTaoEELKRZvDSmTP2HFKpJJkm9a1SBe4WhM1JfnK3RyYCJ9XdNN2v6DpimfZgh6pLCfMGtJ4NQTadibva7tUom76JqE6B2AJY1",
 				"accounts":{  
 					"0":{  
 						"extended_private_key":"Ltpv78bHMsStHEYdUEruzA4SzRkBzX4mFRnLW2tH7ygcWeCjvn9ggjmBnFSm4Ckked919grZ223MfmriMBfmvEZ5JmTJd8GvWym6jn82NPqe7fb",
@@ -89,7 +90,7 @@ test('Wallet Serialize and Deserialize', async (done) => {
 					"scriptHash":94,
 					"wif":163
 				},
-				"seed":"12410a4f9b170788b00b55dbc25909e08cf3a334c3cc282b7cd38c487218a8d6b968d86de9772481442de41b1c267ccfe848bbb0a55761ffb77692cb1605931f",
+				"seed":"xprv9uvNqaLC9GTaoEELKRZvDSmTP2HFKpJJkm9a1SBe4WhM1JfnK3RyYCJ9XdNN2v6DpimfZgh6pLCfMGtJ4NQTadibva7tUom76JqE6B2AJY1",
 				"accounts":{  
 					"0":{  
 						"extended_private_key":"Fprv4yb4HkMenJmHv56HqcXq1KRKGXFuASq9FSosLHciMsNcNfE2181F7FmZ18qEnkR51pheXLL3Ev3us91CZ2TbNr4mXdh8pnvxxNMEko82MtZ",
@@ -166,6 +167,8 @@ test('Wallet can be defined from Mnemonic', () => {
 	expect(w.getSeed()).toBe('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4')
 	expect(w.getMnemonic()).toBe("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
 	expect(w.getEntropy()).toBe('00000000000000000000000000000000')
+
+	console.log(w.serialize())
 })
 
 test('Wallet can be defined from Seed Hex', () => {
