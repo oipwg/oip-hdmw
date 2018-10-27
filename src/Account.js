@@ -196,9 +196,9 @@ class Account {
 		return tmpHydratedAddr
 	}
 	/**
-	 * Get the All Used Address (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
+	 * Get all derived Addresses for the entire Account, or just for a specific Chain.
 	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
-	 * @example <caption>Get all Used Addresses on the Account</caption>
+	 * @example <caption>Get all Addresses on the Account</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
@@ -240,6 +240,39 @@ class Account {
 		}
 
 		return addrs
+	}
+	/**
+	 * Get all Used Addresses (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
+	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
+	 * @example <caption>Get all Used Addresses on the Account</caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getUsedAddresses()
+	 * // addresses = [Address, Address, Address]
+	 * @example <caption>Get the addresses on Chain `0`</caption>
+	 * import bip32 from 'bip32'
+	 * import { Account, Networks } from 'oip-hdmw'
+	 * 
+	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 *
+	 * var account = new Account(account_master, Networks.flo, false);
+	 * var addresses = account.getUsedAddresses(0)
+	 * // addresses = [Address, Address, Address]
+	 * @return {Array.<Address>}
+	 */
+	getUsedAddresses(chain_number){
+		let used_addresses = []
+		let all_addresses = this.getAddresses()
+
+		for (let address of all_addresses)
+			if (address.getTotalReceived() > 0)
+				used_addresses.push(address)
+
+		return used_addresses
 	}
 	/**
 	 * Get the Balance for the entire Account
@@ -372,7 +405,11 @@ class Account {
 					}
 				// else add all the addresses on the Account that have recieved any txs
 				} else {
-					sendFrom = allAddresses;
+					for (let address of allAddresses){
+						if (address.getBalance() >= 0){
+							sendFrom.push(address)
+						}
+					}
 				}
 
 				if (sendFrom.length === 0){
@@ -463,14 +500,14 @@ class Account {
 		// override the internal chain
 		this.account.chains[discovered.chainIndex] = chain
 
-		for (let adrr of discovered.addresses)
-			this.addresses[adrr.getPublicAddress()] = adrr
+		for (let address of discovered.addresses)
+			this.addresses[address.getPublicAddress()] = address
 
 		return discovered
 	}
 	async _chainPromise(addresses, coin){
 		var results = {};
-		var foundAddresses = []
+		var allAddresses = []
 
 		var addressPromises = [];
 
@@ -500,14 +537,16 @@ class Account {
 
 		for (var address of promiseResponses){
 			if (address.getTotalReceived() > 0){
-				foundAddresses.push(address)
 				results[address.getPublicAddress()] = true
 			} else {
 				results[address.getPublicAddress()] = false
 			}
+
+			// Store all addresses
+			allAddresses.push(address)
 		}
 
-		return {results: results, addresses: foundAddresses}
+		return {results: results, addresses: allAddresses}
 	}
 	/**
 	 * Discover Used and Unused addresses for a specified Chain number

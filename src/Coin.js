@@ -424,7 +424,7 @@ class Coin {
 			await this.getAccount(0).discoverChains()
 		} catch (e) { throw new Error("Unable to discoverAccounts! \n" + e) }
 
-		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0){
+		while (this.accounts[this.getHighestAccountNumber()].getUsedAddresses().length > 0){
 			try {
 				await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
 			} catch (e) { throw new Error("Unable to discover account #" + (this.getHighestAccountNumber() + 1) + "\n" + e) }

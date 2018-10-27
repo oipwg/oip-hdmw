@@ -234,7 +234,7 @@ test('Coin, get flo_testnet balance', (done) => {
 		expect(balance).toBeGreaterThan(1);
 		done()
 	})
-}, 10000)
+}, 30000)
 
 /*test('Coin, catch network request error', async (done) => {
 	let bitcoin = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.bitcoin, {discover: false})
@@ -268,7 +268,7 @@ test('Coin, discover accounts', async (done) => {
 		expect(accounts.length >= 2).toBe(true);
 		done()
 	}
-}, 10000)
+}, 30000)
 
 test('Coin, getCoinInfo', () => {
 	var flo_testnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
