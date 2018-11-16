@@ -506,13 +506,9 @@ class Account {
 		return discovered
 	}
 	async _chainPromise(addresses, coin){
-<<<<<<< HEAD
+
 		let results = {};
-		let foundAddresses = []
-=======
-		var results = {};
-		var allAddresses = []
->>>>>>> 1f5d3fab0aeb93b0389e58f38200993ebd298e81
+		let allAddresses = []
 
 		let addressPromises = [];
 
