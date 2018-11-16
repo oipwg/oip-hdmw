@@ -25,12 +25,12 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * @example <caption>Spawn a Bitcoin bip32 Node</caption>
  * import bip32 from 'bip32';
  * 
- * var bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+ * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * @example <caption>Spawn a Flo bip32 Node</caption>
  * import bip32 from 'bip32';
  * import { Networks } from 'oip-hdmw';
  * 
- * var bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+ * let bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
  */
 
 /**
@@ -40,8 +40,8 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * import bip32 from 'bip32';
  * import bip32utils from 'bip32-utils';
  * 
- * var bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
- * var chain = new bip32utils.Chain(bip32Node)
+ * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+ * let chain = new bip32utils.Chain(bip32Node)
  */
 
 /**
@@ -56,17 +56,17 @@ class Account {
 	 * ```
 	 * import { Account, Networks } from 'oip-hdmw';
 	 *
-	 * var account_master = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
+	 * let account_master = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
 	 *
-	 * var account = new Account(account_master, Networks.bitcoin);
+	 * let account = new Account(account_master, Networks.bitcoin);
 	 * ```
 	 * Create a Flo Account
 	 * ```
 	 * import { Account, Networks } from 'oip-hdmw';
 	 *
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo);
+	 * let account = new Account(account_master, Networks.flo);
 	 * ```
 	 * @param  {bip32} account_master - The BIP32 Node to derive Chains and Addresses from.
 	 * @param  {CoinInfo} coin - The CoinInfo for the Account
@@ -79,8 +79,8 @@ class Account {
 		this.account_master = account_master;
 		this.coin = coin || {};
 
-		var external = this.account_master.derive(0)
-		var internal = this.account_master.derive(1)
+		let external = this.account_master.derive(0)
+		let internal = this.account_master.derive(1)
 
 		this.account = new bip32utils.Account([
 			new bip32utils.Chain(external, undefined, CUSTOM_ADDRESS_FUNCTION),
@@ -117,9 +117,9 @@ class Account {
 		}
 	}
 	serialize(){
-		var addresses = this.getAddresses()
+		let addresses = this.getAddresses()
 
-		var serialized_addresses = addresses.map((address) => {
+		let serialized_addresses = addresses.map((address) => {
 			return address.serialize()
 		})
 
@@ -157,10 +157,10 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var address = account.getMainAddress()
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let address = account.getMainAddress()
 	 * // address.getPublicAddress() = FPznv9i9iHX5vt4VMbH9x2LgUcrjtSn4cW
 	 * @return {Address}
 	 */
@@ -175,15 +175,15 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var address = account.getAddress(0, 10)
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let address = account.getAddress(0, 10)
 	 * // address.getPublicAddress() = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
 	 * @return {Address}
 	 */
 	getAddress(chain_number, address_number){
-		var addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
+		let addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
 		
 		let tmpHydratedAddr = new Address(addr, this.coin, false)
 
@@ -202,39 +202,39 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var addresses = account.getAddresses()
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let addresses = account.getAddresses()
 	 * // addresses = [Address, Address, Address]
 	 * @example <caption>Get the addresses on Chain `0`</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var addresses = account.getAddresses(0)
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let addresses = account.getAddresses(0)
 	 * // addresses = [Address, Address, Address]
 	 * @return {Array.<Address>}
 	 */
 	getAddresses(chain_number){
-		var addrs = [];
+		let addrs = [];
 
 		if (chain_number && typeof chain_number === "number"){
-			for (var addr in this.addresses){
-				var chain = this.account.getChain(chain_number);
-				var addresses = chain.addresses.map((ad) => {
+			for (let addr in this.addresses){
+				let chain = this.account.getChain(chain_number);
+				let addresses = chain.addresses.map((ad) => {
 					return new Address(ad, this.coin, false)
 				})
-				for (var adr of addresses){
+				for (let adr of addresses){
 					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()){
 						addrs.push(this.addresses[addr])
 					}
 				}
 			}
 		} else {
-			for (var addr in this.addresses){
+			for (let addr in this.addresses){
 				addrs.push(this.addresses[addr])
 			}
 		}
@@ -247,9 +247,9 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
+	 * let account = new Account(account_master, Networks.flo, false);
 	 * account.getBalance({ discover: true }).then((balance) => {
 	 * 	console.log(balance);
 	 * })
@@ -260,7 +260,7 @@ class Account {
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
 	async getBalance(options){
-		var discover = this.discover;
+		let discover = this.discover;
 
 		if (options && options.discover !== undefined)
 			discover = options.discover;
@@ -271,10 +271,10 @@ class Account {
 			} catch (e) { throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e) }
 		}
 
-		var totalBal = 0;
+		let totalBal = 0;
 
 		// Iterate through each of the addresses we have found
-		for (var addr in this.addresses){
+		for (let addr in this.addresses){
 			// Are we searching only for a single addresses balance?
 			if (options && options.addresses && typeof options.addresses === "string"){
 				if (addr === options.addresses){
@@ -282,7 +282,7 @@ class Account {
 				}
 			// Are we searching for only the addresses in an array?
 			} else if (options && options.addresses && Array.isArray(options.addresses)){
-				for (var ad of options.addresses){
+				for (let ad of options.addresses){
 					if (addr === ad){
 						totalBal += this.addresses[addr].getBalance()
 					}
@@ -293,7 +293,7 @@ class Account {
 			}
 		}
 
-		var balance_data = {
+		let balance_data = {
 			balance: totalBal
 		}
 
@@ -309,10 +309,10 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var address = account.getNextChainAddress(1)
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let address = account.getNextChainAddress(1)
 	 * @return {Address}
 	 */
 	getNextChainAddress(chain_number){
@@ -324,10 +324,10 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var address = account.getNextChangeAddress()
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let address = account.getNextChangeAddress()
 	 * @return {Address}
 	 */
 	getNextChangeAddress(){
@@ -348,22 +348,22 @@ class Account {
 			if (!options)
 				reject(new Error("You must define your payment options!"))
 
-			var processPayment = () => {
-				var sendFrom = [];
+			let processPayment = () => {
+				let sendFrom = [];
 
-				var allAddresses = this.getAddresses();
+				let allAddresses = this.getAddresses();
 
 				// Check if we define what address we wish to send from
 				if (options.from) {
 					if (typeof options.from === "string") {
-						for (var address of allAddresses){
+						for (let address of allAddresses){
 							if (address.getPublicAddress() === options.from){
 								sendFrom.push(address);
 							}
 						}
 					} else if (Array.isArray(options.from)) {
-						for (var adr of options.from){
-							for (var address of allAddresses){
+						for (let adr of options.from){
+							for (let address of allAddresses){
 								if (address.getPublicAddress() === adr){
 									sendFrom.push(address);
 								}
@@ -380,11 +380,11 @@ class Account {
 					return;
 				}
 
-				var newOpts = options;
+				let newOpts = options;
 
 				newOpts.from = sendFrom;
 
-				var txb = new TransactionBuilder(this.coin, newOpts);
+				let txb = new TransactionBuilder(this.coin, newOpts);
 
 				txb.sendTX().then(resolve);
 			}
@@ -402,10 +402,10 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var extPrivateKey = account.getExtendedPrivateKey()
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let extPrivateKey = account.getExtendedPrivateKey()
 	 * // extPrivateKey = Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC
 	 * @return {string}
 	 */
@@ -418,10 +418,10 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var extPublicKey = account.getExtendedPublicKey()
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let extPublicKey = account.getExtendedPublicKey()
 	 * // extPublicKey = Fpub1BPo8vEQqDkoDQmDqcJ8WFHD331AMpd7VU7atCJsix8xbHwN6K9wfDLjZKnW9fUw5uJg8UJMLhQ5W7gTxv6DbkfPoeJbBpMaUHrULxzVnSy
 	 * @return {string}
 	 */
@@ -435,20 +435,20 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
-	 * var chain = account.getChain(0)
+	 * let account = new Account(account_master, Networks.flo, false);
+	 * let chain = account.getChain(0)
 	 * @return {bip32utilschain}
 	 */
 	getChain(chainNumber){
 		return this.account.getChain(chainNumber)
 	}
 	async _discoverChain(chainNumber, gapLimit) {
-		var chains = this.account.getChains()
-		var chain = chains[chainNumber].clone()
+		let chains = this.account.getChains()
+		let chain = chains[chainNumber].clone()
 
-		var discovered
+		let discovered
 
 		try {
 			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
@@ -457,8 +457,8 @@ class Account {
 		}
 
 		// throw away EACH unused address AFTER the last unused address
-		var unused = discovered.checked - discovered.used
-		for (var j = 1; j < unused; ++j) chain.pop()
+		let unused = discovered.checked - discovered.used
+		for (let j = 1; j < unused; ++j) chain.pop()
 
 		// override the internal chain
 		this.account.chains[discovered.chainIndex] = chain
@@ -469,15 +469,15 @@ class Account {
 		return discovered
 	}
 	async _chainPromise(addresses, coin){
-		var results = {};
-		var foundAddresses = []
+		let results = {};
+		let foundAddresses = []
 
-		var addressPromises = [];
+		let addressPromises = [];
 
-		for (var addr of addresses){
-			var address = new Address(addr, coin, false);
+		for (let addr of addresses){
+			let address = new Address(addr, coin, false);
 
-			var prom = address.updateState()
+			let prom = address.updateState()
 
 			// This will only be called for any rejections AFTER the first one,
 			// please take a look at the comment below for more info.
@@ -498,7 +498,7 @@ class Account {
 			throw new Error("Unable to update Address state in _chainPromise \n" + e)
 		}
 
-		for (var address of promiseResponses){
+		for (let address of promiseResponses){
 			if (address.getTotalReceived() > 0){
 				foundAddresses.push(address)
 				results[address.getPublicAddress()] = true
@@ -516,9 +516,9 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
+	 * let account = new Account(account_master, Networks.flo, false);
 	 * account.discoverChain(0).then((acc) => {
 	 * 	console.log(acc.getChain(0).addresses)
 	 * })
@@ -526,7 +526,7 @@ class Account {
 	 */
 	async discoverChain(chain_number){
 		try {
-			var discovered = await this._discoverChain(chain_number, GAP_LIMIT)
+			let discovered = await this._discoverChain(chain_number, GAP_LIMIT)
 		} catch (e) { throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e) }
 
 		this.chains[chain_number] = { lastUpdate: Date.now() }
@@ -539,9 +539,9 @@ class Account {
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
+	 * let account = new Account(account_master, Networks.flo, false);
 	 * account.discoverChains().then((acc) => {
 	 * 	console.log(acc.getChain(0).addresses)
 	 * 	console.log(acc.getChain(1).addresses)
@@ -549,12 +549,12 @@ class Account {
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
 	async discoverChains(){
-		var chainsToDiscover = [0, 1]
+		let chainsToDiscover = [0, 1]
 
-		var account
+		let account
 
 		// Do each chain one at a time in case it crashes and errors out.
-		for (var c of chainsToDiscover){
+		for (let c of chainsToDiscover){
 			try {
 				account = await this.discoverChain(c)
 			} catch (e) { throw new Error("Unable to discoverChains! \n" + e) }
@@ -588,9 +588,9 @@ class Account {
 	 * @example
 	 * import { Account, Networks } from 'oip-hdmw'
 	 * 
-	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
+	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
-	 * var account = new Account(account_master, Networks.flo, false);
+	 * let account = new Account(account_master, Networks.flo, false);
 	 * 
 	 * account.onWebsocketUpdate((address) => {
 	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
