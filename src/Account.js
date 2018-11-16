@@ -5,7 +5,7 @@ import EventEmitter from 'eventemitter3'
 
 import Address from './Address'
 import TransactionBuilder from './TransactionBuilder'
-import { toBase58, isValidPublicAddress, discovery } from './util'
+import {toBase58, isValidPublicAddress, discovery} from './util'
 
 // Helper CONSTS (used in other consts)
 const SECOND = 1000;
@@ -16,7 +16,7 @@ const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE;
 const GAP_LIMIT = 20;
 
 const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
-	return { address: node, network: network }
+	return {address: node, network: network}
 }
 
 /**
@@ -24,12 +24,12 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * @typedef {Object} bip32
  * @example <caption>Spawn a Bitcoin bip32 Node</caption>
  * import bip32 from 'bip32';
- * 
+ *
  * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * @example <caption>Spawn a Flo bip32 Node</caption>
  * import bip32 from 'bip32';
  * import { Networks } from 'oip-hdmw';
- * 
+ *
  * let bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
  */
 
@@ -39,7 +39,7 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * @example
  * import bip32 from 'bip32';
  * import bip32utils from 'bip32-utils';
- * 
+ *
  * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * let chain = new bip32utils.Chain(bip32Node)
  */
@@ -75,7 +75,7 @@ class Account {
 	 * @param {Object} [options.serialized_data] - Serialized data to load the Account from
 	 * @return {Account}
 	 */
-	constructor(account_master, coin, options){
+	constructor(account_master, coin, options) {
 		this.account_master = account_master;
 		this.coin = coin || {};
 
@@ -112,11 +112,12 @@ class Account {
 		if (options && options.serialized_data)
 			this.deserialize(options.serialized_data)
 
-		if (this.discover){
+		if (this.discover) {
 			this.discoverChains()
 		}
 	}
-	serialize(){
+
+	serialize() {
 		let addresses = this.getAddresses()
 
 		let serialized_addresses = addresses.map((address) => {
@@ -124,39 +125,41 @@ class Account {
 		})
 
 		return {
-			extended_private_key: this.getExtendedPrivateKey(), 
+			extended_private_key: this.getExtendedPrivateKey(),
 			addresses: serialized_addresses,
 			chains: this.chains
 		}
 	}
-	deserialize(serialized_data){
-		if (serialized_data){
+
+	deserialize(serialized_data) {
+		if (serialized_data) {
 			// Rehydrate Addresses
-			if (serialized_data.addresses){
+			if (serialized_data.addresses) {
 				let rehydrated_addresses = []
 
-				for (let address of serialized_data.addresses){
+				for (let address of serialized_data.addresses) {
 					rehydrated_addresses.push(new Address(address.wif, this.coin, address))
 				}
 
-				for (let address of rehydrated_addresses){
+				for (let address of rehydrated_addresses) {
 					this.addresses[address.getPublicAddress()] = address
 				}
 			}
 			// Rehydrate Chain info
-			if (serialized_data.chains){
+			if (serialized_data.chains) {
 				this.chains = serialized_data.chains
 			}
 		}
 	}
+
 	/**
 	 * Get the Main Address for a specified Chain and Index on the Chain.
-	 * @param  {number}	[chain_number=0] - Number of the specific chain you want to get the Main Address for
+	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Main Address for
 	 * @param  {number} [main_address_number=0] - Index of the Main Address on the specified chain
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -164,17 +167,18 @@ class Account {
 	 * // address.getPublicAddress() = FPznv9i9iHX5vt4VMbH9x2LgUcrjtSn4cW
 	 * @return {Address}
 	 */
-	getMainAddress(chain_number, main_address_number){
+	getMainAddress(chain_number, main_address_number) {
 		return this.getAddress(chain_number, main_address_number)
 	}
+
 	/**
 	 * Get the Address for a specified Chain and Index on the Chain.
-	 * @param  {number}	[chain_number=0] - Number of the specific chain you want to get the Address from
+	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Address from
 	 * @param  {number} [address_number=0] - Index of the Address on the specified chain
 	 * @example <caption>Get the address on Chain `0` at Index `10`</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -182,9 +186,9 @@ class Account {
 	 * // address.getPublicAddress() = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
 	 * @return {Address}
 	 */
-	getAddress(chain_number, address_number){
+	getAddress(chain_number, address_number) {
 		let addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
-		
+
 		let tmpHydratedAddr = new Address(addr, this.coin, false)
 
 		// Attempt to match to address that we already have
@@ -195,13 +199,14 @@ class Account {
 
 		return tmpHydratedAddr
 	}
+
 	/**
 	 * Get all derived Addresses for the entire Account, or just for a specific Chain.
-	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
+	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Addresses on the Account</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -210,7 +215,7 @@ class Account {
 	 * @example <caption>Get the addresses on Chain `0`</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -218,36 +223,37 @@ class Account {
 	 * // addresses = [Address, Address, Address]
 	 * @return {Array.<Address>}
 	 */
-	getAddresses(chain_number){
+	getAddresses(chain_number) {
 		let addrs = [];
 
-		if (chain_number && typeof chain_number === "number"){
-			for (let addr in this.addresses){
+		if (chain_number && typeof chain_number === "number") {
+			for (let addr in this.addresses) {
 				let chain = this.account.getChain(chain_number);
 				let addresses = chain.addresses.map((ad) => {
 					return new Address(ad, this.coin, false)
 				})
-				for (let adr of addresses){
-					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()){
+				for (let adr of addresses) {
+					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()) {
 						addrs.push(this.addresses[addr])
 					}
 				}
 			}
 		} else {
-			for (let addr in this.addresses){
+			for (let addr in this.addresses) {
 				addrs.push(this.addresses[addr])
 			}
 		}
 
 		return addrs
 	}
+
 	/**
 	 * Get all Used Addresses (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
-	 * @param  {number}	[chain_number] - Number of the specific chain you want to get the Addresses from
+	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Used Addresses on the Account</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * var account = new Account(account_master, Networks.flo, false);
@@ -256,7 +262,7 @@ class Account {
 	 * @example <caption>Get the addresses on Chain `0`</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * var account = new Account(account_master, Networks.flo, false);
@@ -264,7 +270,7 @@ class Account {
 	 * // addresses = [Address, Address, Address]
 	 * @return {Array.<Address>}
 	 */
-	getUsedAddresses(chain_number){
+	getUsedAddresses(chain_number) {
 		let used_addresses = []
 		let all_addresses = this.getAddresses()
 
@@ -274,12 +280,13 @@ class Account {
 
 		return used_addresses
 	}
+
 	/**
 	 * Get the Balance for the entire Account
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -292,35 +299,37 @@ class Account {
 	 * @param {number} [options.id] - The ID number to return when the Promise resolves
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
-	async getBalance(options){
+	async getBalance(options) {
 		let discover = this.discover;
 
 		if (options && options.discover !== undefined)
 			discover = options.discover;
 
-		if (discover){
+		if (discover) {
 			try {
 				await this.discoverChains()
-			} catch (e) { throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e) }
+			} catch (e) {
+				throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e)
+			}
 		}
 
 		let totalBal = 0;
 
 		// Iterate through each of the addresses we have found
-		for (let addr in this.addresses){
+		for (let addr in this.addresses) {
 			// Are we searching only for a single addresses balance?
-			if (options && options.addresses && typeof options.addresses === "string"){
-				if (addr === options.addresses){
+			if (options && options.addresses && typeof options.addresses === "string") {
+				if (addr === options.addresses) {
 					totalBal += this.addresses[addr].getBalance()
 				}
-			// Are we searching for only the addresses in an array?
-			} else if (options && options.addresses && Array.isArray(options.addresses)){
-				for (let ad of options.addresses){
-					if (addr === ad){
+				// Are we searching for only the addresses in an array?
+			} else if (options && options.addresses && Array.isArray(options.addresses)) {
+				for (let ad of options.addresses) {
+					if (addr === ad) {
 						totalBal += this.addresses[addr].getBalance()
 					}
 				}
-			// If not the first two, then just add them all up :)
+				// If not the first two, then just add them all up :)
 			} else {
 				totalBal += this.addresses[addr].getBalance()
 			}
@@ -335,38 +344,41 @@ class Account {
 
 		return balance_data
 	}
+
 	/**
 	 * Get the Next Chain Address for a specified chain
 	 * @param  {number} [chain_number=0] - The specific chain that you want to get the next address from
 	 * @example <caption>Get the next Chain Address on Chain #1</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
 	 * let address = account.getNextChainAddress(1)
 	 * @return {Address}
 	 */
-	getNextChainAddress(chain_number){
+	getNextChainAddress(chain_number) {
 		return new Address(this.account.getChain(chain_number || 0).next(), this.coin, false);
 	}
+
 	/**
 	 * Get the Next Change Address from the "Internal" chain
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
 	 * let address = account.getNextChangeAddress()
 	 * @return {Address}
 	 */
-	getNextChangeAddress(){
+	getNextChangeAddress() {
 		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
 		return this.getNextChainAddress(1)
 	}
+
 	/**
 	 * Send a Payment to specified Addresses and Amounts
 	 * @param  {Object} options - the options for the specific transaction being sent
@@ -376,7 +388,7 @@ class Account {
 	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
 	 * @return {Promise<string>} - Returns a promise that will resolve to the success TXID
 	 */
-	sendPayment(options){
+	sendPayment(options) {
 		return new Promise((resolve, reject) => {
 			if (!options)
 				reject(new Error("You must define your payment options!"))
@@ -389,30 +401,30 @@ class Account {
 				// Check if we define what address we wish to send from
 				if (options.from) {
 					if (typeof options.from === "string") {
-						for (let address of allAddresses){
-							if (address.getPublicAddress() === options.from){
+						for (let address of allAddresses) {
+							if (address.getPublicAddress() === options.from) {
 								sendFrom.push(address);
 							}
 						}
 					} else if (Array.isArray(options.from)) {
-						for (let adr of options.from){
-							for (let address of allAddresses){
-								if (address.getPublicAddress() === adr){
+						for (let adr of options.from) {
+							for (let address of allAddresses) {
+								if (address.getPublicAddress() === adr) {
 									sendFrom.push(address);
 								}
 							}
 						}
 					}
-				// else add all the addresses on the Account that have recieved any txs
+					// else add all the addresses on the Account that have recieved any txs
 				} else {
-					for (let address of allAddresses){
-						if (address.getBalance() >= 0){
+					for (let address of allAddresses) {
+						if (address.getBalance() >= 0) {
 							sendFrom.push(address)
 						}
 					}
 				}
 
-				if (sendFrom.length === 0){
+				if (sendFrom.length === 0) {
 					reject(new Error("No Addresses match defined options.from Addresses!"))
 					return;
 				}
@@ -426,19 +438,20 @@ class Account {
 				txb.sendTX().then(resolve);
 			}
 
-			if (options.discover === false){
+			if (options.discover === false) {
 				processPayment();
 			} else {
 				this.discoverChains().then(processPayment)
 			}
 		})
 	}
+
 	/**
 	 * Get the Extended Private Key for the Account
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -446,15 +459,16 @@ class Account {
 	 * // extPrivateKey = Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC
 	 * @return {string}
 	 */
-	getExtendedPrivateKey(){
+	getExtendedPrivateKey() {
 		return this.account_master.toBase58()
 	}
+
 	/**
 	 * Get the Extended Public Key for the Account
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -462,25 +476,27 @@ class Account {
 	 * // extPublicKey = Fpub1BPo8vEQqDkoDQmDqcJ8WFHD331AMpd7VU7atCJsix8xbHwN6K9wfDLjZKnW9fUw5uJg8UJMLhQ5W7gTxv6DbkfPoeJbBpMaUHrULxzVnSy
 	 * @return {string}
 	 */
-	getExtendedPublicKey(){
+	getExtendedPublicKey() {
 		return this.account_master.neutered().toBase58()
 	}
+
 	/**
 	 * Get the specified Chain number
 	 * @param {number} chain_number - The number of the chain you are requesting
 	 * @example <caption>Get Chain 0</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
 	 * let chain = account.getChain(0)
 	 * @return {bip32utilschain}
 	 */
-	getChain(chainNumber){
+	getChain(chainNumber) {
 		return this.account.getChain(chainNumber)
 	}
+
 	async _discoverChain(chainNumber, gapLimit) {
 		let chains = this.account.getChains()
 		let chain = chains[chainNumber].clone()
@@ -489,7 +505,7 @@ class Account {
 
 		try {
 			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
-		} catch(e){
+		} catch (e) {
 			throw new Error("Discovery error in _discoverChain #" + chainNumber + " \n" + e)
 		}
 
@@ -505,21 +521,23 @@ class Account {
 
 		return discovered
 	}
-	async _chainPromise(addresses, coin){
+
+	async _chainPromise(addresses, coin) {
 
 		let results = {};
 		let allAddresses = []
 
 		let addressPromises = [];
 
-		for (let addr of addresses){
+		for (let addr of addresses) {
 			let address = new Address(addr, coin, false);
 
 			let prom = address.updateState()
 
 			// This will only be called for any rejections AFTER the first one,
 			// please take a look at the comment below for more info.
-			prom.catch((e) => {})
+			prom.catch((e) => {
+			})
 
 			addressPromises.push(address.updateState())
 		}
@@ -536,8 +554,8 @@ class Account {
 			throw new Error("Unable to update Address state in _chainPromise \n" + e)
 		}
 
-		for (let address of promiseResponses){
-			if (address.getTotalReceived() > 0){
+		for (let address of promiseResponses) {
+			if (address.getTotalReceived() > 0) {
 				results[address.getPublicAddress()] = true
 			} else {
 				results[address.getPublicAddress()] = false
@@ -549,13 +567,14 @@ class Account {
 
 		return {results: results, addresses: allAddresses}
 	}
+
 	/**
 	 * Discover Used and Unused addresses for a specified Chain number
 	 * @param  {number} chain_number - The number of the chain you wish to discover
 	 * @example <caption>Discover Chain 0</caption>
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -564,21 +583,24 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	async discoverChain(chain_number){
+	async discoverChain(chain_number) {
 		try {
 			let discovered = await this._discoverChain(chain_number, GAP_LIMIT)
-		} catch (e) { throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e) }
+		} catch (e) {
+			throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e)
+		}
 
-		this.chains[chain_number] = { lastUpdate: Date.now() }
+		this.chains[chain_number] = {lastUpdate: Date.now()}
 
 		return this
 	}
+
 	/**
 	 * Discover all Chains
 	 * @example
 	 * import bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
@@ -588,55 +610,60 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	async discoverChains(){
+	async discoverChains() {
 		let chainsToDiscover = [0, 1]
 
 		let account
 
 		// Do each chain one at a time in case it crashes and errors out.
-		for (let c of chainsToDiscover){
+		for (let c of chainsToDiscover) {
 			try {
 				account = await this.discoverChain(c)
-			} catch (e) { throw new Error("Unable to discoverChains! \n" + e) }
+			} catch (e) {
+				throw new Error("Unable to discoverChains! \n" + e)
+			}
 		}
 
 		this._subscribeToAddressWebsocketUpdates()
 
 		return account
 	}
+
 	/**
 	 * Internal function used to subscribe to WebSocket updates for All Discovered Addresses
 	 */
-	_subscribeToAddressWebsocketUpdates(){
+	_subscribeToAddressWebsocketUpdates() {
 		let allAddresses = this.getAddresses()
 
 		for (let address of allAddresses)
 			address.onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
 	}
+
 	/**
 	 * Internal function used to process Address updates streaming in from Websockets,
 	 * emits an update that can be subscribed to with onWebsocketUpdate
 	 * @param  {Object} update - Websocket Update Data
 	 */
-	_handleWebsocketUpdate(address){
+	_handleWebsocketUpdate(address) {
 		this.event_emitter.emit("websocket_update", address)
 	}
+
 	/**
 	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example
 	 * import { Account, Networks } from 'oip-hdmw'
-	 * 
+	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
 	 *
 	 * let account = new Account(account_master, Networks.flo, false);
-	 * 
+	 *
 	 * account.onWebsocketUpdate((address) => {
 	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
 	 * })
 	 */
-	onWebsocketUpdate(subscriber_function){
+	onWebsocketUpdate(subscriber_function) {
 		this.event_emitter.on("websocket_update", subscriber_function)
 	}
 }
