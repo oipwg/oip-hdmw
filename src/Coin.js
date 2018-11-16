@@ -27,15 +27,19 @@ class Coin {
 	 *
 	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
 	 *```
-	 * @param  {string} seed - Master Seed hex (needs to be at least 128 bits)
+	 * @param  {string} node - BIP32 Node already derived to m/44'
 	 * @param  {CoinInfo} coin - The CoinInfo containing network & version variables
 	 * @param  {Object} [options] - The Options for spawning the Coin
 	 * @param  {boolean} [options.discover=true] - Should the Coin auto-discover Accounts and Chains
 	 * @param  {Object} [options.serialized_data] - The Data to de-serialize from
 	 * @return {Coin}
 	 */
-	constructor(seed, coin, options){
-		this.seed = seed
+	constructor(node, coin, options){
+		if (typeof node === "string")
+			this.seed = node
+		else
+			this.seed = node.toBase58()
+		
 		this.coin = coin
 
 		this.discover = true
@@ -43,7 +47,8 @@ class Coin {
 		if (options && options.discover !== undefined)
 			this.discover = options.discover
 
-		var mainRoot = bip32.fromSeed(new Buffer(this.seed, "hex"), this.coin.network);
+		var purposeNode = bip32.fromBase58(this.seed);
+		purposeNode.network = this.coin.network
 
 		var bip44Num = this.coin.network.slip44;
 
@@ -51,7 +56,7 @@ class Coin {
 		if (bip44Num >= COIN_START)
 			bip44Num -= COIN_START;
 
-		this.root = mainRoot.derivePath("m/44'/" + bip44Num + "'");
+		this.root = purposeNode.derivePath(bip44Num + "'");
 
 		this.accounts = {}
 
@@ -419,7 +424,7 @@ class Coin {
 			await this.getAccount(0).discoverChains()
 		} catch (e) { throw new Error("Unable to discoverAccounts! \n" + e) }
 
-		while (this.accounts[this.getHighestAccountNumber()].getAddresses().length > 0){
+		while (this.accounts[this.getHighestAccountNumber()].getUsedAddresses().length > 0){
 			try {
 				await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
 			} catch (e) { throw new Error("Unable to discover account #" + (this.getHighestAccountNumber() + 1) + "\n" + e) }

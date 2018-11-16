@@ -2,9 +2,9 @@ var Coin = require('../src').Coin;
 var Networks = require('../src').Networks;
 
 test('Coin Account keys generated from Mnemonic Match', () => {
-	var bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
-	var litecoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.litecoin, {discover: false})
-	var flo = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo, {discover: false})
+	var bitcoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.bitcoin, {discover: false})
+	var litecoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.litecoin, {discover: false})
+	var flo = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.flo, {discover: false})
 
 	expect(bitcoin.getExtendedPrivateKey()).toBe("xprv9wnZLsHUEcR3UVuysrCTjAu7FWKXN2m5XVrgkEmeptHqi5yNkR8seouPutDWAJQcUPYDzTDgjK7G1h53M4QeA4myt6gUSUgdFhQSYw7XAV4")
 	expect(bitcoin.getExtendedPublicKey()).toBe("xpub6AmukNpN4yyLgyzSysjU6JqqoYA1mVUvtinHYdBGPDppatJXHxT8CcDsmBo9n3yLBgrcw9z62ygt1siT9xai4UaJ2w4FPmY6kPCF96YN2cF")
@@ -29,7 +29,7 @@ test('Coin Serialization & Deserialization', () => {
 			"scriptHash":58,
 			"wif":239
 		},
-		"seed":"5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4",
+		"seed":"xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh",
 		"accounts":{  
 			"0":{  
 				"extended_private_key":"Fprt4gUYQvk1qawUdXNqoVhEFAW2Bn7bcYv6gQogtqYBZBUYDqjdtX2g2HcbymAwkEQbM3xJ3rCYRVnsEcxYcg4ZitbW5XazvVH9kJMLnm2rmrb",
@@ -165,7 +165,7 @@ test('Coin Serialization & Deserialization', () => {
 })
 
 test('Can add Account to Coin', () => {
-	var bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
+	var bitcoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.bitcoin, {discover: false})
 
 	bitcoin.addAccount(1);
 
@@ -173,7 +173,7 @@ test('Can add Account to Coin', () => {
 })
 
 test('Can add Account to Coin (string)', () => {
-	var bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
+	var bitcoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.bitcoin, {discover: false})
 
 	bitcoin.addAccount("1");
 
@@ -181,7 +181,7 @@ test('Can add Account to Coin (string)', () => {
 })
 
 test('Account add on second time just returns account', () => {
-	var bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
+	var bitcoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.bitcoin, {discover: false})
 
 	var x = bitcoin.addAccount("1");
 	expect(bitcoin.addAccount(1)).toBe(x)
@@ -190,18 +190,18 @@ test('Account add on second time just returns account', () => {
 })
 
 test('Account auto-adds if not Existing on Coin', () => {
-	var bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
+	var bitcoin = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.bitcoin, {discover: false})
 
 	expect(bitcoin.getAccount(1).getExtendedPrivateKey()).toBe("xprv9xpXFhFpqdQK5owUStFsuAiWUxYpLkvQn1QmVDumBKTvmmjkNEZgpMYoAaAftt3JVeDhRkvyLvrKathDToUMdz2FqRF7JNavF7uboJWArrw")
 })
 
 test('Coin, get main address (many coins)', () => {
-	var bitcoin 		 =	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
-	var litecoin 		 = 	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.litecoin, {discover: false})
-	var flo 			 = 	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo, {discover: false})
-	var bitcoin_testnet  = 	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin_testnet, {discover: false})
-	var litecoin_testnet = 	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.litecoin_testnet, {discover: false})
-	var flo_testnet 	 =	new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+	var bitcoin 		 =	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.bitcoin, {discover: false})
+	var litecoin 		 = 	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.litecoin, {discover: false})
+	var flo 			 = 	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo, {discover: false})
+	var bitcoin_testnet  = 	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.bitcoin_testnet, {discover: false})
+	var litecoin_testnet = 	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.litecoin_testnet, {discover: false})
+	var flo_testnet 	 =	new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
 
 	expect(bitcoin.getMainAddress().getPublicAddress()).toBe("1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA");
 	expect(litecoin.getMainAddress(0).getPublicAddress()).toBe("LUWPbpM43E2p7ZSh8cyTBEkvpHmr3cB8Ez");
@@ -212,7 +212,7 @@ test('Coin, get main address (many coins)', () => {
 })
 
 test('Coin, get main address, single coin', () => {
-	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+	var flo_testnet = new Coin("xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh", Networks.flo_testnet, {discover: false})
 
 	expect(flo_testnet.getExtendedPrivateKey()).toBe("Fprt4fYqEmCM4dWVwLQT4z1gyG1c2PSbJbM9sCkZfAgoWBCB1EFzHvLQg5PypdRntRAzT91PGeGi8DzHbe3wSbwqriP7nZJhAMYqMQtMGyr3weo")
 	expect(flo_testnet.getExtendedPublicKey()).toBe("Fput3UqK2g2pBHyVYRLznrwkYRqprgj9Jn7Mw9XCy4DpZx56aaYsxyvgNHaevMxbHq5PBGC7H6LqCqD55oa5UCy5H3FmNhjodaNQNP5UUPGME8K")
@@ -227,17 +227,17 @@ test('Coin, get main address, single coin', () => {
 })
 
 test('Coin, get flo_testnet balance', (done) => {
-	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+	var flo_testnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
 
 	flo_testnet.getBalance().then((balance) => {
 		expect(flo_testnet.getAccounts()[0]).toBeDefined()
 		expect(balance).toBeGreaterThan(1);
 		done()
 	})
-}, 10000)
+}, 30000)
 
 /*test('Coin, catch network request error', async (done) => {
-	let bitcoin = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.bitcoin, {discover: false})
+	let bitcoin = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.bitcoin, {discover: false})
 
 	let myPromise = bitcoin.getBalance({discover: true, test_error: true })
 	let balance, error = false;
@@ -258,7 +258,7 @@ test('Coin, get flo_testnet balance', (done) => {
 }, 10000)*/
 
 test('Coin, discover accounts', async (done) => {
-	let flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+	let flo_testnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
 
 	expect(flo_testnet.getCoinInfo()).toEqual(Networks.flo_testnet)
 
@@ -268,16 +268,16 @@ test('Coin, discover accounts', async (done) => {
 		expect(accounts.length >= 2).toBe(true);
 		done()
 	}
-}, 10000)
+}, 30000)
 
 test('Coin, getCoinInfo', () => {
-	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+	var flo_testnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
 
 	expect(flo_testnet.getCoinInfo()).toEqual(Networks.flo_testnet)
 })
 
 // test('Test send payment (with from account)', (done) => {
-// 	var flo_testnet = new Coin('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', Networks.flo_testnet, {discover: false})
+// 	var flo_testnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.flo_testnet, {discover: false})
 
 // 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh
 // 	flo_testnet.sendPayment({

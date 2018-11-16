@@ -1,6 +1,7 @@
+import bip32 from 'bip32'
 import bip39 from 'bip39'
-import Exchange from 'oip-exchange-rate'
 import EventEmitter from 'eventemitter3'
+import Exchange from 'oip-exchange-rate'
 
 import Coin from './Coin'
 import networks from './networks'
@@ -61,6 +62,9 @@ class Wallet {
 			this.fromMnemonic(bip39.generateMnemonic());
 		}
 
+		// Derive the "m" level of the BIP44 wallet
+		this.master_node = bip32.fromSeed(new Buffer(this.seed, "hex"))
+
 		// Setup EventEmitter to notify when we have changed
 		this.event_emitter = new EventEmitter()
 
@@ -115,6 +119,7 @@ class Wallet {
 		}
 
 		return {
+			master_node: this.master_node.toBase58(),
 			seed: this.getMnemonic() ? this.getMnemonic() : this.seed,
 			coins: serialized_coins
 		}
@@ -142,7 +147,7 @@ class Wallet {
 		// If the coin isn't already added AND we have access to a valid network, 
 		// then add the coin.
 		if (!this.coins[name] && this.networks[name]){
-			this.coins[name] = new Coin(this.seed, this.networks[name], opts)
+			this.coins[name] = new Coin(this.master_node.derivePath("44'"), this.networks[name], opts)
 			this.coins[name].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
 		}
 	}
@@ -368,8 +373,8 @@ class Wallet {
 		if (isEntropy(entropy)){
 			this.entropy = entropy;
 			this.mnemonic = bip39.entropyToMnemonic(this.entropy);
-			this.seed = bip39.mnemonicToSeedHex(this.mnemonic);
-			return true
+
+			return this.fromMnemonic(this.mnemonic)
 		}
 
 		return false
