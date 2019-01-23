@@ -520,6 +520,18 @@ class Wallet {
 	onWebsocketUpdate(subscriber_function){
 		this.event_emitter.on("websocket_update", subscriber_function)
 	}
+	
+	/**
+	 * Returns the network information for the coins available
+	 * @return Array.<CoinInfo>
+	 */
+	getNetworks() {
+		return this.networks
+	}
+	
+	setNetworks(networks) {
+		this.networks = networks
+	}
 }
 
 module.exports = Wallet
