@@ -536,11 +536,19 @@ class Wallet {
 	}
 	
 	/**
-	 * Add default supported testnet coins to wallet
+	 * Add default SUPPORTED testnet coins to wallet
 	 */
 	addTestnetCoins() {
 		for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
 			this.addCoin(coin_name)
+	}
+	
+	/**
+	 * Remove default SUPPORTED testnet coins
+	 */
+	removeTestnetCoins() {
+		for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
+			delete this.coins[coin_name]
 	}
 	
 	/**
