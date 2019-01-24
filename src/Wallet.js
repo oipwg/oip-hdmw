@@ -229,10 +229,10 @@ class Wallet {
         for (let coin in coinPromises) {
             let response = await coinPromises[coin]
 
-            if (response.balance)
+            if (typeof response.balance === 'number')
             	coin_balances[coin] = response.balance
             else
-            	coin_balances[coin] = "error fetching balance";
+            	coin_balances[coin] = `error fetching balance: ${response}`;
         }
 
         return coin_balances
