@@ -2,6 +2,7 @@ import bip32 from 'bip32'
 import bip39 from 'bip39'
 import EventEmitter from 'eventemitter3'
 import Exchange from 'oip-exchange-rate'
+import { Insight } from 'insight-explorer'
 
 import Coin from './Coin'
 import networks from './networks'
@@ -531,6 +532,35 @@ class Wallet {
 	
 	setNetworks(networks) {
 		this.networks = networks
+	}
+	
+	/**
+	 * Set the urls for the insight api explorers
+	 * @param options
+	 * @param {string} options.flo - flo api
+	 * @param {string} options.flo_testnet - flo_testnet api
+	 * @param {string} options.bitcoin - bitcoin api
+	 * @param {string} options.bitcoin_testnet - bitcoin_testnet api
+	 * @param {string} options.litecoin - litecoin api
+	 * @param {string} options.litecoin_testnet - litecoin_testnet api
+	 * @example
+	 * let options = {
+	 *     flo: 'myFloSiteApi.com/yadayada,
+	 *     bitcoin: 'myBitcoinApi.superApi/AyePeeEye',
+	 *     litecoin: 'superLightCoin.hero'
+	 * }
+	 * new Wallet(mnemonic, {discover: false}).setNetworkApi(options)
+	 */
+	setNetworkApi(options) {
+		let networks = this.getNetworks();
+		for (let network_coin in networks) {
+			for (let coin in options) {
+				if (network_coin === coin) {
+					networks[coin].explorer = new Insight(options[coin])
+				}
+			}
+		}
+		this.setNetworks(networks)
 	}
 }
 

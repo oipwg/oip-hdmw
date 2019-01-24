@@ -248,6 +248,38 @@ test('Wallet getExchangeRates', async (done) => {
 	done()
 }, 100000)
 
+test('set network apis', () => {
+	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	let oldNetworks = wallet.getNetworks()
+
+	let oldUrls = []
+	for (let coin in oldNetworks) {
+		oldUrls.push(oldNetworks[coin].explorer.url)
+	}
+
+	let options = {flo: 'flo.ryan', bitcoin: 'bitcoin.ryan', litecoin: 'litecoin.ryan'}
+	wallet.setNetworkApi(options)
+	let newNetworks = wallet.getNetworks()
+	
+	let newUrls = []
+	for (let coin in newNetworks) {
+		newUrls.push(newNetworks[coin].explorer.url)
+	}
+	
+	let myUrls = []
+	for (let url of newUrls) {
+		if (!oldUrls.includes(url)) {
+			myUrls.push(url)
+		}
+	}
+	
+	expect(myUrls.length).toEqual(3)
+	for (let coin in options) {
+		expect(myUrls.includes(options[coin]))
+	}
+	
+})
+
 // test('Wallet sendPayment', (done) => {
 // 	var w = new Wallet('00000000000000000000000000000000', { 
 // 		discover: false,
