@@ -11,6 +11,7 @@ import TransactionBuilder from './TransactionBuilder'
 import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
 
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
+const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoin_testnet', 'flo_testnet', 'litecoin_testnet'];
 
 /** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
 class Wallet {
@@ -532,6 +533,14 @@ class Wallet {
 	
 	setNetworks(networks) {
 		this.networks = networks
+	}
+	
+	/**
+	 * Add default supported testnet coins to wallet
+	 */
+	addTestnetCoins() {
+		for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
+			this.addCoin(coin_name)
 	}
 	
 	/**

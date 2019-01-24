@@ -277,7 +277,13 @@ test('set network apis', () => {
 	for (let coin in options) {
 		expect(myUrls.includes(options[coin]))
 	}
-	
+})
+
+test('add default supported testnet coins', () => {
+	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo"])
+	wallet.addTestnetCoins()
+	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo", "bitcoin_testnet", "flo_testnet", "litecoin_testnet"])
 })
 
 // test('Wallet sendPayment', (done) => {
