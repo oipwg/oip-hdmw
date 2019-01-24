@@ -203,6 +203,7 @@ class Wallet {
      * @param {Object} [options] - The options for searching the Balance of coins
      * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
      * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+     * @param {Boolean} [options.testnet=false] - Should we attempt to get balances for testnet coins as well (coins ending with '_testnet')
      * 
      * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
      * 
@@ -217,9 +218,17 @@ class Wallet {
      *      "litecoin": 3.32211
      * }
      */
-    async getCoinBalances(options = { discover: true }){
-        const coinnames = options.coins || Object.keys(this.getCoins());
-
+    async getCoinBalances(options = { discover: true, testnet: false }){
+        let coinnames = options.coins || Object.keys(this.getCoins());
+        
+        if (!options.testnet) {
+	        for (let i = coinnames.length - 1; i >= 0; i--) {
+				if (coinnames[i].includes('_testnet')) {
+					coinnames.splice(i, 1)
+				}
+	        }
+        }
+        
         let coinPromises = {};
 
         for (let name of coinnames) {

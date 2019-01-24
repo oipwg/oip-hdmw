@@ -295,6 +295,23 @@ test('remove default supported testnet coins', () => {
 	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo"])
 })
 
+test('remove testnet coins in getCoinBalances', () => {
+	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	wallet.addTestnetCoins()
+	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo", "bitcoin_testnet", "flo_testnet", "litecoin_testnet"])
+	
+	let coinnames = Object.keys(wallet.getCoins())
+
+	for (let i = coinnames.length - 1; i >= 0; i--) {
+		if (coinnames[i].includes('_testnet')) {
+			coinnames.splice(i, 1)
+		}
+	}
+	
+	expect(coinnames).toEqual(["bitcoin", "litecoin", "flo"])
+	
+})
+
 
 // test('Wallet sendPayment', (done) => {
 // 	var w = new Wallet('00000000000000000000000000000000', { 
