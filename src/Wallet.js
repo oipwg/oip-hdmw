@@ -243,7 +243,7 @@ class Wallet {
             if (typeof response.balance === 'number')
             	coin_balances[coin] = response.balance
             else
-            	coin_balances[coin] = `error fetching balance: ${response}`;
+            	coin_balances[coin] = `error fetching balance: ${JSON.stringify(response)}`;
         }
 
         return coin_balances
