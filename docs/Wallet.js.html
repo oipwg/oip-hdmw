@@ -364,7 +364,9 @@ class Wallet {
         let coins = options.coins || Object.keys(this.getCoins());
 
         if (!coins) throw new Error("No coins found to fetch exchange rates");
-
+        if (!options.fiat)
+        	options.fiat = 'usd'
+	    
         // Initialize an Exchange object
         if (!this._exchange)
         	this._exchange = new Exchange()

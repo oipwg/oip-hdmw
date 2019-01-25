@@ -248,6 +248,14 @@ test('Wallet getExchangeRates', async (done) => {
 	done()
 }, 100000)
 
+test('Wallet getExchangeRates with coin options', async (done) => {
+	var walb = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	let rates = await walb.getExchangeRates({coins: ['flo']})
+	expect(rates.flo).toBeDefined()
+	expect(typeof rates.flo === 'number')
+	done()
+}, 100000)
+
 test('set network apis', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
 	let oldNetworks = wallet.getNetworks()
