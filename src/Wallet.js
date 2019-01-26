@@ -281,6 +281,8 @@ class Wallet {
         let promiseArray = {};
 
         for (let coinname of coins) {
+        	if (coinname.includes('_testnet'))
+        		break;
             promiseArray[coinname] = this._exchange.getExchangeRate(coinname, options.fiat);
         }
 
