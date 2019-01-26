@@ -548,18 +548,17 @@ class Wallet {
 	
 	/**
 	 * Add default SUPPORTED testnet coins to wallet
+	 * @param {Boolean} [bool=true] - if true, add testnet coins, is false, remove them
 	 */
-	addTestnetCoins() {
-		for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
-			this.addCoin(coin_name)
-	}
-	
-	/**
-	 * Remove default SUPPORTED testnet coins
-	 */
-	removeTestnetCoins() {
-		for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
-			delete this.coins[coin_name]
+	addTestnetCoins(bool = true) {
+		if (bool) {
+			for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
+				this.addCoin(coin_name)
+		} else {
+			for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS)
+				delete this.coins[coin_name]
+		}
+		
 	}
 	
 	/**
