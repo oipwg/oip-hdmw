@@ -587,7 +587,7 @@ class Wallet {
 	 * }
 	 * new Wallet(mnemonic, {discover: false}).setNetworkApi(options)
 	 */
-	setNetworkApi(options) {
+	setNetworkApis(options) {
 		let networks = this.getNetworks();
 		for (let network_coin in networks) {
 			for (let coin in options) {
