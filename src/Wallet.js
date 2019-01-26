@@ -598,6 +598,17 @@ class Wallet {
 		}
 		this.setNetworks(networks)
 	}
+	
+	getNetworkApiUrls() {
+		let networks = this.getNetworks();
+		
+		let networkObject = {}
+		for (let coin in networks) {
+			networkObject[coin] = networks[coin].explorer.url
+		}
+		
+		return networkObject
+	}
 }
 
 module.exports = Wallet
