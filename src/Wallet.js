@@ -299,14 +299,12 @@ class Wallet {
     }
     /**
      * Calculate Balance of coins after exchange rate conversion
-     *
-     * * @param {Object} [options] - The options for getting the exchange rates
+     * @param {Object} [options] - The options for getting the exchange rates
      * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
      * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
      * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
-     * 
+     * @param {Boolean} [options.testnet=true] - should we include testnet coins?
      * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
-     * 
      * @example
      * let wallet = new Wallet(...)
      * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
@@ -321,8 +319,17 @@ class Wallet {
     async getFiatBalances(options){
         let fiatBalances = {}, balances = {}, xrates = {};
 
-        balances = await this.getCoinBalances(options);
-        xrates = await this.getExchangeRates(options);
+        try {
+	        balances = await this.getCoinBalances(options);
+        } catch (err) {
+        	throw new Error(`Failled to get coin balances: ${JSON.stringify(err)}`)
+        }
+        
+        try {
+	        xrates = await this.getExchangeRates(options);
+        } catch (err) {
+	        throw new Error(`Failled to get exchange rates: ${JSON.stringify(err)}`)
+        }
 
         for (let coinB in balances) {
             for (let coinX in xrates) {
