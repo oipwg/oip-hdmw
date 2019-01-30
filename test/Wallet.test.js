@@ -279,7 +279,18 @@ test('set network apis', () => {
 	}
 })
 
-test('get network apis', () => {
+test('get network api urls', () => {
+	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	expect(wallet.getNetworkApiUrls()).toEqual(
+		{
+			bitcoin: 'https://bitsight.failover.alexandria.io/api',
+			flo: 'https://livenet.flocha.in/api',
+			litecoin: 'https://litesight.failover.alexandria.io/api',
+		}
+	)
+})
+
+test('get network api urls with testnet coins', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
 	wallet.addTestnetCoins()
 	expect(wallet.getNetworkApiUrls()).toEqual(

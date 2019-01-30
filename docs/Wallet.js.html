@@ -696,10 +696,13 @@ class Wallet {
 		let networks = this.getNetworks();
 		
 		let networkObject = {}
-		for (let coin in networks) {
-			networkObject[coin] = networks[coin].explorer.url
+		for (let walletCoin of Object.keys(this.getCoins())) {
+			for (let networkCoin in networks) {
+				if (walletCoin === networkCoin) {
+					networkObject[walletCoin] = networks[walletCoin].explorer.url
+				}
+			}
 		}
-		
 		return networkObject
 	}
 }
