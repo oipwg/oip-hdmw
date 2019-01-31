@@ -290,6 +290,18 @@ test('get network api urls', () => {
 	)
 })
 
+test('static method call from instance', () => {
+	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
+	expect(wallet.constructor.getDefaultNetworkApiUrls()).toEqual({
+		bitcoin: 'https://bitsight.failover.alexandria.io/api',
+		bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
+		flo: 'https://livenet.flocha.in/api',
+		flo_testnet: 'https://testnet.flocha.in/api',
+		litecoin: 'https://litesight.failover.alexandria.io/api',
+		litecoin_testnet: 'https://litesight.mk1.alexandria.io/api'
+	})
+})
+
 test('reset network api urls', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
 	wallet.setNetworkApis({

@@ -620,6 +620,10 @@ class Wallet {
 	resetNetworkApiUrls() {
 		this.setNetworkApis(networkConfig.defaultApiUrls)
 	}
+	
+	static getDefaultNetworkApiUrls() {
+		return networkConfig.defaultApiUrls
+	}
 }
 
 module.exports = Wallet
