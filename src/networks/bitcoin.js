@@ -1,6 +1,7 @@
 import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
 import bip44constants from 'bip44-constants'
+import config from './config'
 
 var bitcoinFeePerKb = 100000
 
@@ -21,7 +22,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://bitsight.failover.alexandria.io/api'),
+	explorer: new Insight(config.defaultApiUrls.bitcoin),
 
 	getExtraBytes: function(options){ return },
 

@@ -1,4 +1,5 @@
 import { Insight } from 'insight-explorer'
+import config from "./config";
 
 var litecoinFeePerKb = 100000
 
@@ -15,7 +16,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://litesight.mk1.alexandria.io/api'),
+	explorer: new Insight(config.defaultApiUrls.litecoin_testnet),
 
 	getExtraBytes: function(options){ return },
 

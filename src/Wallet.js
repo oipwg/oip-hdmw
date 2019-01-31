@@ -6,6 +6,7 @@ import { Insight } from 'insight-explorer'
 
 import Coin from './Coin'
 import networks from './networks'
+import networkConfig from './networks/config'
 
 import TransactionBuilder from './TransactionBuilder'
 import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
@@ -599,6 +600,9 @@ class Wallet {
 		this.setNetworks(networks)
 	}
 	
+	/**
+	 * Get back the network explorer apis for supported coins
+	 */
 	getNetworkApiUrls() {
 		let networks = this.getNetworks();
 		
@@ -611,6 +615,10 @@ class Wallet {
 			}
 		}
 		return networkObject
+	}
+	
+	resetNetworkApiUrls() {
+		this.setNetworkApis(networkConfig.defaultApiUrls)
 	}
 }
 

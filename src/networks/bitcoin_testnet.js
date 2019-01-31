@@ -1,6 +1,8 @@
 import { Insight } from 'insight-explorer'
 import { networks } from 'bitcoinjs-lib'
 
+import config from './config'
+
 var bitcoinFeePerKb = 100000
 
 var n = networks.testnet;
@@ -20,7 +22,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://bitsight.mk1.alexandria.io/api'),
+	explorer: new Insight(config.defaultApiUrls.bitcoin_testnet),
 
 	getExtraBytes: function(options){ return },
 

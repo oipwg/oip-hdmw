@@ -1,5 +1,6 @@
 import { Insight } from 'insight-explorer'
 import { varIntBuffer } from '../util'
+import config from "./config";
 
 var floFeePerKb = 100000
 
@@ -85,7 +86,7 @@ module.exports = {
 
 	txVersion: 2,
 
-	explorer: new Insight('https://livenet.flocha.in/api'),
+	explorer: new Insight(config.defaultApiUrls.flo),
 
 	getExtraBytes: function(options){
 		var fData = options.floData || ""

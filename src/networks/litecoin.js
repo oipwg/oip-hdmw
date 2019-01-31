@@ -1,6 +1,7 @@
 import { Insight } from 'insight-explorer'
 import coininfo from 'coininfo'
 import bip44constants from 'bip44-constants'
+import config from "./config";
 
 var litecoinFeePerKb = 100000
 
@@ -19,7 +20,7 @@ module.exports = {
 
 	txVersion: 1,
 
-	explorer: new Insight('https://litesight.failover.alexandria.io/api'),
+	explorer: new Insight(config.defaultApiUrls.litecoin),
 
 	getExtraBytes: function(options){ return },
 
