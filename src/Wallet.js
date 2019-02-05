@@ -222,7 +222,13 @@ class Wallet {
     async getCoinBalances(options = { discover: true, testnet: true }){
         let coinnames = options.coins || Object.keys(this.getCoins());
         
-        if (!options.testnet) {
+        //when passing in custom options object, it's easy to forget to set the defaults, so just in case
+        if (options.discover === undefined) {
+        	options.discover = true
+        }
+        
+        //checlking if false so that if undefined, it will proceed normally
+        if (options.testnet === false) {
 	        for (let i = coinnames.length - 1; i >= 0; i--) {
 				if (coinnames[i].includes('_testnet')) {
 					coinnames.splice(i, 1)
