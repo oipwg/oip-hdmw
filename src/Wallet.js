@@ -588,7 +588,7 @@ class Wallet {
 	 * }
 	 * new Wallet(mnemonic, {discover: false}).setNetworkApi(options)
 	 */
-	setNetworkApis(options) {
+	setExplorerUrls(options) {
 		let networks = this.getNetworks();
 		for (let network_coin in networks) {
 			for (let coin in options) {
@@ -603,7 +603,7 @@ class Wallet {
 	/**
 	 * Get back the network explorer apis for supported coins
 	 */
-	getNetworkApiUrls() {
+	getExplorerUrls() {
 		let networks = this.getNetworks();
 		
 		let networkObject = {}
@@ -617,11 +617,11 @@ class Wallet {
 		return networkObject
 	}
 	
-	resetNetworkApiUrls() {
-		this.setNetworkApis(networkConfig.defaultApiUrls)
+	resetExplorerUrls() {
+		this.setExplorerUrls(networkConfig.defaultApiUrls)
 	}
 	
-	static getDefaultNetworkApiUrls() {
+	static getDefaultExplorerUrls() {
 		return networkConfig.defaultApiUrls
 	}
 }

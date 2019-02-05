@@ -215,6 +215,10 @@ test('Wallet can return all coins', () => {
 test('Wallet getCoinBalances & getFiatBalances', async (done) => {
 	var wal = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
 	let balances = await wal.getCoinBalances()
+	for (let coin in balances) {
+		console.log(typeof balances[coin])
+	}
+	console.log(balances)
 	
 	expect(balances).toHaveProperty("flo");
 	expect(balances).toHaveProperty("bitcoin");
@@ -258,7 +262,7 @@ test('set network apis', () => {
 	}
 	
 	let options = {flo: 'flo.ryan', bitcoin: 'bitcoin.ryan', litecoin: 'litecoin.ryan'}
-	wallet.setNetworkApis(options)
+	wallet.setExplorerUrls(options)
 	let newNetworks = wallet.getNetworks()
 	
 	let newUrls = []
@@ -281,7 +285,7 @@ test('set network apis', () => {
 
 test('get network api urls', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
-	expect(wallet.getNetworkApiUrls()).toEqual(
+	expect(wallet.getExplorerUrls()).toEqual(
 		{
 			bitcoin: 'https://bitsight.failover.alexandria.io/api',
 			flo: 'https://livenet.flocha.in/api',
@@ -292,7 +296,7 @@ test('get network api urls', () => {
 
 test('static method call from instance', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
-	expect(wallet.constructor.getDefaultNetworkApiUrls()).toEqual({
+	expect(wallet.constructor.getDefaultExplorerUrls()).toEqual({
 		bitcoin: 'https://bitsight.failover.alexandria.io/api',
 		bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
 		flo: 'https://livenet.flocha.in/api',
@@ -304,18 +308,18 @@ test('static method call from instance', () => {
 
 test('reset network api urls', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
-	wallet.setNetworkApis({
+	wallet.setExplorerUrls({
 		flo: 'flow',
 		bitcoin: 'bitcoin',
 		litecoin: 'litecion'
 	})
-	expect(wallet.getNetworkApiUrls()).toEqual({
+	expect(wallet.getExplorerUrls()).toEqual({
 		flo: 'flow',
 		bitcoin: 'bitcoin',
 		litecoin: 'litecion'
 	})
-	wallet.resetNetworkApiUrls()
-	expect(wallet.getNetworkApiUrls()).toEqual(
+	wallet.resetExplorerUrls()
+	expect(wallet.getExplorerUrls()).toEqual(
 		{
 			bitcoin: 'https://bitsight.failover.alexandria.io/api',
 			flo: 'https://livenet.flocha.in/api',
@@ -327,7 +331,7 @@ test('reset network api urls', () => {
 test('get network api urls with testnet coins', () => {
 	let wallet = new Wallet("siren comic spy donkey unknown license asset lens proud bus exhaust section", {discover: false})
 	wallet.addTestnetCoins()
-	expect(wallet.getNetworkApiUrls()).toEqual(
+	expect(wallet.getExplorerUrls()).toEqual(
 		{
 			bitcoin: 'https://bitsight.failover.alexandria.io/api',
 			bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
@@ -351,7 +355,7 @@ test('remove default supported testnet coins', () => {
 	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo"])
 	wallet.addTestnetCoins()
 	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo", "bitcoin_testnet", "flo_testnet", "litecoin_testnet"])
-	wallet.removeTestnetCoins()
+	wallet.addTestnetCoins(false)
 	expect(Object.keys(wallet.getCoins())).toEqual(["bitcoin", "litecoin", "flo"])
 })
 
