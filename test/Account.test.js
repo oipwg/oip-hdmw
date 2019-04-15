@@ -1,3 +1,4 @@
+/* eslint-env jest */
 let bip32 = require('bip32')
 let Account = require('../src').Account
 let Networks = require('../src').Networks

@@ -1,3 +1,4 @@
+/* eslint-env jest */
 var bip32 = require('bip32')
 var Address = require('../src').Address
 var Networks = require('../src').Networks

@@ -1,3 +1,4 @@
+/* eslint-env jest */
 var Coin = require('../src').Coin
 var Networks = require('../src').Networks
 

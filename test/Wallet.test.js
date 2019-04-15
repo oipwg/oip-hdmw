@@ -1,3 +1,4 @@
+/* eslint-env jest */
 var Wallet = require('../src').Wallet
 
 test('Wallet can be created from nothing', () => {

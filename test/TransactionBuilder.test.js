@@ -1,3 +1,4 @@
+/* eslint-env jest */
 var bip32 = require('bip32')
 var TransactionBuilder = require('../src').TransactionBuilder
 var Networks = require('../src').Networks
