@@ -2,7 +2,6 @@
 var bip32 = require('bip32')
 var TransactionBuilder = require('../src').TransactionBuilder
 var Networks = require('../src').Networks
-var Account = require('../src').Account
 var Address = require('../src').Address
 
 test('TransactionBuilder should load a From Address', () => {
