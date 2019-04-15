@@ -1,4 +1,4 @@
-![](https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master)
+[![Build Status](https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master)](https://travis-ci.org/oipwg/oip-hdmw)
 [![](https://img.shields.io/npm/v/oip-hdmw.svg)](https://www.npmjs.com/package/oip-hdmw)
 [![Coverage Status](https://coveralls.io/repos/github/oipwg/oip-hdmw/badge.svg?branch=master)](https://coveralls.io/github/oipwg/oip-hdmw?branch=master)
 # OIP HD-MultiWallet
