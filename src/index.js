@@ -7,11 +7,11 @@ import Networks from './networks'
 import util from './util'
 
 module.exports = {
-	Wallet,
-	Coin,
-	Account,
-	Address,
-	TransactionBuilder,
-	Networks,
-	util
+  Wallet,
+  Coin,
+  Account,
+  Address,
+  TransactionBuilder,
+  Networks,
+  util
 }

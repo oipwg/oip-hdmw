@@ -5,18 +5,18 @@ import EventEmitter from 'eventemitter3'
 
 import Address from './Address'
 import TransactionBuilder from './TransactionBuilder'
-import {toBase58, isValidPublicAddress, discovery} from './util'
+import { toBase58, isValidPublicAddress, discovery } from './util'
 
 // Helper CONSTS (used in other consts)
-const SECOND = 1000;
-const MINUTE = 60 * SECOND;
+const SECOND = 1000
+const MINUTE = 60 * SECOND
 
 // Class Constants
-const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE;
-const GAP_LIMIT = 20;
+const CHAIN_EXPIRE_TIMEOUT = 30 * MINUTE
+const GAP_LIMIT = 20
 
 const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
-	return {address: node, network: network}
+  return { address: node, network: network }
 }
 
 /**
@@ -48,7 +48,7 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * Manages Chains and Addresses for a specific BIP32/BIP44 Account
  */
 class Account {
-	/**
+  /**
 	 * Create a new Account to manage Chains and Addresses for based on a BIP32 Node
 	 *
 	 * ##### Examples
@@ -75,84 +75,82 @@ class Account {
 	 * @param {Object} [options.serialized_data] - Serialized data to load the Account from
 	 * @return {Account}
 	 */
-	constructor(account_master, coin, options) {
-		this.account_master = account_master;
-		this.coin = coin || {};
+  constructor (account_master, coin, options) {
+    this.account_master = account_master
+    this.coin = coin || {}
 
-		let external = this.account_master.derive(0)
-		let internal = this.account_master.derive(1)
+    let external = this.account_master.derive(0)
+    let internal = this.account_master.derive(1)
 
-		this.account = new bip32utils.Account([
-			new bip32utils.Chain(external, undefined, CUSTOM_ADDRESS_FUNCTION),
-			new bip32utils.Chain(internal, undefined, CUSTOM_ADDRESS_FUNCTION)
-		])
+    this.account = new bip32utils.Account([
+      new bip32utils.Chain(external, undefined, CUSTOM_ADDRESS_FUNCTION),
+      new bip32utils.Chain(internal, undefined, CUSTOM_ADDRESS_FUNCTION)
+    ])
 
-		this.addresses = {}
+    this.addresses = {}
 
-		this.chains = {
-			0: {
-				index: 0,
-				lastUpdate: 0
-			},
-			1: {
-				index: 1,
-				lastUpdate: 0
-			}
-		}
+    this.chains = {
+      0: {
+        index: 0,
+        lastUpdate: 0
+      },
+      1: {
+        index: 1,
+        lastUpdate: 0
+      }
+    }
 
-		// Setup EventEmitter to notify when we have changed
-		this.event_emitter = new EventEmitter()
+    // Setup EventEmitter to notify when we have changed
+    this.event_emitter = new EventEmitter()
 
-		this.discover = true;
+    this.discover = true
 
-		if (options && options.discover !== undefined)
-			this.discover = options.discover
+    if (options && options.discover !== undefined) { this.discover = options.discover }
 
-		// Discover both External and Internal chains
-		if (options && options.serialized_data)
-			this.deserialize(options.serialized_data)
+    // Discover both External and Internal chains
+    if (options && options.serialized_data) { this.deserialize(options.serialized_data) }
 
-		if (this.discover) {
-			this.discoverChains()
-		}
-	}
+    if (this.discover) {
+      this.discoverChains()
+    }
+  }
 
-	serialize() {
-		let addresses = this.getAddresses()
+  serialize () {
+    let addresses = this.getAddresses()
 
-		let serialized_addresses = addresses.map((address) => {
-			return address.serialize()
-		})
+    let serialized_addresses = addresses.map((address) => {
+      return address.serialize()
+    })
 
-		return {
-			extended_private_key: this.getExtendedPrivateKey(),
-			addresses: serialized_addresses,
-			chains: this.chains
-		}
-	}
+    return {
+      extended_private_key: this.getExtendedPrivateKey(),
+      addresses: serialized_addresses,
+      chains: this.chains
+    }
+  }
 
-	deserialize(serialized_data) {
-		if (serialized_data) {
-			// Rehydrate Addresses
-			if (serialized_data.addresses) {
-				let rehydrated_addresses = []
+  deserialize (serialized_data) {
+    if (serialized_data) {
+      // Rehydrate Addresses
+      if (serialized_data.addresses) {
+        let rehydrated_addresses = []
 
-				for (let address of serialized_data.addresses) {
-					rehydrated_addresses.push(new Address(address.wif, this.coin, address))
-				}
+        for (let address of serialized_data.addresses) {
+          rehydrated_addresses.push(new Address(address.wif, this.coin, address))
+        }
 
-				for (let address of rehydrated_addresses) {
-					this.addresses[address.getPublicAddress()] = address
-				}
-			}
-			// Rehydrate Chain info
-			if (serialized_data.chains) {
-				this.chains = serialized_data.chains
-			}
-		}
-	}
+        for (let address of rehydrated_addresses) {
+          this.addresses[address.getPublicAddress()] = address
+        }
+      }
+      // Rehydrate Chain info
+      if (serialized_data.chains) {
+        this.chains = serialized_data.chains
+      }
+    }
+  }
 
-	/**
+  /**
 	 * Get the Main Address for a specified Chain and Index on the Chain.
 	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Main Address for
 	 * @param  {number} [main_address_number=0] - Index of the Main Address on the specified chain
@@ -167,11 +165,11 @@ class Account {
 	 * // address.getPublicAddress() = FPznv9i9iHX5vt4VMbH9x2LgUcrjtSn4cW
 	 * @return {Address}
 	 */
-	getMainAddress(chain_number, main_address_number) {
-		return this.getAddress(chain_number, main_address_number)
-	}
+  getMainAddress (chain_number, main_address_number) {
+    return this.getAddress(chain_number, main_address_number)
+  }
 
-	/**
+  /**
 	 * Get the Address for a specified Chain and Index on the Chain.
 	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Address from
 	 * @param  {number} [address_number=0] - Index of the Address on the specified chain
@@ -186,21 +184,18 @@ class Account {
 	 * // address.getPublicAddress() = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
 	 * @return {Address}
 	 */
-	getAddress(chain_number, address_number) {
-		let addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network);
+  getAddress (chain_number, address_number) {
+    let addr = CUSTOM_ADDRESS_FUNCTION(this.account.getChain(chain_number || 0).__parent.derive(address_number || 0), this.coin.network)
 
-		let tmpHydratedAddr = new Address(addr, this.coin, false)
+    let tmpHydratedAddr = new Address(addr, this.coin, false)
 
-		// Attempt to match to address that we already have
-		if (this.addresses[tmpHydratedAddr.getPublicAddress()])
-			return this.addresses[tmpHydratedAddr.getPublicAddress()]
-		else
-			this.addresses[tmpHydratedAddr.getPublicAddress()] = tmpHydratedAddr
+    // Attempt to match to address that we already have
+    if (this.addresses[tmpHydratedAddr.getPublicAddress()]) { return this.addresses[tmpHydratedAddr.getPublicAddress()] } else { this.addresses[tmpHydratedAddr.getPublicAddress()] = tmpHydratedAddr }
 
-		return tmpHydratedAddr
-	}
+    return tmpHydratedAddr
+  }
 
-	/**
+  /**
 	 * Get all derived Addresses for the entire Account, or just for a specific Chain.
 	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Addresses on the Account</caption>
@@ -223,31 +218,31 @@ class Account {
 	 * // addresses = [Address, Address, Address]
 	 * @return {Array.<Address>}
 	 */
-	getAddresses(chain_number) {
-		let addrs = [];
+  getAddresses (chain_number) {
+    let addrs = []
 
-		if (chain_number && typeof chain_number === "number") {
-			for (let addr in this.addresses) {
-				let chain = this.account.getChain(chain_number);
-				let addresses = chain.addresses.map((ad) => {
-					return new Address(ad, this.coin, false)
-				})
-				for (let adr of addresses) {
-					if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()) {
-						addrs.push(this.addresses[addr])
-					}
-				}
-			}
-		} else {
-			for (let addr in this.addresses) {
-				addrs.push(this.addresses[addr])
-			}
-		}
+    if (chain_number && typeof chain_number === 'number') {
+      for (let addr in this.addresses) {
+        let chain = this.account.getChain(chain_number)
+        let addresses = chain.addresses.map((ad) => {
+          return new Address(ad, this.coin, false)
+        })
+        for (let adr of addresses) {
+          if (adr.getPublicAddress() === this.addresses[addr].getPublicAddress()) {
+            addrs.push(this.addresses[addr])
+          }
+        }
+      }
+    } else {
+      for (let addr in this.addresses) {
+        addrs.push(this.addresses[addr])
+      }
+    }
 
-		return addrs
-	}
+    return addrs
+  }
 
-	/**
+  /**
 	 * Get all Used Addresses (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
 	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Used Addresses on the Account</caption>
@@ -270,18 +265,18 @@ class Account {
 	 * // addresses = [Address, Address, Address]
 	 * @return {Array.<Address>}
 	 */
-	getUsedAddresses(chain_number) {
-		let used_addresses = []
-		let all_addresses = this.getAddresses()
+  getUsedAddresses (chain_number) {
+    let used_addresses = []
+    let all_addresses = this.getAddresses()
 
-		for (let address of all_addresses)
-			if (address.getTotalReceived() > 0)
-				used_addresses.push(address)
+    for (let address of all_addresses) {
+      if (address.getTotalReceived() > 0) { used_addresses.push(address) }
+    }
 
-		return used_addresses
-	}
+    return used_addresses
+  }
 
-	/**
+  /**
 	 * Get the Balance for the entire Account
 	 * @example
 	 * import bip32 from 'bip32'
@@ -299,53 +294,51 @@ class Account {
 	 * @param {number} [options.id] - The ID number to return when the Promise resolves
 	 * @return {Promise<number>} - Returns a Promise that will resolve to the total balance.
 	 */
-	async getBalance(options) {
-		let discover = this.discover;
+  async getBalance (options) {
+    let discover = this.discover
 
-		if (options && options.discover !== undefined)
-			discover = options.discover;
+    if (options && options.discover !== undefined) { discover = options.discover }
 
-		if (discover) {
-			try {
-				await this.discoverChains()
-			} catch (e) {
-				throw new Error("Unable to discover Account Chains in Account getBalance! \n" + e)
-			}
-		}
+    if (discover) {
+      try {
+        await this.discoverChains()
+      } catch (e) {
+        throw new Error('Unable to discover Account Chains in Account getBalance! \n' + e)
+      }
+    }
 
-		let totalBal = 0;
+    let totalBal = 0
 
-		// Iterate through each of the addresses we have found
-		for (let addr in this.addresses) {
-			// Are we searching only for a single addresses balance?
-			if (options && options.addresses && typeof options.addresses === "string") {
-				if (addr === options.addresses) {
-					totalBal += this.addresses[addr].getBalance()
-				}
-				// Are we searching for only the addresses in an array?
-			} else if (options && options.addresses && Array.isArray(options.addresses)) {
-				for (let ad of options.addresses) {
-					if (addr === ad) {
-						totalBal += this.addresses[addr].getBalance()
-					}
-				}
-				// If not the first two, then just add them all up :)
-			} else {
-				totalBal += this.addresses[addr].getBalance()
-			}
-		}
+    // Iterate through each of the addresses we have found
+    for (let addr in this.addresses) {
+      // Are we searching only for a single addresses balance?
+      if (options && options.addresses && typeof options.addresses === 'string') {
+        if (addr === options.addresses) {
+          totalBal += this.addresses[addr].getBalance()
+        }
+        // Are we searching for only the addresses in an array?
+      } else if (options && options.addresses && Array.isArray(options.addresses)) {
+        for (let ad of options.addresses) {
+          if (addr === ad) {
+            totalBal += this.addresses[addr].getBalance()
+          }
+        }
+        // If not the first two, then just add them all up :)
+      } else {
+        totalBal += this.addresses[addr].getBalance()
+      }
+    }
 
-		let balance_data = {
-			balance: totalBal
-		}
+    let balance_data = {
+      balance: totalBal
+    }
 
-		if (options && options.id)
-			balance_data.id = options.id;
+    if (options && options.id) { balance_data.id = options.id }
 
-		return balance_data
-	}
+    return balance_data
+  }
 
-	/**
+  /**
 	 * Get the Next Chain Address for a specified chain
 	 * @param  {number} [chain_number=0] - The specific chain that you want to get the next address from
 	 * @example <caption>Get the next Chain Address on Chain #1</caption>
@@ -358,11 +351,11 @@ class Account {
 	 * let address = account.getNextChainAddress(1)
 	 * @return {Address}
 	 */
-	getNextChainAddress(chain_number) {
-		return new Address(this.account.getChain(chain_number || 0).next(), this.coin, false);
-	}
+  getNextChainAddress (chain_number) {
+    return new Address(this.account.getChain(chain_number || 0).next(), this.coin, false)
+  }
 
-	/**
+  /**
 	 * Get the Next Change Address from the "Internal" chain
 	 * @example
 	 * import bip32 from 'bip32'
@@ -374,12 +367,12 @@ class Account {
 	 * let address = account.getNextChangeAddress()
 	 * @return {Address}
 	 */
-	getNextChangeAddress() {
-		// We use Chain 1 since that is the "Internal" chain used for generating change addresses.
-		return this.getNextChainAddress(1)
-	}
+  getNextChangeAddress () {
+    // We use Chain 1 since that is the "Internal" chain used for generating change addresses.
+    return this.getNextChainAddress(1)
+  }
 
-	/**
+  /**
 	 * Send a Payment to specified Addresses and Amounts
 	 * @param  {Object} options - the options for the specific transaction being sent
 	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
@@ -388,65 +381,64 @@ class Account {
 	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
 	 * @return {Promise<string>} - Returns a promise that will resolve to the success TXID
 	 */
-	sendPayment(options) {
-		return new Promise((resolve, reject) => {
-			if (!options)
-				reject(new Error("You must define your payment options!"))
+  sendPayment (options) {
+    return new Promise((resolve, reject) => {
+      if (!options) { reject(new Error('You must define your payment options!')) }
 
-			let processPayment = () => {
-				let sendFrom = [];
+      let processPayment = () => {
+        let sendFrom = []
 
-				let allAddresses = this.getAddresses();
+        let allAddresses = this.getAddresses()
 
-				// Check if we define what address we wish to send from
-				if (options.from) {
-					if (typeof options.from === "string") {
-						for (let address of allAddresses) {
-							if (address.getPublicAddress() === options.from) {
-								sendFrom.push(address);
-							}
-						}
-					} else if (Array.isArray(options.from)) {
-						for (let adr of options.from) {
-							for (let address of allAddresses) {
-								if (address.getPublicAddress() === adr) {
-									sendFrom.push(address);
-								}
-							}
-						}
-					}
-					// else add all the addresses on the Account that have recieved any txs
-				} else {
-					for (let address of allAddresses) {
-						if (address.getBalance() >= 0) {
-							sendFrom.push(address)
-						}
-					}
-				}
+        // Check if we define what address we wish to send from
+        if (options.from) {
+          if (typeof options.from === 'string') {
+            for (let address of allAddresses) {
+              if (address.getPublicAddress() === options.from) {
+                sendFrom.push(address)
+              }
+            }
+          } else if (Array.isArray(options.from)) {
+            for (let adr of options.from) {
+              for (let address of allAddresses) {
+                if (address.getPublicAddress() === adr) {
+                  sendFrom.push(address)
+                }
+              }
+            }
+          }
+          // else add all the addresses on the Account that have recieved any txs
+        } else {
+          for (let address of allAddresses) {
+            if (address.getBalance() >= 0) {
+              sendFrom.push(address)
+            }
+          }
+        }
 
-				if (sendFrom.length === 0) {
-					reject(new Error("No Addresses match defined options.from Addresses!"))
-					return;
-				}
+        if (sendFrom.length === 0) {
+          reject(new Error('No Addresses match defined options.from Addresses!'))
+          return
+        }
 
-				let newOpts = options;
+        let newOpts = options
 
-				newOpts.from = sendFrom;
+        newOpts.from = sendFrom
 
-				let txb = new TransactionBuilder(this.coin, newOpts);
+        let txb = new TransactionBuilder(this.coin, newOpts)
 
-				txb.sendTX().then(resolve);
-			}
+        txb.sendTX().then(resolve)
+      }
 
-			if (options.discover === false) {
-				processPayment();
-			} else {
-				this.discoverChains().then(processPayment)
-			}
-		})
-	}
+      if (options.discover === false) {
+        processPayment()
+      } else {
+        this.discoverChains().then(processPayment)
+      }
+    })
+  }
 
-	/**
+  /**
 	 * Get the Extended Private Key for the Account
 	 * @example
 	 * import bip32 from 'bip32'
@@ -459,11 +451,11 @@ class Account {
 	 * // extPrivateKey = Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC
 	 * @return {string}
 	 */
-	getExtendedPrivateKey() {
-		return this.account_master.toBase58()
-	}
+  getExtendedPrivateKey () {
+    return this.account_master.toBase58()
+  }
 
-	/**
+  /**
 	 * Get the Extended Public Key for the Account
 	 * @example
 	 * import bip32 from 'bip32'
@@ -476,11 +468,11 @@ class Account {
 	 * // extPublicKey = Fpub1BPo8vEQqDkoDQmDqcJ8WFHD331AMpd7VU7atCJsix8xbHwN6K9wfDLjZKnW9fUw5uJg8UJMLhQ5W7gTxv6DbkfPoeJbBpMaUHrULxzVnSy
 	 * @return {string}
 	 */
-	getExtendedPublicKey() {
-		return this.account_master.neutered().toBase58()
-	}
+  getExtendedPublicKey () {
+    return this.account_master.neutered().toBase58()
+  }
 
-	/**
+  /**
 	 * Get the specified Chain number
 	 * @param {number} chain_number - The number of the chain you are requesting
 	 * @example <caption>Get Chain 0</caption>
@@ -493,82 +485,80 @@ class Account {
 	 * let chain = account.getChain(0)
 	 * @return {bip32utilschain}
 	 */
-	getChain(chainNumber) {
-		return this.account.getChain(chainNumber)
-	}
+  getChain (chainNumber) {
+    return this.account.getChain(chainNumber)
+  }
 
-	async _discoverChain(chainNumber, gapLimit) {
-		let chains = this.account.getChains()
-		let chain = chains[chainNumber].clone()
+  async _discoverChain (chainNumber, gapLimit) {
+    let chains = this.account.getChains()
+    let chain = chains[chainNumber].clone()
 
-		let discovered
+    let discovered
 
-		try {
-			discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
-		} catch (e) {
-			throw new Error("Discovery error in _discoverChain #" + chainNumber + " \n" + e)
-		}
+    try {
+      discovered = await discovery(chain, gapLimit, this._chainPromise, chainNumber, this.coin)
+    } catch (e) {
+      throw new Error('Discovery error in _discoverChain #' + chainNumber + ' \n' + e)
+    }
 
-		// throw away EACH unused address AFTER the last unused address
-		let unused = discovered.checked - discovered.used
-		for (let j = 1; j < unused; ++j) chain.pop()
+    // throw away EACH unused address AFTER the last unused address
+    let unused = discovered.checked - discovered.used
+    for (let j = 1; j < unused; ++j) chain.pop()
 
-		// override the internal chain
-		this.account.chains[discovered.chainIndex] = chain
+    // override the internal chain
+    this.account.chains[discovered.chainIndex] = chain
 
-		for (let address of discovered.addresses)
-			this.addresses[address.getPublicAddress()] = address
+    for (let address of discovered.addresses) { this.addresses[address.getPublicAddress()] = address }
 
-		return discovered
-	}
+    return discovered
+  }
 
-	async _chainPromise(addresses, coin) {
+  async _chainPromise (addresses, coin) {
+    let results = {}
+    let allAddresses = []
 
-		let results = {};
-		let allAddresses = []
+    let addressPromises = []
 
-		let addressPromises = [];
+    for (let addr of addresses) {
+      let address = new Address(addr, coin, false)
 
-		for (let addr of addresses) {
-			let address = new Address(addr, coin, false);
+      let prom = address.updateState()
 
-			let prom = address.updateState()
+      // This will only be called for any rejections AFTER the first one,
+      // please take a look at the comment below for more info.
+      prom.catch((e) => {
+      })
 
-			// This will only be called for any rejections AFTER the first one,
-			// please take a look at the comment below for more info.
-			prom.catch((e) => {
-			})
+      addressPromises.push(address.updateState())
+    }
 
-			addressPromises.push(address.updateState())
-		}
+    let promiseResponses = []
 
-		let promiseResponses = []
+    try {
+      promiseResponses = await Promise.all(addressPromises)
+    } catch (e) {
+      // This will still be called even though we use prom.catch() above.
+      // The first promise rejection will be caught here, all other promises
+      // that reject AFTER the first, will be caught in the above prom.catch() function.
 
-		try {
-			promiseResponses = await Promise.all(addressPromises)
-		} catch (e) {
-			// This will still be called even though we use prom.catch() above.
-			// The first promise rejection will be caught here, all other promises
-			// that reject AFTER the first, will be caught in the above prom.catch() function.
+      throw new Error('Unable to update Address state in _chainPromise \n' + e)
+    }
 
-			throw new Error("Unable to update Address state in _chainPromise \n" + e)
-		}
+    for (let address of promiseResponses) {
+      if (address.getTotalReceived() > 0) {
+        results[address.getPublicAddress()] = true
+      } else {
+        results[address.getPublicAddress()] = false
+      }
 
-		for (let address of promiseResponses) {
-			if (address.getTotalReceived() > 0) {
-				results[address.getPublicAddress()] = true
-			} else {
-				results[address.getPublicAddress()] = false
-			}
+      // Store all addresses
+      allAddresses.push(address)
+    }
 
-			// Store all addresses
-			allAddresses.push(address)
-		}
+    return { results: results, addresses: allAddresses }
+  }
 
-		return {results: results, addresses: allAddresses}
-	}
-
-	/**
+  /**
 	 * Discover Used and Unused addresses for a specified Chain number
 	 * @param  {number} chain_number - The number of the chain you wish to discover
 	 * @example <caption>Discover Chain 0</caption>
@@ -583,19 +573,19 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	async discoverChain(chain_number) {
-		try {
-			let discovered = await this._discoverChain(chain_number, GAP_LIMIT)
-		} catch (e) {
-			throw new Error("Unable to discoverChain #" + chain_number + "! \n" + e)
-		}
+  async discoverChain (chain_number) {
+    try {
+      let discovered = await this._discoverChain(chain_number, GAP_LIMIT)
+    } catch (e) {
+      throw new Error('Unable to discoverChain #' + chain_number + '! \n' + e)
+    }
 
-		this.chains[chain_number] = {lastUpdate: Date.now()}
+    this.chains[chain_number] = { lastUpdate: Date.now() }
 
-		return this
-	}
+    return this
+  }
 
-	/**
+  /**
 	 * Discover all Chains
 	 * @example
 	 * import bip32 from 'bip32'
@@ -610,45 +600,44 @@ class Account {
 	 * })
 	 * @return {Promise<Account>} - A Promise that once finished will resolve to the Account (now with discovery done)
 	 */
-	async discoverChains() {
-		let chainsToDiscover = [0, 1]
+  async discoverChains () {
+    let chainsToDiscover = [0, 1]
 
-		let account
+    let account
 
-		// Do each chain one at a time in case it crashes and errors out.
-		for (let c of chainsToDiscover) {
-			try {
-				account = await this.discoverChain(c)
-			} catch (e) {
-				throw new Error("Unable to discoverChains! \n" + e)
-			}
-		}
+    // Do each chain one at a time in case it crashes and errors out.
+    for (let c of chainsToDiscover) {
+      try {
+        account = await this.discoverChain(c)
+      } catch (e) {
+        throw new Error('Unable to discoverChains! \n' + e)
+      }
+    }
 
-		this._subscribeToAddressWebsocketUpdates()
+    this._subscribeToAddressWebsocketUpdates()
 
-		return account
-	}
+    return account
+  }
 
-	/**
+  /**
 	 * Internal function used to subscribe to WebSocket updates for All Discovered Addresses
 	 */
-	_subscribeToAddressWebsocketUpdates() {
-		let allAddresses = this.getAddresses()
+  _subscribeToAddressWebsocketUpdates () {
+    let allAddresses = this.getAddresses()
 
-		for (let address of allAddresses)
-			address.onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
-	}
+    for (let address of allAddresses) { address.onWebsocketUpdate(this._handleWebsocketUpdate.bind(this)) }
+  }
 
-	/**
+  /**
 	 * Internal function used to process Address updates streaming in from Websockets,
 	 * emits an update that can be subscribed to with onWebsocketUpdate
 	 * @param  {Object} update - Websocket Update Data
 	 */
-	_handleWebsocketUpdate(address) {
-		this.event_emitter.emit("websocket_update", address)
-	}
+  _handleWebsocketUpdate (address) {
+    this.event_emitter.emit('websocket_update', address)
+  }
 
-	/**
+  /**
 	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
@@ -663,9 +652,9 @@ class Account {
 	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
 	 * })
 	 */
-	onWebsocketUpdate(subscriber_function) {
-		this.event_emitter.on("websocket_update", subscriber_function)
-	}
+  onWebsocketUpdate (subscriber_function) {
+    this.event_emitter.on('websocket_update', subscriber_function)
+  }
 }
 
 module.exports = Account

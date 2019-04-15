@@ -137,25 +137,25 @@ test('Wallet Serialize and Deserialize', async (done) => {
       }
     }
   }
-  
+
   var w = new Wallet(serialized.seed, {
     discover: false,
     serialized_data: serialized
   })
-  
+
   expect(w.getMnemonic()).toBe('siren comic spy donkey unknown license asset lens proud bus exhaust section')
-  
+
   let flo_balance = await w.getCoin('flo').getBalance({ discover: false })
   expect(flo_balance).toBe(9.85686398)
-  
+
   expect(w.serialize()).toEqual(serialized)
-  
+
   done()
 })
 
 test('Wallet can be defined from Mnemonic', () => {
   var w = new Wallet('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about', { discover: false })
-  
+
   expect(w.getSeed()).toBe('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4')
   expect(w.getMnemonic()).toBe('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about')
   expect(w.getEntropy()).toBe('00000000000000000000000000000000')
@@ -163,7 +163,7 @@ test('Wallet can be defined from Mnemonic', () => {
 
 test('Wallet can be defined from Seed Hex', () => {
   var w = new Wallet('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4', { discover: false })
-  
+
   expect(w.getSeed()).toBe('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4')
   expect(w.getEntropy()).toBeUndefined()
   expect(w.getMnemonic()).toBeUndefined()
@@ -171,7 +171,7 @@ test('Wallet can be defined from Seed Hex', () => {
 
 test('Wallet can be defined from BIP39 Entropy', () => {
   var w = new Wallet('00000000000000000000000000000000', { discover: false })
-  
+
   expect(w.getMnemonic()).toBe('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about')
   expect(w.getSeed()).toBe('5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4')
   expect(w.getEntropy()).toBe('00000000000000000000000000000000')
@@ -182,7 +182,7 @@ test('Wallet can spawn on only one defined coin', () => {
     discover: false,
     supported_coins: 'flo_testnet'
   })
-  
+
   expect(w.getCoin('flo_testnet')).toBeDefined()
   expect(w.getCoin('bitcoin')).toBeUndefined()
   expect(w.getCoin('litecoin')).toBeUndefined()
@@ -194,7 +194,7 @@ test('Wallet can spawn on multiple defined coins', () => {
     discover: false,
     supported_coins: ['flo', 'flo_testnet']
   })
-  
+
   expect(w.getCoin('flo_testnet')).toBeDefined()
   expect(w.getCoin('flo')).toBeDefined()
   expect(w.getCoin('bitcoin')).toBeUndefined()
@@ -203,9 +203,9 @@ test('Wallet can spawn on multiple defined coins', () => {
 
 test('Wallet can return all coins', () => {
   var w = new Wallet('00000000000000000000000000000000', { discover: false })
-  
+
   var coins = w.getCoins()
-  
+
   expect(coins.bitcoin).toBeDefined()
   expect(coins.litecoin).toBeDefined()
   expect(coins.flo).toBeDefined()
@@ -219,17 +219,17 @@ test('Wallet getCoinBalances & getFiatBalances', async (done) => {
   // 	console.log(typeof balances[coin])
   // }
   // console.log(balances)
-  
+
   expect(balances).toHaveProperty('flo')
   expect(balances).toHaveProperty('bitcoin')
   expect(balances).toHaveProperty('litecoin')
-  
+
   let fb = await wal.getFiatBalances({ discover: false })
-  
+
   expect(fb).toHaveProperty('flo')
   expect(fb).toHaveProperty('bitcoin')
   expect(fb).toHaveProperty('litecoin')
-  
+
   done()
 }, 100000)
 
@@ -240,7 +240,7 @@ test('Wallet getExchangeRates', async (done) => {
   expect(rates).toHaveProperty('flo')
   expect(rates).toHaveProperty('bitcoin')
   expect(rates).toHaveProperty('litecoin')
-  
+
   done()
 }, 100000)
 
@@ -258,37 +258,36 @@ test('get network api urls', () => {
     {
       bitcoin: 'https://bitsight.failover.alexandria.io/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://litesight.failover.alexandria.io/api',
+      litecoin: 'https://litesight.failover.alexandria.io/api'
     }
   )
 })
 
-
 test('set network apis', () => {
   let wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   let oldNetworks = wallet.getNetworks()
-  
+
   let oldUrls = []
   for (let coin in oldNetworks) {
     oldUrls.push(oldNetworks[coin].explorer.url)
   }
-  
+
   let options = { flo: 'flo.test', bitcoin: 'bitcoin.test', litecoin: 'litecoin.test' }
   wallet.setExplorerUrls(options)
   let newNetworks = wallet.getNetworks()
-  
+
   let newUrls = []
   for (let coin in newNetworks) {
     newUrls.push(newNetworks[coin].explorer.url)
   }
-  
+
   let myUrls = []
   for (let url of newUrls) {
     if (!oldUrls.includes(url)) {
       myUrls.push(url)
     }
   }
-  
+
   expect(myUrls.length).toEqual(3)
   for (let coin in options) {
     expect(myUrls.includes(options[coin]))
@@ -324,7 +323,7 @@ test('reset network api urls', () => {
     {
       bitcoin: 'https://bitsight.failover.alexandria.io/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://litesight.failover.alexandria.io/api',
+      litecoin: 'https://litesight.failover.alexandria.io/api'
     }
   )
 })
@@ -364,17 +363,16 @@ test('remove testnet coins in getCoinBalances', () => {
   let wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   wallet.addTestnetCoins()
   expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'bitcoin_testnet', 'flo_testnet', 'litecoin_testnet'])
-  
+
   let coinnames = Object.keys(wallet.getCoins())
-  
+
   for (let i = coinnames.length - 1; i >= 0; i--) {
     if (coinnames[i].includes('_testnet')) {
       coinnames.splice(i, 1)
     }
   }
-  
+
   expect(coinnames).toEqual(['bitcoin', 'litecoin', 'flo'])
-  
 })
 
 // test('Wallet sendPayment', (done) => {

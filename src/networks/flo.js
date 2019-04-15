@@ -1,9 +1,8 @@
 import { Insight } from 'insight-explorer'
 import { varIntBuffer } from '../util'
-import config from "./config";
+import config from './config'
 
 var floFeePerKb = 100000
-
 
 /**
  * An object that contains information about a coins Name, Network, and access to an explorer
@@ -74,40 +73,40 @@ var floFeePerKb = 100000
  */
 
 module.exports = {
-	name: 'flo',
-	displayName: 'Flo',
-	ticker: 'FLO',
-	satPerCoin: 1e8,
-	feePerKb: floFeePerKb,
-	feePerByte: floFeePerKb / 1024,
-	maxFeePerByte: 100,
-	minFee: floFeePerKb,
-	dust: 100000,
+  name: 'flo',
+  displayName: 'Flo',
+  ticker: 'FLO',
+  satPerCoin: 1e8,
+  feePerKb: floFeePerKb,
+  feePerByte: floFeePerKb / 1024,
+  maxFeePerByte: 100,
+  minFee: floFeePerKb,
+  dust: 100000,
 
-	txVersion: 2,
+  txVersion: 2,
 
-	explorer: new Insight(config.defaultApiUrls.flo),
+  explorer: new Insight(config.defaultApiUrls.flo),
 
-	getExtraBytes: function(options){
-		var fData = options.floData || ""
+  getExtraBytes: function (options) {
+    var fData = options.floData || ''
 
-		var string_buffer = Buffer.from(fData, 'utf8')
-		var length_buffer = varIntBuffer(string_buffer.length)
+    var string_buffer = Buffer.from(fData, 'utf8')
+    var length_buffer = varIntBuffer(string_buffer.length)
 
-		var built_string = length_buffer.toString("hex") + string_buffer.toString("hex")
+    var built_string = length_buffer.toString('hex') + string_buffer.toString('hex')
 
-		return built_string
-	},
+    return built_string
+  },
 
-	network: {
-		bip32: {
-			public: 0x0134406b,
-			private: 0x01343c31
-		},
-		slip44: 216,
-		messagePrefix: '\u001bFlorincoin Signed Message:\n',
-		pubKeyHash: 35,
-		scriptHash: 94,
-		wif: 163
-	}
+  network: {
+    bip32: {
+      public: 0x0134406b,
+      private: 0x01343c31
+    },
+    slip44: 216,
+    messagePrefix: '\u001bFlorincoin Signed Message:\n',
+    pubKeyHash: 35,
+    scriptHash: 94,
+    wif: 163
+  }
 }

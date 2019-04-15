@@ -8,7 +8,7 @@ import EventEmitter from 'eventemitter3'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 
-const ECPair = bitcoin.ECPair;
+const ECPair = bitcoin.ECPair
 
 /**
  * [bitcoinjs-lib ECPair](https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/ecpair.js#L16)
@@ -27,7 +27,7 @@ const ECPair = bitcoin.ECPair;
  * @property {number} height - The Blockheight the Parent Transaction was confirmed in
  * @property {number} confirmations - The total number of Confirmations the Parent Transaction has recieved
  * @example
- * { 
+ * {
  * 	address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
  * 	txid: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
  * 	vout: 1,
@@ -35,7 +35,7 @@ const ECPair = bitcoin.ECPair;
  * 	amount: 0.001,
  * 	satoshis: 100000,
  * 	height: 2784696,
- * 	confirmations: 6828 
+ * 	confirmations: 6828
  * }
  */
 
@@ -50,14 +50,14 @@ const ECPair = bitcoin.ECPair;
  * @property {Array.<string>} spentTransactions - Array of `txids` that have been spent, but not yet confirmed on the Network
  * @property {number} lastUpdated - Timestamp of when the Address was last updated/synced with the Explorer
  * @example
- * { 
+ * {
  * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
  * 	balanceSat: 0,
  * 	totalReceivedSat: 0,
  * 	unconfirmedBalanceSat: 0,
  * 	transactions: [],
  * 	spentTransactions: [],
- * 	lastUpdated: 0 
+ * 	lastUpdated: 0
  * }
  */
 
@@ -65,7 +65,7 @@ const ECPair = bitcoin.ECPair;
  * Manages information about a specific Address
  */
 class Address {
-	/**
+  /**
 	 * Create a new Address based on either a bip32 node, WIF Private Key, or Public Address
 	 * ##### Examples
 	 * Create Address from bip32
@@ -93,82 +93,81 @@ class Address {
 	 * @param  {boolean|AddressState} [discover=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
 	 * @return {Address}
 	 */
-	constructor(address, coin, discover){
-		if (address.network !== undefined){
-			this.fromBIP32 = true
+  constructor (address, coin, discover) {
+    if (address.network !== undefined) {
+      this.fromBIP32 = true
 
-			if (address.address){
-				this.address = address.address
-			} else if (address.index !== undefined && address.depth !== undefined){
-				this.address = address
-			}
+      if (address.address) {
+        this.address = address.address
+      } else if (address.index !== undefined && address.depth !== undefined) {
+        this.address = address
+      }
 
-			// Make sure that the networks match and throw an error if they don't
-			if (address.network.pubKeyHash !== coin.network.pubKeyHash){
-				throw new Error("Address Network and Coin Network DO NOT MATCH!!!!!")
-			}
-		} else {
-			if (isValidPublicAddress(address, coin.network)){
-				this.fromBIP32 = false
-				this.pubAddress = address
-			} else if (isValidWIF(address, coin.network)){
-				this.fromBIP32 = true
+      // Make sure that the networks match and throw an error if they don't
+      if (address.network.pubKeyHash !== coin.network.pubKeyHash) {
+        throw new Error('Address Network and Coin Network DO NOT MATCH!!!!!')
+      }
+    } else {
+      if (isValidPublicAddress(address, coin.network)) {
+        this.fromBIP32 = false
+        this.pubAddress = address
+      } else if (isValidWIF(address, coin.network)) {
+        this.fromBIP32 = true
 
-				this.address = ECPair.fromWIF(address, coin.network)
-			}
-		}
+        this.address = ECPair.fromWIF(address, coin.network)
+      }
+    }
 
-		this.coin = coin || { satPerCoin: 1e8 }
+    this.coin = coin || { satPerCoin: 1e8 }
 
-		// Setup internal variables
-		this.transactions = [];
+    // Setup internal variables
+    this.transactions = []
 
-		this.balanceSat = 0;
-		this.totalReceivedSat = 0;
-		this.totalSentSat = 0;
-		this.unconfirmedBalanceSat = 0;
+    this.balanceSat = 0
+    this.totalReceivedSat = 0
+    this.totalSentSat = 0
+    this.unconfirmedBalanceSat = 0
 
-		this.lastUpdated = 0;
+    this.lastUpdated = 0
 
-		this.spentTransactions = []
+    this.spentTransactions = []
 
-		// Setup EventEmitter to notify when we have changed
-		this.event_emitter = new EventEmitter()
+    // Setup EventEmitter to notify when we have changed
+    this.event_emitter = new EventEmitter()
 
-		// Setup Websocket Address updates to keep us always up to date
-		this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate.bind(this))
-		
-		if (discover || discover === false){
-			// Load from serialized JSON
-			this.deserialize(discover)
-		} else {
-			// Update the state from the explorer
-			this.updateState()
-		}
-	}
-	/**
+    // Setup Websocket Address updates to keep us always up to date
+    this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate.bind(this))
+
+    if (discover || discover === false) {
+      // Load from serialized JSON
+      this.deserialize(discover)
+    } else {
+      // Update the state from the explorer
+      this.updateState()
+    }
+  }
+  /**
 	 * Get the Base58 sharable Public Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
-	 * 
+	 *
 	 * var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
 	 * var pubAddr = address.getPublicAddress();
 	 * // pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
 	 * @return {string}
 	 */
-	getPublicAddress(){
-		var public_key
+  getPublicAddress () {
+    var public_key
 
-		if (this.fromBIP32 && this.address){
-			public_key = this.address.publicKey
+    if (this.fromBIP32 && this.address) {
+      public_key = this.address.publicKey
 
-			if (!public_key && this.address.getPublicKeyBuffer)
-				public_key = this.address.getPublicKeyBuffer()
-		}
+      if (!public_key && this.address.getPublicKeyBuffer) { public_key = this.address.getPublicKeyBuffer() }
+    }
 
-		return this.fromBIP32 ? toBase58(public_key, this.coin.network.pubKeyHash) : this.pubAddress
-	}
-	/**
+    return this.fromBIP32 ? toBase58(public_key, this.coin.network.pubKeyHash) : this.pubAddress
+  }
+  /**
 	 * Get the Base58 sharable Private Address (WIF)
 	 * @example
 	 * import bip32 from 'bip32';
@@ -180,12 +179,12 @@ class Address {
 	 * // wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5
 	 * @return {string}
 	 */
-	getPrivateAddress(){
-		return this.address ? this.address.toWIF() : undefined
-	}
-	/**
-	 * Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers. 
-	 * Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access 
+  getPrivateAddress () {
+    return this.address ? this.address.toWIF() : undefined
+  }
+  /**
+	 * Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers.
+	 * Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access
 	 * to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
 	 * the ECPair will exist.
 	 * @example
@@ -197,55 +196,53 @@ class Address {
 	 * var ecpair = address.getECPair();
 	 * @return {ECPair}
 	 */
-	getECPair(){
-		return this.address
-	}
-	/**
+  getECPair () {
+    return this.address
+  }
+  /**
 	 * Get the signature of a specific message that can be verified by others
 	 * @param  {String} message - The message you wish to get the signature for
 	 * @return {String} Returns the base64 string of the created Signature
 	 */
-	signMessage(message){
-		if (!message || typeof message !== "string")
-			throw new Error("Message must be defined and a String!")
+  signMessage (message) {
+    if (!message || typeof message !== 'string') { throw new Error('Message must be defined and a String!') }
 
-		let privatekey_ecpair = this.getECPair()
+    let privatekey_ecpair = this.getECPair()
 
-		if (!privatekey_ecpair) 
-			throw new Error("No Private Key available! Unable to sign message!")
+    if (!privatekey_ecpair) { throw new Error('No Private Key available! Unable to sign message!') }
 
-		let privateKeyBuffer = privatekey_ecpair.privateKey;
+    let privateKeyBuffer = privatekey_ecpair.privateKey
 
-		let compressed = privatekey_ecpair.compressed || true;
-		let messagePrefix = this.coin.network.messagePrefix;
+    let compressed = privatekey_ecpair.compressed || true
+    let messagePrefix = this.coin.network.messagePrefix
 
-		let signature_buffer
-		try {
-			signature_buffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)
-		} catch (e) {
-			throw new Error("Unable to create signature! \n" + e)
-		}
+    let signature_buffer
+    try {
+      signature_buffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)
+    } catch (e) {
+      throw new Error('Unable to create signature! \n' + e)
+    }
 
-		return signature_buffer.toString('base64')
-	}
-	/**
+    return signature_buffer.toString('base64')
+  }
+  /**
 	 * Verify the signature of a given message
 	 * @param  {String} message   - The message you want to verify
 	 * @param  {String} signature - The signature of the message
 	 * @return {Boolean} Returns either `true` or `false` depending on if the signature and message match
 	 */
-	verifySignature(message, signature){
-		let valid 
+  verifySignature (message, signature) {
+    let valid
 
-		try {
-			valid = bitcoinMessage.verify(message, this.getPublicAddress(), signature, this.coin.network.messagePrefix)
-		} catch (e) {
-			throw new Error("Unable to verify signature! \n" + e)
-		}
+    try {
+      valid = bitcoinMessage.verify(message, this.getPublicAddress(), signature, this.coin.network.messagePrefix)
+    } catch (e) {
+      throw new Error('Unable to verify signature! \n' + e)
+    }
 
-		return valid
-	}
-	/**
+    return valid
+  }
+  /**
 	 * Get the latest State for this address from the Blockchain Explorer
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -256,75 +253,66 @@ class Address {
 	 * })
 	 * @return {Promise<Address>} Returns a Promise that will resolve to the Address
 	 */
-	async updateState(){
-		try {
-			var state = await this.coin.explorer.getAddress(this.getPublicAddress())
-		} catch(e) { 
-			throw new Error("Error Updating Address State for: " + this.getPublicAddress() + "\n" + e) 
-		}
+  async updateState () {
+    try {
+      var state = await this.coin.explorer.getAddress(this.getPublicAddress())
+    } catch (e) {
+      throw new Error('Error Updating Address State for: ' + this.getPublicAddress() + '\n' + e)
+    }
 
-		return this.deserialize(state)
-	}
-	/**
+    return this.deserialize(state)
+  }
+  /**
 	 * Hydrate an Address from the serialized JSON, or update the state
 	 * @param  {AddressState} state
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * 
-	 * address.deserialize({ 
+	 *
+	 * address.deserialize({
 	 * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
      * 	balanceSat: 123,
      * 	totalReceivedSat: 234,
      * 	unconfirmedBalanceSat: 345,
      * 	transactions: ['abcde'],
      * 	spentTransactions: ['bcdef'],
-     * 	lastUpdated: 456 
+     * 	lastUpdated: 456
      * })
      *
      * var balance = address.getBalance()
      * // balance = 0.00000123
 	 * @return {Address}
 	 */
-	deserialize(state){
-		if (!state)
-			return
+  deserialize (state) {
+    if (!state) { return }
 
-		// If the state doesn't match for this address, ignore it.
-		if (state.addrStr && state.addrStr !== this.getPublicAddress())
-			return;
+    // If the state doesn't match for this address, ignore it.
+    if (state.addrStr && state.addrStr !== this.getPublicAddress()) { return }
 
-		if (!isNaN(state.balanceSat))
-			this.balanceSat = state.balanceSat
+    if (!isNaN(state.balanceSat)) { this.balanceSat = state.balanceSat }
 
-		if (!isNaN(state.totalReceivedSat))
-			this.totalReceivedSat = state.totalReceivedSat
+    if (!isNaN(state.totalReceivedSat)) { this.totalReceivedSat = state.totalReceivedSat }
 
-		if (!isNaN(state.totalSentSat))
-			this.totalSentSat = state.totalSentSat
+    if (!isNaN(state.totalSentSat)) { this.totalSentSat = state.totalSentSat }
 
-		if (!isNaN(state.unconfirmedBalanceSat))
-			this.unconfirmedBalanceSat = state.unconfirmedBalanceSat
+    if (!isNaN(state.unconfirmedBalanceSat)) { this.unconfirmedBalanceSat = state.unconfirmedBalanceSat }
 
-		if (Array.isArray(state.transactions)){
-			this.transactions = state.transactions
-		}
+    if (Array.isArray(state.transactions)) {
+      this.transactions = state.transactions
+    }
 
-		if (Array.isArray(state.spentTransactions)){
-			for (var tx of state.spentTransactions){
-				this.spentTransactions.push(tx)
-			}
-		}
+    if (Array.isArray(state.spentTransactions)) {
+      for (var tx of state.spentTransactions) {
+        this.spentTransactions.push(tx)
+      }
+    }
 
-		if (!isNaN(state.lastUpdated))
-			this.lastUpdated = state.lastUpdated
-		else
-			this.lastUpdated = Date.now()
+    if (!isNaN(state.lastUpdated)) { this.lastUpdated = state.lastUpdated } else { this.lastUpdated = Date.now() }
 
-		return this
-	}
-	/**
+    return this
+  }
+  /**
 	 * Get a serialized version of the Address (dried out JSON)
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -332,30 +320,30 @@ class Address {
 	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 	 *
 	 * var address_state = address.serialize()
-	 * // address_state = { 
+	 * // address_state = {
 	 * // 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
      * // 	balanceSat: 0,
      * // 	totalReceivedSat: 0,
      * // 	unconfirmedBalanceSat: 0,
      * // 	transactions: [],
      * // 	spentTransactions: [],
-     * // 	lastUpdated: 0 
+     * // 	lastUpdated: 0
      * // }
 	 * @return {AddressState}
 	 */
-	serialize(){
-		return {
-			addrStr: this.getPublicAddress(),
-			wif: this.getPrivateAddress(),
-			balanceSat: this.balanceSat,
-			totalReceivedSat: this.totalReceivedSat,
-			unconfirmedBalanceSat: this.unconfirmedBalanceSat,
-			transactions: this.transactions,
-			spentTransactions: this.spentTransactions,
-			lastUpdated: this.lastUpdated
-		}
-	}
-	/**
+  serialize () {
+    return {
+      addrStr: this.getPublicAddress(),
+      wif: this.getPrivateAddress(),
+      balanceSat: this.balanceSat,
+      totalReceivedSat: this.totalReceivedSat,
+      unconfirmedBalanceSat: this.unconfirmedBalanceSat,
+      transactions: this.transactions,
+      spentTransactions: this.spentTransactions,
+      lastUpdated: this.lastUpdated
+    }
+  }
+  /**
 	 * Get the Balance (in whole coins) for the Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -365,10 +353,10 @@ class Address {
 	 * // balance = 0
 	 * @return {number}
 	 */
-	getBalance(){
-		return this.balanceSat / this.coin.satPerCoin
-	}
-	/**
+  getBalance () {
+    return this.balanceSat / this.coin.satPerCoin
+  }
+  /**
 	 * Get the Total Recieved balance (in whole coins) for the Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -378,10 +366,10 @@ class Address {
 	 * // totReceived = 0
 	 * @return {number}
 	 */
-	getTotalReceived(){
-		return this.totalReceivedSat / this.coin.satPerCoin
-	}
-	/**
+  getTotalReceived () {
+    return this.totalReceivedSat / this.coin.satPerCoin
+  }
+  /**
 	 * Get the Total Sent balance (in whole coins) for the Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -391,10 +379,10 @@ class Address {
 	 * // totSent = 0
 	 * @return {number}
 	 */
-	getTotalSent(){
-		return this.totalSentSat / this.coin.satPerCoin
-	}
-	/**
+  getTotalSent () {
+    return this.totalSentSat / this.coin.satPerCoin
+  }
+  /**
 	 * Get the Unconfirmed Balance (in whole coins) for the Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -404,10 +392,10 @@ class Address {
 	 * // uBal = 0
 	 * @return {number}
 	 */
-	getUnconfirmedBalance(){
-		return this.unconfirmedBalanceSat / this.coin.satPerCoin
-	}
-	/**
+  getUnconfirmedBalance () {
+    return this.unconfirmedBalanceSat / this.coin.satPerCoin
+  }
+  /**
 	 * Get the unspent transaction outputs for the Address
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -418,12 +406,12 @@ class Address {
 	 * })
 	 * @return {Promise<Array.<utxo>>} Returns a Promise that resolves to an Array of utxos.
 	 */
-	getUnspent(){
-		return this.coin.explorer.getAddressUtxo(this.getPublicAddress()).then((utxos) => {
-			return this.removeSpent(utxos)
-		})
-	}
-	/**
+  getUnspent () {
+    return this.coin.explorer.getAddressUtxo(this.getPublicAddress()).then((utxos) => {
+      return this.removeSpent(utxos)
+    })
+  }
+  /**
 	 * Remove the already spent outputs from the array we are given.
 	 * @param  {Array.<utxo>} unspentTransactions - An Array containing utxos to sort through
 	 * @example
@@ -436,32 +424,30 @@ class Address {
 	 * })
 	 * @return {Array.<utxo>}
 	 */
-	removeSpent(unspentTransactions){
-		// If we are not defined, or we are not an array, just return
-		if (!unspentTransactions || !Array.isArray(unspentTransactions))
-			return
+  removeSpent (unspentTransactions) {
+    // If we are not defined, or we are not an array, just return
+    if (!unspentTransactions || !Array.isArray(unspentTransactions)) { return }
 
-		var unspent = [];
+    var unspent = []
 
-		for (var tx of unspentTransactions){
-			var spent = false
-			for (var txid of this.spentTransactions){
-				if (txid === tx.txid){
-					spent = true;
-				}
-			}
+    for (var tx of unspentTransactions) {
+      var spent = false
+      for (var txid of this.spentTransactions) {
+        if (txid === tx.txid) {
+          spent = true
+        }
+      }
 
-			if (!spent)
-				unspent.push(tx);
-		}
+      if (!spent) { unspent.push(tx) }
+    }
 
-		// @ToDo: Check if some spentTransactions txids are missing from the unspentTransactions array
-		// If the txid is missing from the unspentTransactions array, then remove it from the spentTransactions array
-		// This clears out any spentTransactions that have been confirmed as no longer unspent.
+    // @ToDo: Check if some spentTransactions txids are missing from the unspentTransactions array
+    // If the txid is missing from the unspentTransactions array, then remove it from the spentTransactions array
+    // This clears out any spentTransactions that have been confirmed as no longer unspent.
 
-		return unspent;
-	}
-	/**
+    return unspent
+  }
+  /**
 	 * Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.
 	 * @example
 	 * import { Address, Networks } from 'oip-hdmw';
@@ -470,26 +456,25 @@ class Address {
 	 * address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")
 	 * @param {string} txid - The TXID of the spent output that we should remove
 	 */
-	addSpentTransaction(txid){
-		this.spentTransactions.push(txid);
-	}
-	/**
+  addSpentTransaction (txid) {
+    this.spentTransactions.push(txid)
+  }
+  /**
 	 * Internal function used to process updates streaming in from Websockets,
 	 * emits an update that can be subscribed to with onWebsocketUpdate
 	 * @param  {Object} update - Websocket Update Data
 	 */
-	_processWebsocketUpdate(update){
-		// If there is no data available, just ignore it
-		if (!update)
-			return
+  _processWebsocketUpdate (update) {
+    // If there is no data available, just ignore it
+    if (!update) { return }
 
-		// If there is updated data, go ahead and set ourselves to it
-		if (update.updated_data){
-			var addr = this.deserialize(update.updated_data)
-			this.event_emitter.emit("websocket_update", addr)
-		}
-	}
-	/**
+    // If there is updated data, go ahead and set ourselves to it
+    if (update.updated_data) {
+      var addr = this.deserialize(update.updated_data)
+      this.event_emitter.emit('websocket_update', addr)
+    }
+  }
+  /**
 	 * Subscribe to events that are emitted when an Address update is recieved via Websockets
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
@@ -501,9 +486,9 @@ class Address {
 	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
 	 * })
 	 */
-	onWebsocketUpdate(subscriber_function){
-		this.event_emitter.on("websocket_update", subscriber_function)
-	}
+  onWebsocketUpdate (subscriber_function) {
+    this.event_emitter.on('websocket_update', subscriber_function)
+  }
 }
 
 module.exports = Address

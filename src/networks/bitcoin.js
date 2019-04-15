@@ -5,26 +5,26 @@ import config from './config'
 
 var bitcoinFeePerKb = 100000
 
-var n = networks.bitcoin;
+var n = networks.bitcoin
 
-n.slip44 = bip44constants.BTC;
+n.slip44 = bip44constants.BTC
 
 module.exports = {
-	name: 'bitcoin',
-	displayName: 'Bitcoin',
-	ticker: 'BTC',
-	satPerCoin: 1e8,
-	feePerKb: bitcoinFeePerKb,
-	feePerByte: bitcoinFeePerKb / 1024,
-	maxFeePerByte: 100,
-	minFee: bitcoinFeePerKb,
-	dust: 546,
+  name: 'bitcoin',
+  displayName: 'Bitcoin',
+  ticker: 'BTC',
+  satPerCoin: 1e8,
+  feePerKb: bitcoinFeePerKb,
+  feePerByte: bitcoinFeePerKb / 1024,
+  maxFeePerByte: 100,
+  minFee: bitcoinFeePerKb,
+  dust: 546,
 
-	txVersion: 1,
+  txVersion: 1,
 
-	explorer: new Insight(config.defaultApiUrls.bitcoin),
+  explorer: new Insight(config.defaultApiUrls.bitcoin),
 
-	getExtraBytes: function(options){ return },
+  getExtraBytes: function (options) { },
 
-	network: n
+  network: n
 }

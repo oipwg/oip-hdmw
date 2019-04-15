@@ -1,38 +1,38 @@
 import { Insight } from 'insight-explorer'
 import coininfo from 'coininfo'
 import bip44constants from 'bip44-constants'
-import config from "./config";
+import config from './config'
 
 var litecoinFeePerKb = 100000
 
-var n = coininfo.litecoin.main.toBitcoinJS();
+var n = coininfo.litecoin.main.toBitcoinJS()
 
 module.exports = {
-	name: 'litecoin',
-	displayName: 'Litecoin',
-	ticker: 'LTC',
-	satPerCoin: 1e8,
-	feePerKb: litecoinFeePerKb,
-	feePerByte: litecoinFeePerKb / 1024,
-	maxFeePerByte: 100,
-	minFee: litecoinFeePerKb,
-	dust: 54600,
+  name: 'litecoin',
+  displayName: 'Litecoin',
+  ticker: 'LTC',
+  satPerCoin: 1e8,
+  feePerKb: litecoinFeePerKb,
+  feePerByte: litecoinFeePerKb / 1024,
+  maxFeePerByte: 100,
+  minFee: litecoinFeePerKb,
+  dust: 54600,
 
-	txVersion: 1,
+  txVersion: 1,
 
-	explorer: new Insight(config.defaultApiUrls.litecoin),
+  explorer: new Insight(config.defaultApiUrls.litecoin),
 
-	getExtraBytes: function(options){ return },
+  getExtraBytes: function (options) { },
 
-	network: {
-		bip32: {
-			public: n.bip32.public,
-			private: n.bip32.private
-		},
-		slip44: bip44constants.LTC,
-		messagePrefix: "\u0018Litecoin Signed Message:\n",
-		pubKeyHash: n.pubKeyHash,
-		scriptHash: n.scriptHash,
-		wif: n.wif
-	}
+  network: {
+    bip32: {
+      public: n.bip32.public,
+      private: n.bip32.private
+    },
+    slip44: bip44constants.LTC,
+    messagePrefix: '\u0018Litecoin Signed Message:\n',
+    pubKeyHash: n.pubKeyHash,
+    scriptHash: n.scriptHash,
+    wif: n.wif
+  }
 }

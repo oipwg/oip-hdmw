@@ -1,12 +1,11 @@
-import bitcoin from 'bitcoinjs-lib';
+import bitcoin from 'bitcoinjs-lib'
 
-let Transaction = bitcoin.Transaction;
-let bcrypto = bitcoin.crypto;
-let bscript = bitcoin.script;
-let payments = bitcoin.payments;
-let classify = bitcoin.classify;
-let SCRIPT_TYPES = classify.types;
-
+let Transaction = bitcoin.Transaction
+let bcrypto = bitcoin.crypto
+let bscript = bitcoin.script
+let payments = bitcoin.payments
+let classify = bitcoin.classify
+let SCRIPT_TYPES = classify.types
 
 var EMPTY_SCRIPT = Buffer.allocUnsafe(0)
 var ONE = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001', 'hex')
@@ -234,9 +233,8 @@ function prepareInput (input, ourPubKey, redeemScript, witnessValue, witnessScri
   }
 }
 
-function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashType, witnessValue, witnessScript){
-  if (!transactionBuilder.__inputs[vin])
-    throw new Error("No input at index: " + vin)
+function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashType, witnessValue, witnessScript) {
+  if (!transactionBuilder.__inputs[vin]) { throw new Error('No input at index: ' + vin) }
 
   hashType = hashType || bitcoin.Transaction.SIGHASH_ALL
 
@@ -250,21 +248,17 @@ function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashTy
   var ourPubKey = keyPair.publicKey
 
   // Check both publickKey, getPublicKey, and getPublicKeyBuffer to support all HDNode types (bitcoinjs-lib v3 & bip32 npm & bitcoinjs-lib v4 when it comes out)
-  if (!ourPubKey && keyPair.getPublicKey)
-    ourPubKey = keyPair.getPublicKey()
-  else if (!ourPubKey && keyPair.getPublicKeyBuffer)
-    ourPubKey = keyPair.getPublicKeyBuffer()
+  if (!ourPubKey && keyPair.getPublicKey) { ourPubKey = keyPair.getPublicKey() } else if (!ourPubKey && keyPair.getPublicKeyBuffer) { ourPubKey = keyPair.getPublicKeyBuffer() }
 
   if (!canSign(input)) {
     if (witnessValue !== undefined) {
-      if (input.value !== undefined && input.value !== witnessValue)
-        throw new Error('Input didn\'t match witnessValue')
+      if (input.value !== undefined && input.value !== witnessValue) { throw new Error('Input didn\'t match witnessValue') }
 
       input.value = witnessValue
     }
 
     // @TODO: Add this when SegWit support is needed
-    if (!canSign(input)){
+    if (!canSign(input)) {
       const prepared = prepareInput(input, ourPubKey, redeemScript, witnessValue, witnessScript)
 
       Object.assign(input, prepared)
@@ -298,10 +292,9 @@ function sign(transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashTy
   if (!signed) throw new Error('Key pair cannot sign for this input')
 }
 
-function hashForSignature(transaction, extraBytes, inIndex, prevOutScript, hashType){
+function hashForSignature (transaction, extraBytes, inIndex, prevOutScript, hashType) {
   // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighash_tests.cpp#L29
-  if (inIndex >= transaction.ins.length) 
-    return ONE
+  if (inIndex >= transaction.ins.length) { return ONE }
 
   // ignore OP_CODESEPARATOR
   var ourScript = bitcoin.script.compile(bitcoin.script.decompile(prevOutScript).filter(function (x) {
@@ -324,8 +317,7 @@ function hashForSignature(transaction, extraBytes, inIndex, prevOutScript, hashT
   // SIGHASH_SINGLE: ignore all outputs, except at the same index?
   } else if ((hashType & 0x1f) === bitcoin.Transaction.SIGHASH_SINGLE) {
     // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighash_tests.cpp#L60
-    if (inIndex >= transaction.outs.length) 
-      return ONE
+    if (inIndex >= transaction.outs.length) { return ONE }
 
     // truncate outputs after
     txTmp.outs.length = inIndex + 1
@@ -356,27 +348,27 @@ function hashForSignature(transaction, extraBytes, inIndex, prevOutScript, hashT
   }
 
   // serialize and hash
-  var extraBytesString = extraBytes || "";
+  var extraBytesString = extraBytes || ''
 
   // Get the regular tx hex buffer
   var buffer = Buffer.allocUnsafe(txTmp.__byteLength(false))
   txTmp.__toBuffer(buffer, 0, false)
 
   // tx hex buffer to string (for appending data)
-  var txHexStr = buffer.toString('hex');
+  var txHexStr = buffer.toString('hex')
 
   // Append on Extra Bytes (floData)
-  txHexStr += extraBytesString;
+  txHexStr += extraBytesString
 
   // Create hashType buffer
   var hashTypeBuf = Buffer.allocUnsafe(4)
   hashTypeBuf.writeInt32LE(hashType, 0)
 
   // Add the hashType to the end of the hex string
-  txHexStr += hashTypeBuf.toString('hex');
+  txHexStr += hashTypeBuf.toString('hex')
 
   // Convert hex string to buffer and hash256 it
-  return bcrypto.hash256(new Buffer(txHexStr, 'hex'));
+  return bcrypto.hash256(new Buffer(txHexStr, 'hex'))
 }
 
 module.exports = {
