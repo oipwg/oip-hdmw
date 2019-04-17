@@ -528,7 +528,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line481">line 481</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line467">line 467</a>
         </li>
       </ul>
     </dd>
@@ -680,7 +680,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line473">line 473</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line459">line 459</a>
         </li>
       </ul>
     </dd>
@@ -849,7 +849,7 @@ address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line290">line 290</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line287">line 287</a>
         </li>
       </ul>
     </dd>
@@ -887,14 +887,14 @@ address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5
 
 var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
-address.deserialize({ 
+address.deserialize({
 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
 	balanceSat: 123,
 	totalReceivedSat: 234,
 	unconfirmedBalanceSat: 345,
 	transactions: ['abcde'],
 	spentTransactions: ['bcdef'],
-	lastUpdated: 456 
+	lastUpdated: 456
 })
 
 var balance = address.getBalance()
@@ -996,7 +996,7 @@ var balance = address.getBalance()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line368">line 368</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line356">line 356</a>
         </li>
       </ul>
     </dd>
@@ -1089,8 +1089,8 @@ var balance = address.getBalance();
 
 
   <div class="description">
-    <p>Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers. 
-Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access 
+    <p>Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers.
+Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access
 to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
 the ECPair will exist.</p>
   </div>
@@ -1135,7 +1135,7 @@ the ECPair will exist.</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line200">line 200</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line199">line 199</a>
         </li>
       </ul>
     </dd>
@@ -1272,7 +1272,7 @@ var ecpair = address.getECPair();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line183">line 183</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line182">line 182</a>
         </li>
       </ul>
     </dd>
@@ -1546,7 +1546,7 @@ var pubAddr = address.getPublicAddress();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line381">line 381</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line369">line 369</a>
         </li>
       </ul>
     </dd>
@@ -1682,7 +1682,7 @@ var totReceived = address.getTotalReceived();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line394">line 394</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line382">line 382</a>
         </li>
       </ul>
     </dd>
@@ -1818,7 +1818,7 @@ var totSent = address.getTotalSent();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line407">line 407</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line395">line 395</a>
         </li>
       </ul>
     </dd>
@@ -1954,7 +1954,7 @@ var uBal = address.getUnconfirmedBalance();
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line421">line 421</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line409">line 409</a>
         </li>
       </ul>
     </dd>
@@ -2150,7 +2150,7 @@ address.getUnspent().then((utxos) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line504">line 504</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line489">line 489</a>
         </li>
       </ul>
     </dd>
@@ -2321,7 +2321,7 @@ address.onWebsocketUpdate((address) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line439">line 439</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line427">line 427</a>
         </li>
       </ul>
     </dd>
@@ -2459,7 +2459,7 @@ address.getUnspent().then((utxos) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line346">line 346</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line334">line 334</a>
         </li>
       </ul>
     </dd>
@@ -2498,14 +2498,14 @@ address.getUnspent().then((utxos) => {
 var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
 
 var address_state = address.serialize()
-// address_state = { 
+// address_state = {
 // 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
 // 	balanceSat: 0,
 // 	totalReceivedSat: 0,
 // 	unconfirmedBalanceSat: 0,
 // 	transactions: [],
 // 	spentTransactions: [],
-// 	lastUpdated: 0 
+// 	lastUpdated: 0
 // }</code></pre>
 
 
@@ -2659,7 +2659,7 @@ var address_state = address.serialize()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line208">line 208</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line207">line 207</a>
         </li>
       </ul>
     </dd>
@@ -2781,7 +2781,7 @@ var address_state = address.serialize()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line259">line 259</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line256">line 256</a>
         </li>
       </ul>
     </dd>
@@ -3006,7 +3006,7 @@ address.updateState().then((addr) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line237">line 237</a>
+          <a href="Address.js.html">Address.js</a>, <a href="Address.js.html#line234">line 234</a>
         </li>
       </ul>
     </dd>
