@@ -522,14 +522,13 @@ class Account {
     for (let addr of addresses) {
       let address = new Address(addr, coin, false)
 
-      let prom = address.updateState()
+      let addressUpdatePromise = address.updateState()
 
       // This will only be called for any rejections AFTER the first one,
       // please take a look at the comment below for more info.
-      prom.catch((e) => {
-      })
+      addressUpdatePromise.catch((e) => { console.warn(`An Address Discovery Promise failed during Account Discovery! ${e}\n${e.stack}`) })
 
-      addressPromises.push(address.updateState())
+      addressPromises.push(addressUpdatePromise)
     }
 
     let promiseResponses = []
@@ -541,7 +540,7 @@ class Account {
       // The first promise rejection will be caught here, all other promises
       // that reject AFTER the first, will be caught in the above prom.catch() function.
 
-      throw new Error('Unable to update Address state in _chainPromise \n' + e)
+      throw new Error(`Account Discovery failure in _chainPromise! ${e}\n${e.stack}`)
     }
 
     for (let address of promiseResponses) {
