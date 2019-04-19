@@ -621,7 +621,7 @@ class Account {
       // please take a look at the comment below for more info.
       addressUpdatePromise.catch((e) => { console.warn(`An Address Discovery Promise failed during Account Discovery! ${e}\n${e.stack}`) })
 
-      addressPromises.push(addressUpdatePromise.updateState())
+      addressPromises.push(addressUpdatePromise)
     }
 
     let promiseResponses = []
