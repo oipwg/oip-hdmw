@@ -31,7 +31,7 @@ Creating a wallet is extremely simple! To create a new wallet with a random new 
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet();
+const myWallet = new Wallet()
 
 console.log("My Mnemonic: '" + myWallet.getMnemonic() + "'")
 // My Mnemonic: 'carbon panda replace drum guess heart inside useless random bulb hint industry'
@@ -42,7 +42,7 @@ Now that you have a Mnemonic for your wallet, lets go ahead and create the Walle
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 console.log("My Wallets Coins: ", myWallet.getCoins())
 // My Wallets Coins: {
@@ -58,11 +58,11 @@ Now that we have created a new Wallet and accessed the Coins on the wallet, lets
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
-var bitcoin = myWallet.getCoin('bitcoin');
+const bitcoin = myWallet.getCoin('bitcoin')
 
-var myMainAddress = bitcoin.getMainAddress();
+const myMainAddress = bitcoin.getMainAddress()
 
 console.log("My Wallets Bitcoin Main Address: ", myMainAddress.getPublicAddress());
 // My Wallets Bitcoin Main Address: 13BW4eTvNFXBLeTjJQRgVxuiuStAFp1HfL
@@ -74,7 +74,7 @@ In order to send a transaction, we will need to have a balance on our Wallet fir
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 myWallet.sendPayment({
 	to: { "12nP3k9tFKgQPJNkDDyNWqgjtm2bt3qq1b": 0.001 }

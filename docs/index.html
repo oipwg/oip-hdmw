@@ -125,11 +125,11 @@
 </code></pre>
 <h2>Getting Started</h2>
 <h3>Creating your first Wallet</h3>
-<p>Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no paramaters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples</p>
+<p>Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no parameters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples</p>
 <pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet();
+const myWallet = new Wallet()
 
 console.log(&quot;My Mnemonic: '&quot; + myWallet.getMnemonic() + &quot;'&quot;)
 // My Mnemonic: 'carbon panda replace drum guess heart inside useless random bulb hint industry'
@@ -139,7 +139,7 @@ console.log(&quot;My Mnemonic: '&quot; + myWallet.getMnemonic() + &quot;'&quot;)
 <pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 console.log(&quot;My Wallets Coins: &quot;, myWallet.getCoins())
 // My Wallets Coins: {
@@ -154,11 +154,11 @@ console.log(&quot;My Wallets Coins: &quot;, myWallet.getCoins())
 <pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
-var bitcoin = myWallet.getCoin('bitcoin');
+const bitcoin = myWallet.getCoin('bitcoin')
 
-var myMainAddress = bitcoin.getMainAddress();
+const myMainAddress = bitcoin.getMainAddress()
 
 console.log(&quot;My Wallets Bitcoin Main Address: &quot;, myMainAddress.getPublicAddress());
 // My Wallets Bitcoin Main Address: 13BW4eTvNFXBLeTjJQRgVxuiuStAFp1HfL
@@ -168,7 +168,7 @@ console.log(&quot;My Wallets Bitcoin Main Address: &quot;, myMainAddress.getPubl
 <pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 myWallet.sendPayment({
 	to: { &quot;12nP3k9tFKgQPJNkDDyNWqgjtm2bt3qq1b&quot;: 0.001 }
@@ -178,8 +178,8 @@ myWallet.sendPayment({
 	console.error(&quot;Unable to send Transaction!&quot;, error)
 })
 </code></pre>
-<p>When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should recieve its initial confirmation, and you would be ok to send another transaction.</p>
-<p>If you wanted to send second transaction, before the first recieves its initial confirmation, you can do so by calling the same <code>Wallet</code> instance that you ran <code>sendPayment</code> on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction recieves a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to &quot;restart&quot; between sending transactions, it is suggested that you read the next section called &quot;Saving and Reloading the Wallet&quot;</p>
+<p>When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should receive its initial confirmation, and you would be ok to send another transaction.</p>
+<p>If you wanted to send second transaction, before the first receives its initial confirmation, you can do so by calling the same <code>Wallet</code> instance that you ran <code>sendPayment</code> on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction receives a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to &quot;restart&quot; between sending transactions, it is suggested that you read the next section called &quot;Saving and Reloading the Wallet&quot;</p>
 <h3>Saving and Reloading the Wallet</h3>
 <p>After you have loaded a wallet, you might want to save its current &quot;state&quot; so that on the next load, it can immediately know its balance and be ready to spend without having to &quot;re-discover&quot; the wallet addresses/state.</p>
 <p>Here is an example that, after sending a transaction, saves the current wallet state to a local file. Since I am using Node.js in this example, we are going to use the NPM module <a href="https://www.npmjs.com/package/node-localstorage">node-localstorage</a> in order to store the wallet state easily and effortlessly. If you are using a Browser however, you can use the Native &quot;LocalStorage&quot; using the same code.</p>

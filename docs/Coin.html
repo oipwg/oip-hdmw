@@ -133,7 +133,7 @@
 
 
   <div class="description">
-    <p>Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.</p>
+    <p>Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatible wallet.</p>
 <h5>Examples</h5>
 <p>Create a new Coin using a specified seed.</p>
 <pre class="prettyprint source"><code>import { Coin, Networks } from 'oip-hdmw'
@@ -703,7 +703,7 @@ If the Account does not exist, it will create it and then return it.</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line360">line 360</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line361">line 361</a>
         </li>
       </ul>
     </dd>
@@ -838,7 +838,7 @@ let account = bitcoin.addAccount(1)</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line416">line 416</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line417">line 417</a>
         </li>
       </ul>
     </dd>
@@ -1054,7 +1054,7 @@ bitcoin.discoverAccounts().then((accounts) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line321">line 321</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line322">line 322</a>
         </li>
       </ul>
     </dd>
@@ -1151,7 +1151,7 @@ let account = bitcoin.getAccount(1)</code></pre>
       </svg>
     </a>
     <h4 class="name" id="getAccounts">
-      <span class="type-signature"></span>getAccounts<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Account.html">Account</a>}</span>
+      <span class="type-signature"></span>getAccounts<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;number, <a href="Account.html">Account</a>>}</span>
     </h4>
   </span>
 
@@ -1203,7 +1203,7 @@ let account = bitcoin.getAccount(1)</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line344">line 344</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line345">line 345</a>
         </li>
       </ul>
     </dd>
@@ -1265,7 +1265,7 @@ let accounts = bitcoin.getAccounts()
     <dd>
       
     <span class="param-type">
-      <a href="Account.html">Account</a>
+      Object.&lt;number, <a href="Account.html">Account</a>>
     </span>
 
     
@@ -1511,7 +1511,7 @@ let accounts = bitcoin.getAccounts()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line168">line 168</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line169">line 169</a>
         </li>
       </ul>
     </dd>
@@ -1873,7 +1873,7 @@ let accounts = bitcoin.getAccounts()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line112">line 112</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line113">line 113</a>
         </li>
       </ul>
     </dd>
@@ -2018,7 +2018,7 @@ bitcoin.getBalance().then((balance) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line391">line 391</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line392">line 392</a>
         </li>
       </ul>
     </dd>
@@ -2154,7 +2154,7 @@ let coinInfo = bitcoin.getCoinInfo()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line288">line 288</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line289">line 289</a>
         </li>
       </ul>
     </dd>
@@ -2298,7 +2298,7 @@ let extPrivateKey = bitcoin.getExtendedPrivateKey()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line302">line 302</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line303">line 303</a>
         </li>
       </ul>
     </dd>
@@ -2518,7 +2518,7 @@ This is the Address at index 0 on the External Chain of the Account.</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line188">line 188</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line189">line 189</a>
         </li>
       </ul>
     </dd>
@@ -2723,7 +2723,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line456">line 456</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line460">line 460</a>
         </li>
       </ul>
     </dd>
@@ -2875,7 +2875,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line473">line 473</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line477">line 477</a>
         </li>
       </ul>
     </dd>
@@ -2914,7 +2914,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
 let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
 
 bitcoin.onWebsocketUpdate((address) => {
-    console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+    console.log(address.getPublicAddress() + " Received a Websocket Update!")
 })</code></pre>
 
 
@@ -3316,7 +3316,7 @@ bitcoin.onWebsocketUpdate((address) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line202">line 202</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line203">line 203</a>
         </li>
       </ul>
     </dd>
@@ -3440,7 +3440,7 @@ bitcoin.onWebsocketUpdate((address) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line445">line 445</a>
+          <a href="Coin.js.html">Coin.js</a>, <a href="Coin.js.html#line446">line 446</a>
         </li>
       </ul>
     </dd>

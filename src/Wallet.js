@@ -87,6 +87,7 @@ class Wallet {
       if (options.networks && typeof options.networks === 'object') {
         // Attach each passed in network, overwrite if needed
         for (const node in options.networks) {
+          if (!Object.prototype.hasOwnProperty.call(options.networks, node)) continue
           this.networks[node] = options.networks[node]
         }
       }
@@ -126,6 +127,7 @@ class Wallet {
     if (serializedData) {
       if (serializedData.coins) {
         for (const name in serializedData.coins) {
+          if (!Object.prototype.hasOwnProperty.call(serializedData.coins, name)) continue
           this.addCoin(name, { serializedData: serializedData.coins[name] })
         }
       }
@@ -145,7 +147,7 @@ class Wallet {
     // If the coin isn't already added AND we have access to a valid network,
     // then add the coin.
     if (!this.coins[name] && this.networks[name]) {
-      this.coins[name] = new Coin(this.masterNode.derivePath("44'"), this.networks[name], opts)
+      this.coins[name] = new Coin(this.masterNode.derivePath('44\''), this.networks[name], opts)
       this.coins[name].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
     }
   }
@@ -174,7 +176,7 @@ class Wallet {
    * //  "litecoin": Coin,
    * //  "flo": Coin
    * // }
-   * @return {...Coin} Object containing all coins
+   * @return {Object.<number, Coin>} Object containing all coins
    */
   getCoins () {
     return this.coins
@@ -198,25 +200,25 @@ class Wallet {
   }
 
   /**
-     * Get Coin Balances
-     * @param {Object} [options] - The options for searching the Balance of coins
-     * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
-     * @param {Boolean} [options.testnet=true] - Should we attempt to get balances for testnet coins as well (coins ending with 'Testnet')
-     *
-     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
-     *
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
-     *
-     * //example return
-     * {
-     *      "flo": 2.16216,
-     *      "bitcoin": "error fetching balance",
-     *      "litecoin": 3.32211
-     * }
-     */
+   * Get Coin Balances
+   * @param {Object} [options] - The options for searching the Balance of coins
+   * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+   * @param {Boolean} [options.testnet=true] - Should we attempt to get balances for testnet coins as well (coins ending with 'Testnet')
+   *
+   * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
+   *
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
+   *
+   * //example return
+   * {
+   *      "flo": 2.16216,
+   *      "bitcoin": "error fetching balance",
+   *      "litecoin": 3.32211
+   * }
+   */
   async getCoinBalances (options = { discover: true, testnet: true }) {
     const coinnames = options.coins || Object.keys(this.getCoins())
 
@@ -252,24 +254,24 @@ class Wallet {
   }
 
   /**
-     * Calculate Exchange Rates for supported coins
-     * @param {Object} [options] - The options for getting the exchange rates
-     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
-     *
-     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins exchange rate, along with errors if there are any
-     *
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
-     *
-     * //returns
-     * {
-     *      "flo": expect.any(Number) || "error",
-     *      "bitcoin": expect.any(Number) || "error",
-     *      "litecoin": expect.any(Number) || "error"
-     * }
-     */
+   * Calculate Exchange Rates for supported coins
+   * @param {Object} [options] - The options for getting the exchange rates
+   * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+   *
+   * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins exchange rate, along with errors if there are any
+   *
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
+   *
+   * //returns
+   * {
+   *      "flo": expect.any(Number) || "error",
+   *      "bitcoin": expect.any(Number) || "error",
+   *      "litecoin": expect.any(Number) || "error"
+   * }
+   */
   async getExchangeRates (options = { fiat: 'usd' }) {
     const coins = options.coins || Object.keys(this.getCoins())
 
@@ -301,26 +303,28 @@ class Wallet {
   }
 
   /**
-     * Calculate Balance of coins after exchange rate conversion
-     * @param {Object} [options] - The options for getting the exchange rates
-     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
-     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
-     * @param {Boolean} [options.testnet=true] - should we include testnet coins?
-     * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
-     *
-     * //returns
-     * {
-     *      "flo": expect.any(Number) || "error",
-     *      "bitcoin": expect.any(Number) || "error",
-     *      "litecoin": expect.any(Number) || "error"
-     * }
-     */
+   * Calculate Balance of coins after exchange rate conversion
+   * @param {Object} [options] - The options for getting the exchange rates
+   * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+   * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+   * @param {Boolean} [options.testnet=true] - should we include testnet coins?
+   * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
+   *
+   * //returns
+   * {
+   *      "flo": expect.any(Number) || "error",
+   *      "bitcoin": expect.any(Number) || "error",
+   *      "litecoin": expect.any(Number) || "error"
+   * }
+   */
   async getFiatBalances (options) {
-    const fiatBalances = {}; let balances = {}; let xrates = {}
+    const fiatBalances = {}
+    let balances = {}
+    let xrates = {}
 
     try {
       balances = await this.getCoinBalances(options)
@@ -487,6 +491,7 @@ class Wallet {
 
           for (const toAdr of options.to) {
             for (const adr in toAdr) {
+              if (!Object.prototype.hasOwnProperty.call(toAdr, adr)) continue
               if (isValidPublicAddress(adr, this.networks[coin].network)) {
                 coinMatch = this.networks[coin].name
               } else {
@@ -501,6 +506,7 @@ class Wallet {
       } else {
         for (const coin in this.networks) {
           for (const adr in options.to) {
+            if (!Object.prototype.hasOwnProperty.call(options.to, adr)) continue
             if (isValidPublicAddress(adr, this.networks[coin].network)) {
               coinMatch = this.networks[coin].name
             }
@@ -524,8 +530,8 @@ class Wallet {
    * emits an update that can be subscribed to with onWebsocketUpdate
    * @param  {Object} update - Websocket Update Data
    */
-  HandleWebsocketUpdate (address) {
-    this.eventEmitter.emit('websocketUpdate', address)
+  HandleWebsocketUpdate (update) {
+    this.eventEmitter.emit('websocketUpdate', update)
   }
 
   /**

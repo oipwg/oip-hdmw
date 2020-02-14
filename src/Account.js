@@ -625,8 +625,8 @@ class Account {
    * emits an update that can be subscribed to with onWebsocketUpdate
    * @param  {Object} update - Websocket Update Data
    */
-  HandleWebsocketUpdate (address) {
-    this.eventEmitter.emit('websocketUpdate', address)
+  HandleWebsocketUpdate (update) {
+    this.eventEmitter.emit('websocketUpdate', update)
   }
 
   /**

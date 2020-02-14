@@ -270,6 +270,7 @@ test('set network apis', () => {
 
   const oldUrls = []
   for (const coin in oldNetworks) {
+    if (!Object.prototype.hasOwnProperty.call(oldNetworks, coin)) continue
     oldUrls.push(oldNetworks[coin].explorer.url)
   }
 
@@ -279,6 +280,7 @@ test('set network apis', () => {
 
   const newUrls = []
   for (const coin in newNetworks) {
+    if (!Object.prototype.hasOwnProperty.call(newNetworks, coin)) continue
     newUrls.push(newNetworks[coin].explorer.url)
   }
 

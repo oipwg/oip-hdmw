@@ -179,11 +179,13 @@ class TransactionBuilder {
       if (Array.isArray(options.to)) {
         for (const payTo of options.to) {
           for (const address in payTo) {
+            if (!Object.prototype.hasOwnProperty.call(payTo, address)) continue
             this.addTo(address, payTo[address])
           }
         }
       } else {
         for (const address in options.to) {
+          if (!Object.prototype.hasOwnProperty.call(options.to, address)) continue
           this.addTo(address, options.to[address])
         }
       }
@@ -414,6 +416,7 @@ class TransactionBuilder {
     })
 
     for (const i in inputs) {
+      if (!Object.prototype.hasOwnProperty.call(inputs, i)) continue
       for (const addr of this.from) {
         if (addr.getPublicAddress() === inputs[i].address) {
           const extraBytes = this.coin.getExtraBytes(this.passedOptions)

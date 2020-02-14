@@ -83,6 +83,7 @@ class Coin {
     if (serializedData) {
       if (serializedData.accounts) {
         for (const accountNumber in serializedData.accounts) {
+          if (!Object.prototype.hasOwnProperty.call(serializedData.accounts, accountNumber)) continue
           const accountMaster = bip32.fromBase58(serializedData.accounts[accountNumber].extendedPrivateKey, this.coin.network)
 
           this.accounts[accountNumber] = new Account(accountMaster, this.coin, {
@@ -339,7 +340,7 @@ class Coin {
    * //   0: Account,
    * //   1: Account
    * // }
-   * @return {...Account} Returns a JSON object with accounts
+   * @return {Object.<number, Account>} Returns a JSON object with accounts
    */
   getAccounts () {
     return this.accounts
@@ -445,7 +446,10 @@ class Coin {
   SubscribeToAccountWebsocketUpdates () {
     const accounts = this.getAccounts()
 
-    for (const index in accounts) { accounts[index].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this)) }
+    for (const index in accounts) {
+      if (!Object.prototype.hasOwnProperty.call(accounts, index)) continue
+      accounts[index].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
+    }
   }
 
   /**
@@ -453,8 +457,8 @@ class Coin {
    * emits an update that can be subscribed to with onWebsocketUpdate
    * @param  {Object} update - Websocket Update Data
    */
-  HandleWebsocketUpdate (address) {
-    this.eventEmitter.emit('websocketUpdate', address)
+  HandleWebsocketUpdate (update) {
+    this.eventEmitter.emit('websocketUpdate', update)
   }
 
   /**

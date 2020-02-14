@@ -718,8 +718,8 @@ class Account {
    * emits an update that can be subscribed to with onWebsocketUpdate
    * @param  {Object} update - Websocket Update Data
    */
-  HandleWebsocketUpdate (address) {
-    this.eventEmitter.emit('websocketUpdate', address)
+  HandleWebsocketUpdate (update) {
+    this.eventEmitter.emit('websocketUpdate', update)
   }
 
   /**
@@ -734,7 +734,7 @@ class Account {
    * let account = new Account(accountMaster, Networks.flo, false);
    *
    * account.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {

@@ -110,7 +110,7 @@ const floFeePerKb = 100000
  * @property {number} minFee - The minimum fee that should ever be paid
  * @property {number} dust - Amount in Satoshis of the minimum value allowed to be sent around the network
  * @property {number} txVersion - The current TX version number for the coin
- * @property {InsightExplorer} explorer - An InsightExplorer for the current coin so that data can be retreived from the network
+ * @property {Insight} explorer - An Insight explorer for the current coin so that data can be retrieved from the network
  * @property {function} getExtraBytes - A function that is passed options from TransactionBuilder when a transaction is being built/sent. You can use this to add custom logic/tx hex building.
  * @property {CoinNetwork} network - The specific coin network variables, same as used in bitcoinjs-lib
  *

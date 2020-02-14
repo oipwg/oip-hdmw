@@ -104,7 +104,7 @@ const COIN_START = 0x80000000
  */
 class Coin {
   /**
-   * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.
+   * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatible wallet.
    *
    * ##### Examples
    * Create a new Coin using a specified seed.
@@ -176,6 +176,7 @@ class Coin {
     if (serializedData) {
       if (serializedData.accounts) {
         for (const accountNumber in serializedData.accounts) {
+          if (!Object.prototype.hasOwnProperty.call(serializedData.accounts, accountNumber)) continue
           const accountMaster = bip32.fromBase58(serializedData.accounts[accountNumber].extendedPrivateKey, this.coin.network)
 
           this.accounts[accountNumber] = new Account(accountMaster, this.coin, {
@@ -312,7 +313,7 @@ class Coin {
                 allAddresses = this.accounts[account].getAddresses()
               }
             } else if (Array.isArray(options.fromAccounts)) {
-              // If we are an array, itterate through
+              // If we are an array, iterate through
               for (const acs of options.fromAccounts) {
                 if (acs === parseInt(account)) {
                   allAddresses = allAddresses.concat(this.accounts[account].getAddresses())
@@ -432,7 +433,7 @@ class Coin {
    * //   0: Account,
    * //   1: Account
    * // }
-   * @return {...Account} Returns a JSON object with accounts
+   * @return {Object.&lt;number, Account>} Returns a JSON object with accounts
    */
   getAccounts () {
     return this.accounts
@@ -538,7 +539,10 @@ class Coin {
   SubscribeToAccountWebsocketUpdates () {
     const accounts = this.getAccounts()
 
-    for (const index in accounts) { accounts[index].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this)) }
+    for (const index in accounts) {
+      if (!Object.prototype.hasOwnProperty.call(accounts, index)) continue
+      accounts[index].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
+    }
   }
 
   /**
@@ -546,8 +550,8 @@ class Coin {
    * emits an update that can be subscribed to with onWebsocketUpdate
    * @param  {Object} update - Websocket Update Data
    */
-  HandleWebsocketUpdate (address) {
-    this.eventEmitter.emit('websocketUpdate', address)
+  HandleWebsocketUpdate (update) {
+    this.eventEmitter.emit('websocketUpdate', update)
   }
 
   /**
@@ -560,7 +564,7 @@ class Coin {
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
    *
    * bitcoin.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {
