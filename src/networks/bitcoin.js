@@ -3,9 +3,9 @@ import { networks } from 'bitcoinjs-lib'
 import bip44constants from 'bip44-constants'
 import config from './config'
 
-var bitcoinFeePerKb = 100000
+const bitcoinFeePerKb = 100000
 
-var n = networks.bitcoin
+const n = networks.bitcoin
 
 n.slip44 = bip44constants.BTC
 

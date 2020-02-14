@@ -1,10 +1,10 @@
 import { Insight } from 'insight-explorer'
 import config from './config'
 
-var litecoinFeePerKb = 100000
+const litecoinFeePerKb = 100000
 
 module.exports = {
-  name: 'litecoin_testnet',
+  name: 'litecoinTestnet',
   displayName: 'Litecoin Testnet',
   ticker: 'tLTC',
   satPerCoin: 1e8,
@@ -16,7 +16,7 @@ module.exports = {
 
   txVersion: 1,
 
-  explorer: new Insight(config.defaultApiUrls.litecoin_testnet),
+  explorer: new Insight(config.defaultApiUrls.litecoinTestnet),
 
   getExtraBytes: function (options) { },
 

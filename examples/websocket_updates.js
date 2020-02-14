@@ -1,7 +1,7 @@
-var Wallet = require('../lib/Wallet')
+const Wallet = require('../lib/Wallet')
 
-var w = new Wallet('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about', {
-  supported_coins: ['flo_testnet']
+const w = new Wallet('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about', {
+  supportedCoins: ['floTestnet']
 })
 
 w.onWebsocketUpdate(function (address) {

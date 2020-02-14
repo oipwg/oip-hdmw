@@ -24,7 +24,7 @@ function hash160 (buffer) {
 }
 
 function toBase58Check (hash, version) {
-  var payload = Buffer.allocUnsafe(21)
+  const payload = Buffer.allocUnsafe(21)
   payload.writeUInt8(version, 0)
   hash.copy(payload, 1)
 
@@ -52,7 +52,7 @@ function toBase58 (key, version) {
  */
 function isValidWIF (key, network) {
   try {
-    let dec = wif.decode(key)
+    const dec = wif.decode(key)
 
     if (network) {
       return dec.version === network.wif
@@ -73,7 +73,7 @@ function isValidWIF (key, network) {
  */
 function isValidPublicAddress (address, network) {
   try {
-    let dec = bitcoin.address.fromBase58Check(address)
+    const dec = bitcoin.address.fromBase58Check(address)
     if (network) {
       return dec.version === network.pubKeyHash || dec.version === network.scriptHash
     } else {
@@ -86,12 +86,12 @@ function isValidPublicAddress (address, network) {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account-discovery
 async function discovery (chain, gapLimit, queryPromise, i, coin) {
-  var gap = 0
-  var checked = 0
-  var allAddresses = []
+  let gap = 0
+  let checked = 0
+  const allAddresses = []
 
-  let cycle = async (myCoin) => {
-    var batch = [chain.get()]
+  const cycle = async (myCoin) => {
+    const batch = [chain.get()]
     checked++
 
     while (batch.length < gapLimit) {
@@ -101,13 +101,14 @@ async function discovery (chain, gapLimit, queryPromise, i, coin) {
       checked++
     }
 
+    let queryResultSet
     try {
-      var queryResultSet = await queryPromise(batch, myCoin)
+      queryResultSet = await queryPromise(batch, myCoin)
     } catch (e) {
       throw new Error('discovery failed! \n' + e)
     }
 
-    for (var adr of queryResultSet.addresses) { allAddresses.push(adr) }
+    for (const adr of queryResultSet.addresses) { allAddresses.push(adr) }
 
     if (Array.isArray(queryResultSet.results)) { throw new TypeError('Expected query set, not Array') }
 
@@ -121,7 +122,7 @@ async function discovery (chain, gapLimit, queryPromise, i, coin) {
     })
 
     if (gap >= gapLimit) {
-      var used = checked - gap
+      const used = checked - gap
 
       return { used: used, checked: checked, chainIndex: i, addresses: allAddresses }
     } else {

@@ -1,14 +1,15 @@
 import bitcoin from 'bitcoinjs-lib'
 
-let Transaction = bitcoin.Transaction
-let bcrypto = bitcoin.crypto
-let bscript = bitcoin.script
-let payments = bitcoin.payments
-let classify = bitcoin.classify
-let SCRIPT_TYPES = classify.types
+const Transaction = bitcoin.Transaction
+const bcrypto = bitcoin.crypto
+const bscript = bitcoin.script
+const payments = bitcoin.payments
+const classify = bitcoin.classify
+const SCRIPT_TYPES = classify.types
 
-var EMPTY_SCRIPT = Buffer.allocUnsafe(0)
-var ONE = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001', 'hex')
+const EMPTY_SCRIPT = Buffer.allocUnsafe(0)
+const BLANK_OUTPUT = Buffer.allocUnsafe(0)
+const ONE = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001', 'hex')
 
 function canSign (input) {
   return input.signScript !== undefined &&
@@ -96,7 +97,7 @@ function prepareInput (input, ourPubKey, redeemScript, witnessValue, witnessScri
       expanded.signatures = input.signatures
     }
 
-    let signScript = witnessScript
+    const signScript = witnessScript
     if (expanded.type === SCRIPT_TYPES.P2WPKH) throw new Error('P2SH(P2WSH(P2WPKH)) is a consensus failure')
 
     return {
@@ -170,7 +171,7 @@ function prepareInput (input, ourPubKey, redeemScript, witnessValue, witnessScri
       expanded.signatures = input.signatures
     }
 
-    let signScript = witnessScript
+    const signScript = witnessScript
     if (expanded.type === SCRIPT_TYPES.P2WPKH) throw new Error('P2WSH(P2WPKH) is a consensus failure')
 
     return {
@@ -238,14 +239,14 @@ function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashT
 
   hashType = hashType || bitcoin.Transaction.SIGHASH_ALL
 
-  var input = transactionBuilder.__inputs[vin]
+  const input = transactionBuilder.__inputs[vin]
 
   // if redeemScript was previously provided, enforce consistency
   if (input.redeemScript !== undefined && redeemScript && !input.redeemScript.equals(redeemScript)) {
     throw new Error('Inconsistent redeemScript')
   }
 
-  var ourPubKey = keyPair.publicKey
+  let ourPubKey = keyPair.publicKey
 
   // Check both publickKey, getPublicKey, and getPublicKeyBuffer to support all HDNode types (bitcoinjs-lib v3 & bip32 npm & bitcoinjs-lib v4 when it comes out)
   if (!ourPubKey && keyPair.getPublicKey) { ourPubKey = keyPair.getPublicKey() } else if (!ourPubKey && keyPair.getPublicKeyBuffer) { ourPubKey = keyPair.getPublicKeyBuffer() }
@@ -267,7 +268,7 @@ function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashT
     if (!canSign(input)) throw Error(input.prevOutType + ' not supported')
   }
 
-  var signatureHash
+  let signatureHash
   if (input.witness) {
     signatureHash = transactionBuilder.__tx.hashForWitnessV0(vin, input.signScript, input.value, hashType)
   } else {
@@ -275,7 +276,7 @@ function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashT
     signatureHash = hashForSignature(transactionBuilder.__tx, extraBytes, vin, input.signScript, hashType)
   }
 
-  var signed = input.pubkeys.some(function (pubKey, i) {
+  const signed = input.pubkeys.some(function (pubKey, i) {
     if (!ourPubKey.equals(pubKey)) return false
     if (input.signatures[i]) throw new Error('Signature already exists')
 
@@ -283,7 +284,7 @@ function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashT
       throw new Error('BIP143 rejects uncompressed public keys in P2WPKH or P2WSH')
     }
 
-    let signature = keyPair.sign(signatureHash)
+    const signature = keyPair.sign(signatureHash)
 
     input.signatures[i] = bscript.signature.encode(signature, hashType)
     return true
@@ -293,15 +294,15 @@ function sign (transactionBuilder, extraBytes, vin, keyPair, redeemScript, hashT
 }
 
 function hashForSignature (transaction, extraBytes, inIndex, prevOutScript, hashType) {
-  // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighash_tests.cpp#L29
+  // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighashTests.cpp#L29
   if (inIndex >= transaction.ins.length) { return ONE }
 
   // ignore OP_CODESEPARATOR
-  var ourScript = bitcoin.script.compile(bitcoin.script.decompile(prevOutScript).filter(function (x) {
+  const ourScript = bitcoin.script.compile(bitcoin.script.decompile(prevOutScript).filter(function (x) {
     return x !== 171 // OP_CODESEPARATOR
   }))
 
-  var txTmp = transaction.clone()
+  const txTmp = transaction.clone()
 
   // SIGHASH_NONE: ignore all outputs? (wildcard payee)
   if ((hashType & 0x1f) === bitcoin.Transaction.SIGHASH_NONE) {
@@ -316,14 +317,14 @@ function hashForSignature (transaction, extraBytes, inIndex, prevOutScript, hash
 
   // SIGHASH_SINGLE: ignore all outputs, except at the same index?
   } else if ((hashType & 0x1f) === bitcoin.Transaction.SIGHASH_SINGLE) {
-    // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighash_tests.cpp#L60
+    // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighashTests.cpp#L60
     if (inIndex >= transaction.outs.length) { return ONE }
 
     // truncate outputs after
     txTmp.outs.length = inIndex + 1
 
     // "blank" outputs before
-    for (var i = 0; i < inIndex; i++) {
+    for (let i = 0; i < inIndex; i++) {
       txTmp.outs[i] = BLANK_OUTPUT
     }
 
@@ -348,27 +349,27 @@ function hashForSignature (transaction, extraBytes, inIndex, prevOutScript, hash
   }
 
   // serialize and hash
-  var extraBytesString = extraBytes || ''
+  const extraBytesString = extraBytes || ''
 
   // Get the regular tx hex buffer
-  var buffer = Buffer.allocUnsafe(txTmp.__byteLength(false))
+  const buffer = Buffer.allocUnsafe(txTmp.__byteLength(false))
   txTmp.__toBuffer(buffer, 0, false)
 
   // tx hex buffer to string (for appending data)
-  var txHexStr = buffer.toString('hex')
+  let txHexStr = buffer.toString('hex')
 
   // Append on Extra Bytes (floData)
   txHexStr += extraBytesString
 
   // Create hashType buffer
-  var hashTypeBuf = Buffer.allocUnsafe(4)
+  const hashTypeBuf = Buffer.allocUnsafe(4)
   hashTypeBuf.writeInt32LE(hashType, 0)
 
   // Add the hashType to the end of the hex string
   txHexStr += hashTypeBuf.toString('hex')
 
   // Convert hex string to buffer and hash256 it
-  return bcrypto.hash256(new Buffer(txHexStr, 'hex'))
+  return bcrypto.hash256(Buffer.from(txHexStr, 'hex'))
 }
 
 module.exports = {

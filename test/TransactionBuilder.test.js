@@ -1,14 +1,14 @@
 /* eslint-env jest */
-var bip32 = require('bip32')
-var TransactionBuilder = require('../src').TransactionBuilder
-var Networks = require('../src').Networks
-var Address = require('../src').Address
+const bip32 = require('bip32')
+const TransactionBuilder = require('../src').TransactionBuilder
+const Networks = require('../src').Networks
+const Address = require('../src').Address
 
 test('TransactionBuilder should load a From Address', () => {
-  var node = bip32.fromBase58('Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw', Networks.flo.network)
-  var address = new Address(node, Networks.flo, false)
+  const node = bip32.fromBase58('Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw', Networks.flo.network)
+  const address = new Address(node, Networks.flo, false)
 
-  var builder = new TransactionBuilder(Networks.flo, {
+  const builder = new TransactionBuilder(Networks.flo, {
     from: address
   })
 
@@ -16,10 +16,10 @@ test('TransactionBuilder should load a From Address', () => {
 })
 
 test('TransactionBuilder should load a From Address from an Array', () => {
-  var node = bip32.fromBase58('Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw', Networks.flo.network)
-  var address = new Address(node, Networks.flo, false)
+  const node = bip32.fromBase58('Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw', Networks.flo.network)
+  const address = new Address(node, Networks.flo, false)
 
-  var builder = new TransactionBuilder(Networks.flo, {
+  const builder = new TransactionBuilder(Networks.flo, {
     from: [
       address
     ]
@@ -29,28 +29,28 @@ test('TransactionBuilder should load a From Address from an Array', () => {
 })
 
 test('TransactionBuilder should load a To Address', () => {
-  var builder = new TransactionBuilder(Networks.flo, {
-    to: { 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu': 0.001 }
+  const builder = new TransactionBuilder(Networks.flo, {
+    to: { FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu: 0.001 }
   })
 
-  expect(builder.to).toContainEqual({ 'address': 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu', 'value': 0.001 })
+  expect(builder.to).toContainEqual({ address: 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu', value: 0.001 })
 })
 
 test('TransactionBuilder should load a To Address from an Array', () => {
-  var builder = new TransactionBuilder(Networks.flo, {
+  const builder = new TransactionBuilder(Networks.flo, {
     to: [
-      { 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu': 0.001 }
+      { FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu: 0.001 }
     ]
   })
 
-  expect(builder.to).toContainEqual({ 'address': 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu', 'value': 0.001 })
+  expect(builder.to).toContainEqual({ address: 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu', value: 0.001 })
 })
 
 test('TransactionBuilder should be able to get unspents for From Addresses', (done) => {
   // oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
-  var address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.flo_testnet, false)
+  const address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.floTestnet, false)
 
-  var builder = new TransactionBuilder(Networks.flo_testnet, {
+  const builder = new TransactionBuilder(Networks.floTestnet, {
     from: address
   })
 
@@ -62,11 +62,11 @@ test('TransactionBuilder should be able to get unspents for From Addresses', (do
 
 test('TransactionBuilder should be able to build inputs and outputs for From Addresses', (done) => {
   // oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
-  var address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.flo_testnet, false)
+  const address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.floTestnet, false)
 
-  var builder = new TransactionBuilder(Networks.flo_testnet, {
+  const builder = new TransactionBuilder(Networks.floTestnet, {
     from: address,
-    to: { 'odqpABssS7twQfwqNhQdb58c8RiG6awnCh': 0.00001 }
+    to: { odqpABssS7twQfwqNhQdb58c8RiG6awnCh: 0.00001 }
   })
 
   builder.buildInputsAndOutputs().then((selected) => {
@@ -79,11 +79,11 @@ test('TransactionBuilder should be able to build inputs and outputs for From Add
 
 test('TransactionBuilder should be able build tx hex', (done) => {
   // oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
-  var address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.flo_testnet, false)
+  const address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.floTestnet, false)
 
-  var builder = new TransactionBuilder(Networks.flo_testnet, {
+  const builder = new TransactionBuilder(Networks.floTestnet, {
     from: address,
-    to: { 'odqpABssS7twQfwqNhQdb58c8RiG6awnCh': 0.00001 }
+    to: { odqpABssS7twQfwqNhQdb58c8RiG6awnCh: 0.00001 }
   })
 
   builder.buildTX().then((hex) => {
@@ -94,11 +94,11 @@ test('TransactionBuilder should be able build tx hex', (done) => {
 
 test('TransactionBuilder with Flo Data should be able build tx hex', (done) => {
   // oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL
-  var address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.flo_testnet, false)
+  const address = new Address('cNatkZLp1yixJaR5M2Li3nQEwKoBPt9znhszu2mZkaKiTh7rifGj', Networks.floTestnet, false)
 
-  var builder = new TransactionBuilder(Networks.flo_testnet, {
+  const builder = new TransactionBuilder(Networks.floTestnet, {
     from: address,
-    to: { 'odqpABssS7twQfwqNhQdb58c8RiG6awnCh': 0.00001 },
+    to: { odqpABssS7twQfwqNhQdb58c8RiG6awnCh: 0.00001 },
     floData: 'Testing oip-hdmw!'
   })
 
@@ -109,28 +109,28 @@ test('TransactionBuilder with Flo Data should be able build tx hex', (done) => {
 }, 10000)
 
 // test("TransactionBuilder should be able build & send tx hex", (done) => {
-// 	// odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
-// 	// Test sending to self
-// 	var address = new Address("cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc", Networks.flo_testnet, false);
+//   // odqpABssS7twQfwqNhQdb58c8RiG6awnCh = cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc
+//   // Test sending to self
+//   let address = new Address("cVeB2FKMVxWwAN9bceohxaTnGjCv9HnPEJJF3PYfeRpoSZeQyenc", Networks.floTestnet, false);
 
-// 	var builder = new TransactionBuilder(Networks.flo_testnet, {
-// 		from: address,
-// 		to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
-// 		floData: "Test!"
-// 	})
+//   let builder = new TransactionBuilder(Networks.floTestnet, {
+//     from: address,
+//     to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
+//     floData: "Test!"
+//   })
 
-// 	builder.sendTX().then((txid) => {
-// 		expect(txid.length).toBeGreaterThan(10)
+//   builder.sendTX().then((txid) => {
+//     expect(txid.length).toBeGreaterThan(10)
 
-// 		var builder2 = new TransactionBuilder(Networks.flo_testnet, {
-// 			from: address,
-// 			to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
-// 			floData: "Test two!"
-// 		})
+//     let builder2 = new TransactionBuilder(Networks.floTestnet, {
+//       from: address,
+//       to: {"odqpABssS7twQfwqNhQdb58c8RiG6awnCh": 1},
+//       floData: "Test two!"
+//     })
 
-// 		builder2.sendTX().then((txid) => {
-// 			expect(txid.length).toBeGreaterThan(10)
-// 			done()
-// 		}).catch(console.error)
-// 	}).catch(console.error)
+//     builder2.sendTX().then((txid) => {
+//       expect(txid.length).toBeGreaterThan(10)
+//       done()
+//     }).catch(console.error)
+//   }).catch(console.error)
 // }, 10000)

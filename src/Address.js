@@ -1,9 +1,5 @@
 import bitcoin from 'bitcoinjs-lib'
 import bitcoinMessage from 'bitcoinjs-message'
-import * as bip32 from 'bip32'
-import wif from 'wif'
-import bip32utils from '@oipwg/bip32-utils'
-import coinselect from 'coinselect'
 import EventEmitter from 'eventemitter3'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
@@ -28,14 +24,14 @@ const ECPair = bitcoin.ECPair
  * @property {number} confirmations - The total number of Confirmations the Parent Transaction has received
  * @example
  * {
- * 	address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
- * 	txid: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
- * 	vout: 1,
- * 	scriptPubKey: '76a9141bfcff1731caf3a16225d3e78735ddc229e4fc6c88ac',
- * 	amount: 0.001,
- * 	satoshis: 100000,
- * 	height: 2784696,
- * 	confirmations: 6828
+ *   address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+ *   txid: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
+ *   vout: 1,
+ *   scriptPubKey: '76a9141bfcff1731caf3a16225d3e78735ddc229e4fc6c88ac',
+ *   amount: 0.001,
+ *   satoshis: 100000,
+ *   height: 2784696,
+ *   confirmations: 6828
  * }
  */
 
@@ -51,13 +47,13 @@ const ECPair = bitcoin.ECPair
  * @property {number} lastUpdated - Timestamp of when the Address was last updated/synced with the Explorer
  * @example
  * {
- * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
- * 	balanceSat: 0,
- * 	totalReceivedSat: 0,
- * 	unconfirmedBalanceSat: 0,
- * 	transactions: [],
- * 	spentTransactions: [],
- * 	lastUpdated: 0
+ *   addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+ *   balanceSat: 0,
+ *   totalReceivedSat: 0,
+ *   unconfirmedBalanceSat: 0,
+ *   transactions: [],
+ *   spentTransactions: [],
+ *   lastUpdated: 0
  * }
  */
 
@@ -66,33 +62,33 @@ const ECPair = bitcoin.ECPair
  */
 class Address {
   /**
-	 * Create a new Address based on either a bip32 node, WIF Private Key, or Public Address
-	 * ##### Examples
-	 * Create Address from bip32
-	 * ```
-	 * import * as bip32 from 'bip32';
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo);
-	 * ```
-	 * Create Address from WIF
-	 * ```
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
-	 * ```
-	 * Create Address from Base58 Public Address
-	 * ```
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
-	 * ```
-	 * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
-	 * @param  {CoinInfo} coin - CoinInfo for the specific Address
-	 * @param  {boolean|AddressState} [discover=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
-	 * @return {Address}
-	 */
+   * Create a new Address based on either a bip32 node, WIF Private Key, or Public Address
+   * ##### Examples
+   * Create Address from bip32
+   * ```
+   * import * as bip32 from 'bip32';
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo);
+   * ```
+   * Create Address from WIF
+   * ```
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
+   * ```
+   * Create Address from Base58 Public Address
+   * ```
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
+   * ```
+   * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
+   * @param  {CoinInfo} coin - CoinInfo for the specific Address
+   * @param  {boolean|AddressState} [discover=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
+   * @return {Address}
+   */
   constructor (address, coin, discover) {
     if (address.network !== undefined) {
       this.fromBIP32 = true
@@ -133,10 +129,10 @@ class Address {
     this.spentTransactions = []
 
     // Setup EventEmitter to notify when we have changed
-    this.event_emitter = new EventEmitter()
+    this.eventEmitter = new EventEmitter()
 
     // Setup Websocket Address updates to keep us always up to date
-    this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this._processWebsocketUpdate.bind(this))
+    this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this.ProcessWebsocketUpdate.bind(this))
 
     if (discover || discover === false) {
       // Load from serialized JSON
@@ -146,91 +142,96 @@ class Address {
       this.updateState()
     }
   }
+
   /**
-	 * Get the Base58 sharable Public Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
-	 * var pubAddr = address.getPublicAddress();
-	 * // pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
-	 * @return {string}
-	 */
+   * Get the Base58 sharable Public Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
+   * let pubAddr = address.getPublicAddress();
+   * // pubAddr = F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+   * @return {string}
+   */
   getPublicAddress () {
-    var public_key
+    let publicKey
 
     if (this.fromBIP32 && this.address) {
-      public_key = this.address.publicKey
+      publicKey = this.address.publicKey
 
-      if (!public_key && this.address.getPublicKeyBuffer) { public_key = this.address.getPublicKeyBuffer() }
+      if (!publicKey && this.address.getPublicKeyBuffer) { publicKey = this.address.getPublicKeyBuffer() }
     }
 
-    return this.fromBIP32 ? toBase58(public_key, this.coin.network.pubKeyHash) : this.pubAddress
+    return this.fromBIP32 ? toBase58(publicKey, this.coin.network.pubKeyHash) : this.pubAddress
   }
+
   /**
-	 * Get the Base58 sharable Private Address (WIF)
-	 * @example
-	 * import * as bip32 from 'bip32';
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo);
-	 * var wif = address.getPrivateAddress();
-	 * // wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5
-	 * @return {string}
-	 */
+   * Get the Base58 sharable Private Address (WIF)
+   * @example
+   * import * as bip32 from 'bip32';
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo);
+   * let wif = address.getPrivateAddress();
+   * // wif = RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5
+   * @return {string}
+   */
   getPrivateAddress () {
     return this.address ? this.address.toWIF() : undefined
   }
+
   /**
-	 * Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers.
-	 * Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access
-	 * to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
-	 * the ECPair will exist.
-	 * @example
-	 * import * as bip32 from 'bip32';
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo);
-	 * var ecpair = address.getECPair();
-	 * @return {ECPair}
-	 */
+   * Get the internal ECPair. This is used when you need to Sign Transactions, or to access the raw public/private Buffers.
+   * Please note that if you create the Address from a Public Key, you will not get back an ECPair, since we need access
+   * to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
+   * the ECPair will exist.
+   * @example
+   * import * as bip32 from 'bip32';
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo);
+   * let ecpair = address.getECPair();
+   * @return {ECPair}
+   */
   getECPair () {
     return this.address
   }
+
   /**
-	 * Get the signature of a specific message that can be verified by others
-	 * @param  {String} message - The message you wish to get the signature for
-	 * @return {String} Returns the base64 string of the created Signature
-	 */
+   * Get the signature of a specific message that can be verified by others
+   * @param  {String} message - The message you wish to get the signature for
+   * @return {String} Returns the base64 string of the created Signature
+   */
   signMessage (message) {
     if (!message || typeof message !== 'string') { throw new Error('Message must be defined and a String!') }
 
-    let privatekey_ecpair = this.getECPair()
+    const privatekeyEcpair = this.getECPair()
 
-    if (!privatekey_ecpair) { throw new Error('No Private Key available! Unable to sign message!') }
+    if (!privatekeyEcpair) { throw new Error('No Private Key available! Unable to sign message!') }
 
-    let privateKeyBuffer = privatekey_ecpair.privateKey
+    const privateKeyBuffer = privatekeyEcpair.privateKey
 
-    let compressed = privatekey_ecpair.compressed || true
-    let messagePrefix = this.coin.network.messagePrefix
+    const compressed = privatekeyEcpair.compressed || true
+    const messagePrefix = this.coin.network.messagePrefix
 
-    let signature_buffer
+    let signatureBuffer
     try {
-      signature_buffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)
+      signatureBuffer = bitcoinMessage.sign(message, privateKeyBuffer, compressed, messagePrefix)
     } catch (e) {
       throw new Error('Unable to create signature! \n' + e)
     }
 
-    return signature_buffer.toString('base64')
+    return signatureBuffer.toString('base64')
   }
+
   /**
-	 * Verify the signature of a given message
-	 * @param  {String} message   - The message you want to verify
-	 * @param  {String} signature - The signature of the message
-	 * @return {Boolean} Returns either `true` or `false` depending on if the signature and message match
-	 */
+   * Verify the signature of a given message
+   * @param  {String} message   - The message you want to verify
+   * @param  {String} signature - The signature of the message
+   * @return {Boolean} Returns either `true` or `false` depending on if the signature and message match
+   */
   verifySignature (message, signature) {
     let valid
 
@@ -242,48 +243,51 @@ class Address {
 
     return valid
   }
+
   /**
-	 * Get the latest State for this address from the Blockchain Explorer
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
-	 * address.updateState().then((addr) => {
-	 * 	console.log(addr.getTotalReceived())
-	 * })
-	 * @return {Promise<Address>} Returns a Promise that will resolve to the Address
-	 */
+   * Get the latest State for this address from the Blockchain Explorer
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
+   * address.updateState().then((addr) => {
+   *   console.log(addr.getTotalReceived())
+   * })
+   * @return {Promise<Address>} Returns a Promise that will resolve to the Address
+   */
   async updateState () {
+    let state
     try {
-      var state = await this.coin.explorer.getAddress(this.getPublicAddress())
+      state = await this.coin.explorer.getAddress(this.getPublicAddress())
     } catch (e) {
       throw new Error('Error Updating Address State for: ' + this.getPublicAddress() + '\n' + e)
     }
 
     return this.deserialize(state)
   }
+
   /**
-	 * Hydrate an Address from the serialized JSON, or update the state
-	 * @param  {AddressState} state
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 *
-	 * address.deserialize({
-	 * 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
-     * 	balanceSat: 123,
-     * 	totalReceivedSat: 234,
-     * 	unconfirmedBalanceSat: 345,
-     * 	transactions: ['abcde'],
-     * 	spentTransactions: ['bcdef'],
-     * 	lastUpdated: 456
-     * })
-     *
-     * var balance = address.getBalance()
-     * // balance = 0.00000123
-	 * @return {Address}
-	 */
+   * Hydrate an Address from the serialized JSON, or update the state
+   * @param  {AddressState} state
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   *
+   * address.deserialize({
+   *   addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+   *   balanceSat: 123,
+   *   totalReceivedSat: 234,
+   *   unconfirmedBalanceSat: 345,
+   *   transactions: ['abcde'],
+   *   spentTransactions: ['bcdef'],
+   *   lastUpdated: 456
+   * })
+   *
+   * let balance = address.getBalance()
+   * // balance = 0.00000123
+   * @return {Address}
+   */
   deserialize (state) {
     if (!state) { return }
 
@@ -303,7 +307,7 @@ class Address {
     }
 
     if (Array.isArray(state.spentTransactions)) {
-      for (var tx of state.spentTransactions) {
+      for (const tx of state.spentTransactions) {
         this.spentTransactions.push(tx)
       }
     }
@@ -312,25 +316,26 @@ class Address {
 
     return this
   }
+
   /**
-	 * Get a serialized version of the Address (dried out JSON)
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 *
-	 * var address_state = address.serialize()
-	 * // address_state = {
-	 * // 	addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
-     * // 	balanceSat: 0,
-     * // 	totalReceivedSat: 0,
-     * // 	unconfirmedBalanceSat: 0,
-     * // 	transactions: [],
-     * // 	spentTransactions: [],
-     * // 	lastUpdated: 0
-     * // }
-	 * @return {AddressState}
-	 */
+   * Get a serialized version of the Address (dried out JSON)
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   *
+   * let addressState = address.serialize()
+   * // addressState = {
+   * //   addrStr: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+   * //   balanceSat: 0,
+   * //   totalReceivedSat: 0,
+   * //   unconfirmedBalanceSat: 0,
+   * //   transactions: [],
+   * //   spentTransactions: [],
+   * //   lastUpdated: 0
+   * // }
+   * @return {AddressState}
+   */
   serialize () {
     return {
       addrStr: this.getPublicAddress(),
@@ -343,96 +348,102 @@ class Address {
       lastUpdated: this.lastUpdated
     }
   }
+
   /**
-	 * Get the Balance (in whole coins) for the Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * var balance = address.getBalance();
-	 * // balance = 0
-	 * @return {number}
-	 */
+   * Get the Balance (in whole coins) for the Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * let balance = address.getBalance();
+   * // balance = 0
+   * @return {number}
+   */
   getBalance () {
     return this.balanceSat / this.coin.satPerCoin
   }
+
   /**
-	 * Get the Total Recieved balance (in whole coins) for the Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * var totReceived = address.getTotalReceived();
-	 * // totReceived = 0
-	 * @return {number}
-	 */
+   * Get the Total Recieved balance (in whole coins) for the Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * let totReceived = address.getTotalReceived();
+   * // totReceived = 0
+   * @return {number}
+   */
   getTotalReceived () {
     return this.totalReceivedSat / this.coin.satPerCoin
   }
+
   /**
-	 * Get the Total Sent balance (in whole coins) for the Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * var totSent = address.getTotalSent();
-	 * // totSent = 0
-	 * @return {number}
-	 */
+   * Get the Total Sent balance (in whole coins) for the Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * let totSent = address.getTotalSent();
+   * // totSent = 0
+   * @return {number}
+   */
   getTotalSent () {
     return this.totalSentSat / this.coin.satPerCoin
   }
+
   /**
-	 * Get the Unconfirmed Balance (in whole coins) for the Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * var uBal = address.getUnconfirmedBalance();
-	 * // uBal = 0
-	 * @return {number}
-	 */
+   * Get the Unconfirmed Balance (in whole coins) for the Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * let uBal = address.getUnconfirmedBalance();
+   * // uBal = 0
+   * @return {number}
+   */
   getUnconfirmedBalance () {
     return this.unconfirmedBalanceSat / this.coin.satPerCoin
   }
+
   /**
-	 * Get the unspent transaction outputs for the Address
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * address.getUnspent().then((utxos) => {
-	 * 	console.log(utxos);
-	 * })
-	 * @return {Promise<Array.<utxo>>} Returns a Promise that resolves to an Array of utxos.
-	 */
+   * Get the unspent transaction outputs for the Address
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * address.getUnspent().then((utxos) => {
+   *   console.log(utxos);
+   * })
+   * @return {Promise<Array.<utxo>>} Returns a Promise that resolves to an Array of utxos.
+   */
   getUnspent () {
     return this.coin.explorer.getAddressUtxo(this.getPublicAddress()).then((utxos) => {
       return this.removeSpent(utxos)
     })
   }
+
   /**
-	 * Remove the already spent outputs from the array we are given.
-	 * @param  {Array.<utxo>} unspentTransactions - An Array containing utxos to sort through
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * address.getUnspent().then((utxos) => {
-	 * 	var unspent_utxos = address.removeSpent(utxos)
-	 * 	console.log(unspent_utxos)
-	 * })
-	 * @return {Array.<utxo>}
-	 */
+   * Remove the already spent outputs from the array we are given.
+   * @param  {Array.<utxo>} unspentTransactions - An Array containing utxos to sort through
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * address.getUnspent().then((utxos) => {
+   *   let unspentUtxos = address.removeSpent(utxos)
+   *   console.log(unspentUtxos)
+   * })
+   * @return {Array.<utxo>}
+   */
   removeSpent (unspentTransactions) {
     // If we are not defined, or we are not an array, just return
     if (!unspentTransactions || !Array.isArray(unspentTransactions)) { return }
 
-    var unspent = []
+    const unspent = []
 
-    for (var tx of unspentTransactions) {
-      var spent = false
-      for (var txid of this.spentTransactions) {
+    for (const tx of unspentTransactions) {
+      let spent = false
+      for (const txid of this.spentTransactions) {
         if (txid === tx.txid) {
           spent = true
         }
@@ -447,47 +458,50 @@ class Address {
 
     return unspent
   }
+
   /**
-	 * Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")
-	 * @param {string} txid - The TXID of the spent output that we should remove
-	 */
+   * Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")
+   * @param {string} txid - The TXID of the spent output that we should remove
+   */
   addSpentTransaction (txid) {
     this.spentTransactions.push(txid)
   }
+
   /**
-	 * Internal function used to process updates streaming in from Websockets,
-	 * emits an update that can be subscribed to with onWebsocketUpdate
-	 * @param  {Object} update - Websocket Update Data
-	 */
-  _processWebsocketUpdate (update) {
+   * Internal function used to process updates streaming in from Websockets,
+   * emits an update that can be subscribed to with onWebsocketUpdate
+   * @param  {Object} update - Websocket Update Data
+   */
+  ProcessWebsocketUpdate (update) {
     // If there is no data available, just ignore it
     if (!update) { return }
 
     // If there is updated data, go ahead and set ourselves to it
-    if (update.updated_data) {
-      var addr = this.deserialize(update.updated_data)
-      this.event_emitter.emit('websocket_update', addr)
+    if (update.updatedData) {
+      const addr = this.deserialize(update.updatedData)
+      this.eventEmitter.emit('websocketUpdate', addr)
     }
   }
+
   /**
-	 * Subscribe to events that are emitted when an Address update is received via Websockets
-	 * @param  {function} subscriber_function - The function you want called when there is an update
-	 *
-	 * @example
-	 * import { Address, Networks } from 'oip-hdmw';
-	 *
-	 * var address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-	 * address.onWebsocketUpdate((address) => {
-	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
-	 * })
-	 */
-  onWebsocketUpdate (subscriber_function) {
-    this.event_emitter.on('websocket_update', subscriber_function)
+   * Subscribe to events that are emitted when an Address update is received via Websockets
+   * @param  {function} subscriberFunction - The function you want called when there is an update
+   *
+   * @example
+   * import { Address, Networks } from 'oip-hdmw';
+   *
+   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
+   * address.onWebsocketUpdate((address) => {
+   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   * })
+   */
+  onWebsocketUpdate (subscriberFunction) {
+    this.eventEmitter.on('websocketUpdate', subscriberFunction)
   }
 }
 

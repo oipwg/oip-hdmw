@@ -2,12 +2,12 @@ import { Insight } from 'insight-explorer'
 import { varIntBuffer } from '../util'
 import config from './config'
 
-var floFeePerKb = 100000
+const floFeePerKb = 100000
 
 /**
  * An object that contains information about a coins Name, Network, and access to an explorer
  * @typedef {Object} CoinInfo
- * @property {string} name - All lowercase "name" of the CoinInfo, this is what is passed in to the `supported_coins` check. This cannot include spaces.
+ * @property {string} name - All lowercase "name" of the CoinInfo, this is what is passed in to the `supportedCoins` check. This cannot include spaces.
  * @property {string} displayName - The Display Name for the Coin, this would be the full official name and can include spaces.
  * @property {string} ticker - The "Ticker" that is used to track the Coin on Exchanges
  * @property {number} satPerCoin - The number of satoshis per single coin
@@ -23,26 +23,26 @@ var floFeePerKb = 100000
  *
  * @example
  * {
-	name: 'flo',
-	displayName: 'Flo',
-	ticker: 'FLO',
-	satPerCoin: 1e8,
-	feePerKb: floFeePerKb,
-	feePerByte: floFeePerKb / 1024,
-	maxFeePerByte: 100,
-	minFee: floFeePerKb,
-	dust: 100000,
+  name: 'flo',
+  displayName: 'Flo',
+  ticker: 'FLO',
+  satPerCoin: 1e8,
+  feePerKb: floFeePerKb,
+  feePerByte: floFeePerKb / 1024,
+  maxFeePerByte: 100,
+  minFee: floFeePerKb,
+  dust: 100000,
 
-	txVersion: 2,
+  txVersion: 2,
 
-	explorer: new Insight('https://livenet.flocha.in/api'),
+  explorer: new Insight('https://livenet.flocha.in/api'),
 
-	getExtraBytes: function(options){
-		var fData = options.floData || ""
-		return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
-	},
+  getExtraBytes: function(options){
+    let fData = options.floData || ""
+    return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
+  },
 
-	network: CoinNetwork
+  network: CoinNetwork
 }
  */
 
@@ -52,7 +52,7 @@ var floFeePerKb = 100000
  * @property {Object} bip32 - BIP32 Variables
  * @property {number} bip32.public - The Extended Public Key version bytes
  * @property {number} bip32.private - The Extended Private Key version bytes
- * @property {number} slip44 - The `coin_type` number for the coin, must match [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
+ * @property {number} slip44 - The `coinType` number for the coin, must match [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
  * @property {string} messagePrefix - The Prefix to add on when checking/signing a message
  * @property {number} pubKeyHash - The coin specific "version" used when creating a Public Key Hash (Public Address)
  * @property {number} scriptHash - The coin specific "version" used when creating a Script Hash
@@ -60,15 +60,15 @@ var floFeePerKb = 100000
  *
  * @example
  * {
-	bip32: {
-		public: 0x0134406b,
-		private: 0x01343c31
-	},
-	slip44: 216,
-	messagePrefix: '\x1bFlorincoin Signed Message:\n',
-	pubKeyHash: 35,
-	scriptHash: 94,
-	wif: 163
+  bip32: {
+    public: 0x0134406b,
+    private: 0x01343c31
+  },
+  slip44: 216,
+  messagePrefix: '\x1bFlorincoin Signed Message:\n',
+  pubKeyHash: 35,
+  scriptHash: 94,
+  wif: 163
 }
  */
 
@@ -88,14 +88,14 @@ module.exports = {
   explorer: new Insight(config.defaultApiUrls.flo),
 
   getExtraBytes: function (options) {
-    var fData = options.floData || ''
+    const fData = options.floData || ''
 
-    var string_buffer = Buffer.from(fData, 'utf8')
-    var length_buffer = varIntBuffer(string_buffer.length)
+    const stringBuffer = Buffer.from(fData, 'utf8')
+    const lengthBuffer = varIntBuffer(stringBuffer.length)
 
-    var built_string = length_buffer.toString('hex') + string_buffer.toString('hex')
+    const builtString = lengthBuffer.toString('hex') + stringBuffer.toString('hex')
 
-    return built_string
+    return builtString
   },
 
   network: {

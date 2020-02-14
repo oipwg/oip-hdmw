@@ -2,10 +2,10 @@ import { Insight } from 'insight-explorer'
 import { varIntBuffer } from '../util'
 import config from './config'
 
-var floFeePerKb = 100000
+const floFeePerKb = 100000
 
 module.exports = {
-  name: 'flo_testnet',
+  name: 'floTestnet',
   displayName: 'Flo Testnet',
   ticker: 'tFLO',
   satPerCoin: 1e8,
@@ -17,17 +17,17 @@ module.exports = {
 
   txVersion: 2,
 
-  explorer: new Insight(config.defaultApiUrls.flo_testnet),
+  explorer: new Insight(config.defaultApiUrls.floTestnet),
 
   getExtraBytes: function (options) {
-    var fData = options.floData || ''
+    const fData = options.floData || ''
 
-    var string_buffer = Buffer.from(fData, 'utf8')
-    var length_buffer = varIntBuffer(string_buffer.length)
+    const stringBuffer = Buffer.from(fData, 'utf8')
+    const lengthBuffer = varIntBuffer(stringBuffer.length)
 
-    var built_string = length_buffer.toString('hex') + string_buffer.toString('hex')
+    const builtString = lengthBuffer.toString('hex') + stringBuffer.toString('hex')
 
-    return built_string
+    return builtString
   },
 
   network: {

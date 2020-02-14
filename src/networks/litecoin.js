@@ -3,9 +3,9 @@ import coininfo from 'coininfo'
 import bip44constants from 'bip44-constants'
 import config from './config'
 
-var litecoinFeePerKb = 100000
+const litecoinFeePerKb = 100000
 
-var n = coininfo.litecoin.main.toBitcoinJS()
+const n = coininfo.litecoin.main.toBitcoinJS()
 
 module.exports = {
   name: 'litecoin',

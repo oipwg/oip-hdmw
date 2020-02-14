@@ -3,14 +3,14 @@ import { networks } from 'bitcoinjs-lib'
 
 import config from './config'
 
-var bitcoinFeePerKb = 100000
+const bitcoinFeePerKb = 100000
 
-var n = networks.testnet
+const n = networks.testnet
 
 n.slip44 = 1
 
 module.exports = {
-  name: 'bitcoin_testnet',
+  name: 'bitcoinTestnet',
   displayName: 'Bitcoin Testnet',
   ticker: 'tBTC',
   satPerCoin: 1e8,
@@ -22,7 +22,7 @@ module.exports = {
 
   txVersion: 1,
 
-  explorer: new Insight(config.defaultApiUrls.bitcoin_testnet),
+  explorer: new Insight(config.defaultApiUrls.bitcoinTestnet),
 
   getExtraBytes: function (options) { },
 
