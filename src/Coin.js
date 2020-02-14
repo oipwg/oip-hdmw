@@ -442,7 +442,7 @@ class Coin {
     this.event_emitter.emit('websocket_update', address)
   }
   /**
-	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * Subscribe to events that are emitted when an Address update is received via Websocket
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example

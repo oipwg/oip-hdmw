@@ -175,7 +175,7 @@ test('Discover Chain on Account', (done) => {
 
   account.discoverChain(0).then(function (acc) {
     expect(account.getChain(0).addresses.length).toBeGreaterThan(25)
-    // Get Addresses returns only addresses that have recieved any balances :)
+    // Get Addresses returns only addresses that have received any balances :)
     expect(account.getAddresses(0).length).toBeGreaterThan(4)
     expect(account.addresses.F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp.getTotalReceived()).toBeGreaterThan(0.0001)
     expect(account.addresses.FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu.getTotalReceived()).toBeGreaterThan(0.0001)

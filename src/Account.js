@@ -243,7 +243,7 @@ class Account {
   }
 
   /**
-	 * Get all Used Addresses (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
+	 * Get all Used Addresses (addresses that have received at least 1 tx) for the entire Account, or just for a specific Chain.
 	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Used Addresses on the Account</caption>
 	 * import * as bip32 from 'bip32'
@@ -407,7 +407,7 @@ class Account {
               }
             }
           }
-          // else add all the addresses on the Account that have recieved any txs
+          // else add all the addresses on the Account that have received any txs
         } else {
           for (let address of allAddresses) {
             if (address.getBalance() >= 0) {
@@ -637,7 +637,7 @@ class Account {
   }
 
   /**
-	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * Subscribe to events that are emitted when an Address update is received via Websocket
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example

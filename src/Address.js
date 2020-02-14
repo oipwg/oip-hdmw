@@ -25,7 +25,7 @@ const ECPair = bitcoin.ECPair
  * @property {number} amount - Amount (in whole Coin) of this Output
  * @property {number} satoshis - Amount in Satoshis of this Output
  * @property {number} height - The Blockheight the Parent Transaction was confirmed in
- * @property {number} confirmations - The total number of Confirmations the Parent Transaction has recieved
+ * @property {number} confirmations - The total number of Confirmations the Parent Transaction has received
  * @example
  * {
  * 	address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
@@ -475,7 +475,7 @@ class Address {
     }
   }
   /**
-	 * Subscribe to events that are emitted when an Address update is recieved via Websockets
+	 * Subscribe to events that are emitted when an Address update is received via Websockets
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example

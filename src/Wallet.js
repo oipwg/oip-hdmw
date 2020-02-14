@@ -14,7 +14,7 @@ import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
 const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
 const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoin_testnet', 'flo_testnet', 'litecoin_testnet']
 
-/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
+/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and receiving payments */
 class Wallet {
   /**
 	 * Create a new [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) wallet with the supplied settings
@@ -514,7 +514,7 @@ class Wallet {
     this.event_emitter.emit('websocket_update', address)
   }
   /**
-	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
+	 * Subscribe to events that are emitted when an Address update is received via Websocket
 	 * @param  {function} subscriber_function - The function you want called when there is an update
 	 *
 	 * @example
