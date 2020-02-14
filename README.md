@@ -26,7 +26,7 @@ $ npm install --save oip-hdmw
 ```
 ## Getting Started
 ### Creating your first Wallet
-Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no paramaters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples
+Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no parameters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples
 ```javascript
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
@@ -85,9 +85,9 @@ myWallet.sendPayment({
 })
 ```
 
-When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should recieve its initial confirmation, and you would be ok to send another transaction.
+When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should receive its initial confirmation, and you would be ok to send another transaction.
 
-If you wanted to send second transaction, before the first recieves its initial confirmation, you can do so by calling the same `Wallet` instance that you ran `sendPayment` on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction recieves a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to "restart" between sending transactions, it is suggested that you read the next section called "Saving and Reloading the Wallet"
+If you wanted to send second transaction, before the first receives its initial confirmation, you can do so by calling the same `Wallet` instance that you ran `sendPayment` on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction receives a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to "restart" between sending transactions, it is suggested that you read the next section called "Saving and Reloading the Wallet"
 
 ### Saving and Reloading the Wallet
 After you have loaded a wallet, you might want to save its current "state" so that on the next load, it can immediately know its balance and be ready to spend without having to "re-discover" the wallet addresses/state.

@@ -92,7 +92,7 @@ class Wallet {
       }
     }
 
-    // If we were not passed in a supported coin array by the options, then set it to the defailt options.
+    // If we were not passed in a supported coin array by the options, then set it to the default options.
     if (!this.supportedCoins || !Array.isArray(this.supportedCoins)) { this.supportedCoins = DEFAULT_SUPPORTED_COINS }
 
     // The array to hold the live coin objects
@@ -225,7 +225,7 @@ class Wallet {
       options.discover = true
     }
 
-    // checlking if false so that if undefined, it will proceed normally
+    // checking if false so that if undefined, it will proceed normally
     if (options.testnet === false) {
       for (let i = coinnames.length - 1; i >= 0; i--) {
         if (coinnames[i].includes('Testnet')) {
@@ -325,13 +325,13 @@ class Wallet {
     try {
       balances = await this.getCoinBalances(options)
     } catch (err) {
-      throw new Error(`Failled to get coin balances: ${JSON.stringify(err)}`)
+      throw new Error(`Failed to get coin balances: ${JSON.stringify(err)}`)
     }
 
     try {
       xrates = await this.getExchangeRates(options)
     } catch (err) {
-      throw new Error(`Failled to get exchange rates: ${JSON.stringify(err)}`)
+      throw new Error(`Failed to get exchange rates: ${JSON.stringify(err)}`)
     }
 
     for (const coinB in balances) {
@@ -538,7 +538,7 @@ class Wallet {
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
    *
    * bitcoin.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {

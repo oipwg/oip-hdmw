@@ -312,12 +312,12 @@ test('reset network api urls', () => {
   wallet.setExplorerUrls({
     flo: 'flow',
     bitcoin: 'bitcoin',
-    litecoin: 'litecion'
+    litecoin: 'litecoin'
   })
   expect(wallet.getExplorerUrls()).toEqual({
     flo: 'flow',
     bitcoin: 'bitcoin',
-    litecoin: 'litecion'
+    litecoin: 'litecoin'
   })
   wallet.resetExplorerUrls()
   expect(wallet.getExplorerUrls()).toEqual(

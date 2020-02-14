@@ -641,7 +641,7 @@ class Account {
    * let account = new Account(accountMaster, Networks.flo, false);
    *
    * account.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {

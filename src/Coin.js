@@ -11,7 +11,7 @@ const COIN_START = 0x80000000
  */
 class Coin {
   /**
-   * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatable wallet.
+   * Create a new Coin object to interact with Accounts and Chains for that coin. This spawns a BIP44 compatible wallet.
    *
    * ##### Examples
    * Create a new Coin using a specified seed.
@@ -219,7 +219,7 @@ class Coin {
                 allAddresses = this.accounts[account].getAddresses()
               }
             } else if (Array.isArray(options.fromAccounts)) {
-              // If we are an array, itterate through
+              // If we are an array, iterate through
               for (const acs of options.fromAccounts) {
                 if (acs === parseInt(account)) {
                   allAddresses = allAddresses.concat(this.accounts[account].getAddresses())
@@ -467,7 +467,7 @@ class Coin {
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
    *
    * bitcoin.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {

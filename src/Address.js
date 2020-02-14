@@ -40,7 +40,7 @@ const ECPair = bitcoin.ECPair
  * @typedef {Object} AddressState
  * @property {string} addrStr - Base58 Public Address
  * @property {number} balanceSat - Balance of the Address in Satoshis
- * @property {number} totalReceivedSat - Total Recieved to the Address in Satoshis
+ * @property {number} totalReceivedSat - Total Received to the Address in Satoshis
  * @property {number} unconfirmedBalanceSat - Unconfirmed Balance of the Address in Satoshis
  * @property {Array.<string>} transactions - Array of `txids` that have been confirmed on the Network
  * @property {Array.<string>} spentTransactions - Array of `txids` that have been spent, but not yet confirmed on the Network
@@ -364,7 +364,7 @@ class Address {
   }
 
   /**
-   * Get the Total Recieved balance (in whole coins) for the Address
+   * Get the Total Received balance (in whole coins) for the Address
    * @example
    * import { Address, Networks } from 'oip-hdmw';
    *
@@ -497,7 +497,7 @@ class Address {
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * address.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
+   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
    * })
    */
   onWebsocketUpdate (subscriberFunction) {

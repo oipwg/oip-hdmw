@@ -175,7 +175,7 @@ class TransactionBuilder {
 
     // Load who we are sending to
     if (options.to) {
-      // Check if we are providing an address string and amount seperately
+      // Check if we are providing an address string and amount separately
       if (Array.isArray(options.to)) {
         for (const payTo of options.to) {
           for (const address in payTo) {
