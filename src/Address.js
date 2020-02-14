@@ -1,8 +1,8 @@
 import bitcoin from 'bitcoinjs-lib'
 import bitcoinMessage from 'bitcoinjs-message'
-import bip32 from 'bip32'
+import * as bip32 from 'bip32'
 import wif from 'wif'
-import bip32utils from 'bip32-utils'
+import bip32utils from '@oipwg/bip32-utils'
 import coinselect from 'coinselect'
 import EventEmitter from 'eventemitter3'
 
@@ -70,7 +70,7 @@ class Address {
 	 * ##### Examples
 	 * Create Address from bip32
 	 * ```
-	 * import bip32 from 'bip32';
+	 * import * as bip32 from 'bip32';
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
@@ -170,7 +170,7 @@ class Address {
   /**
 	 * Get the Base58 sharable Private Address (WIF)
 	 * @example
-	 * import bip32 from 'bip32';
+	 * import * as bip32 from 'bip32';
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
@@ -188,7 +188,7 @@ class Address {
 	 * to the Private Key in order to create/access the ECPair. When Address is created using a bip32 node or a Private Key (WIF)
 	 * the ECPair will exist.
 	 * @example
-	 * import bip32 from 'bip32';
+	 * import * as bip32 from 'bip32';
 	 * import { Address, Networks } from 'oip-hdmw';
 	 *
 	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)

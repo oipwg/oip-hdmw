@@ -1,5 +1,5 @@
-import bip32 from 'bip32'
-import bip32utils from 'bip32-utils'
+import * as bip32 from 'bip32'
+import bip32utils from '@oipwg/bip32-utils'
 import EventEmitter from 'eventemitter3'
 
 import Account from './Account'

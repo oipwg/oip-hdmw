@@ -1,6 +1,6 @@
 import bitcoin from 'bitcoinjs-lib'
-import bip32 from 'bip32'
-import bip32utils from 'bip32-utils'
+import * as bip32 from 'bip32'
+import bip32utils from '@oipwg/bip32-utils'
 import EventEmitter from 'eventemitter3'
 
 import Address from './Address'
@@ -23,22 +23,22 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * A BIP32 Node that manages Derivation of Chains and Addresses. This is created from the [`bip32` npm package managed by `bitcoinjs`](https://github.com/bitcoinjs/bip32).
  * @typedef {Object} bip32
  * @example <caption>Spawn a Bitcoin bip32 Node</caption>
- * import bip32 from 'bip32';
+ * import * as bip32 from 'bip32';
  *
  * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * @example <caption>Spawn a Flo bip32 Node</caption>
- * import bip32 from 'bip32';
+ * import * as bip32 from 'bip32';
  * import { Networks } from 'oip-hdmw';
  *
  * let bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
  */
 
 /**
- * A BIP32 Chain manager. This is created from the [`bip32-utils` npm package managed by `bitcoinjs`](https://github.com/bitcoinjs/bip32-utils).
+ * A BIP32 Chain manager. This is created from the [`@oipwg/bip32-utils` npm package managed by `oipwg`](https://github.com/oipwg/bip32-utils).
  * @typedef {Object} bip32utilschain
  * @example
- * import bip32 from 'bip32';
- * import bip32utils from 'bip32-utils';
+ * import * as bip32 from 'bip32';
+ * import bip32utils from '@oipwg/bip32-utils';
  *
  * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * let chain = new bip32utils.Chain(bip32Node)
@@ -155,7 +155,7 @@ class Account {
 	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Main Address for
 	 * @param  {number} [main_address_number=0] - Index of the Main Address on the specified chain
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -174,7 +174,7 @@ class Account {
 	 * @param  {number}    [chain_number=0] - Number of the specific chain you want to get the Address from
 	 * @param  {number} [address_number=0] - Index of the Address on the specified chain
 	 * @example <caption>Get the address on Chain `0` at Index `10`</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -199,7 +199,7 @@ class Account {
 	 * Get all derived Addresses for the entire Account, or just for a specific Chain.
 	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Addresses on the Account</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -208,7 +208,7 @@ class Account {
 	 * let addresses = account.getAddresses()
 	 * // addresses = [Address, Address, Address]
 	 * @example <caption>Get the addresses on Chain `0`</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -246,7 +246,7 @@ class Account {
 	 * Get all Used Addresses (addresses that have recieved at least 1 tx) for the entire Account, or just for a specific Chain.
 	 * @param  {number}    [chain_number] - Number of the specific chain you want to get the Addresses from
 	 * @example <caption>Get all Used Addresses on the Account</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -255,7 +255,7 @@ class Account {
 	 * var addresses = account.getUsedAddresses()
 	 * // addresses = [Address, Address, Address]
 	 * @example <caption>Get the addresses on Chain `0`</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * var account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -279,7 +279,7 @@ class Account {
   /**
 	 * Get the Balance for the entire Account
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -342,7 +342,7 @@ class Account {
 	 * Get the Next Chain Address for a specified chain
 	 * @param  {number} [chain_number=0] - The specific chain that you want to get the next address from
 	 * @example <caption>Get the next Chain Address on Chain #1</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -358,7 +358,7 @@ class Account {
   /**
 	 * Get the Next Change Address from the "Internal" chain
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -441,7 +441,7 @@ class Account {
   /**
 	 * Get the Extended Private Key for the Account
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -458,7 +458,7 @@ class Account {
   /**
 	 * Get the Extended Public Key for the Account
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -476,7 +476,7 @@ class Account {
 	 * Get the specified Chain number
 	 * @param {number} chain_number - The number of the chain you are requesting
 	 * @example <caption>Get Chain 0</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -561,7 +561,7 @@ class Account {
 	 * Discover Used and Unused addresses for a specified Chain number
 	 * @param  {number} chain_number - The number of the chain you wish to discover
 	 * @example <caption>Discover Chain 0</caption>
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
@@ -587,7 +587,7 @@ class Account {
   /**
 	 * Discover all Chains
 	 * @example
-	 * import bip32 from 'bip32'
+	 * import * as bip32 from 'bip32'
 	 * import { Account, Networks } from 'oip-hdmw'
 	 *
 	 * let account_master = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
