@@ -257,9 +257,9 @@ test('get network api urls', () => {
   let testWallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(testWallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://bitsight.failover.alexandria.io/api',
+      bitcoin: 'https://blockexplorer.com/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://litesight.failover.alexandria.io/api'
+      litecoin: 'https://insight.litecore.io/api'
     }
   )
 })
@@ -298,12 +298,12 @@ test('set network apis', () => {
 test('static method call from instance', () => {
   let wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(wallet.constructor.getDefaultExplorerUrls()).toEqual({
-    bitcoin: 'https://bitsight.failover.alexandria.io/api',
-    bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
+    bitcoin: 'https://blockexplorer.com/api',
+    bitcoin_testnet: 'https://testnet.blockexplorer.com/api',
     flo: 'https://livenet.flocha.in/api',
     flo_testnet: 'https://testnet.flocha.in/api',
-    litecoin: 'https://litesight.failover.alexandria.io/api',
-    litecoin_testnet: 'https://litesight.mk1.alexandria.io/api'
+    litecoin: 'https://insight.litecore.io/api',
+    litecoin_testnet: 'https://testnet.litecore.io/api'
   })
 })
 
@@ -322,9 +322,9 @@ test('reset network api urls', () => {
   wallet.resetExplorerUrls()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://bitsight.failover.alexandria.io/api',
+      bitcoin: 'https://blockexplorer.com/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://litesight.failover.alexandria.io/api'
+      litecoin: 'https://insight.litecore.io/api'
     }
   )
 })
@@ -334,12 +334,12 @@ test('get network api urls with testnet coins', () => {
   wallet.addTestnetCoins()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://bitsight.failover.alexandria.io/api',
-      bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
+      bitcoin: 'https://blockexplorer.com/api',
+      bitcoin_testnet: 'https://testnet.blockexplorer.com/api',
       flo: 'https://livenet.flocha.in/api',
       flo_testnet: 'https://testnet.flocha.in/api',
-      litecoin: 'https://litesight.failover.alexandria.io/api',
-      litecoin_testnet: 'https://litesight.mk1.alexandria.io/api'
+      litecoin: 'https://insight.litecore.io/api',
+      litecoin_testnet: 'https://testnet.litecore.io/api'
     }
   )
 })
