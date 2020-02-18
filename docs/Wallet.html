@@ -321,13 +321,58 @@
         
           <td class="default">
             
-              true
+              false
             
           </td>
         
 
         <td class="description last">
           <p>Defines if the Wallet should &quot;auto-discover&quot; Coin Account chains or not</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>websocket</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      boolean
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              false
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Defines if the Wallet should connect to websocket updates</p>
           
         </td>
       </tr>
@@ -510,7 +555,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line55">line 55</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line56">line 56</a>
         </li>
       </ul>
     </dd>
@@ -768,7 +813,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line142">line 142</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line145">line 145</a>
         </li>
       </ul>
     </dd>
@@ -940,7 +985,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line570">line 570</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line575">line 575</a>
         </li>
       </ul>
     </dd>
@@ -1092,7 +1137,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line402">line 402</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line407">line 407</a>
         </li>
       </ul>
     </dd>
@@ -1284,7 +1329,7 @@ wallet.fromEntropy('00000000000000000000000000000000')</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line370">line 370</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line375">line 375</a>
         </li>
       </ul>
     </dd>
@@ -1482,7 +1527,7 @@ wallet.fromMnemonic("abandon abandon abandon abandon abandon abandon abandon aba
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line436">line 436</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line441">line 441</a>
         </li>
       </ul>
     </dd>
@@ -1674,7 +1719,7 @@ wallet.fromSeed("example-seed");</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line163">line 163</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line168">line 168</a>
         </li>
       </ul>
     </dd>
@@ -2043,7 +2088,7 @@ let coin = wallet.getCoin("bitcoin")</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line222">line 222</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line227">line 227</a>
         </li>
       </ul>
     </dd>
@@ -2187,7 +2232,7 @@ wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line181">line 181</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line186">line 186</a>
         </li>
       </ul>
     </dd>
@@ -2331,7 +2376,7 @@ a wallet from Entropy or a Mnemonic, not off of just the Seed Hex</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line424">line 424</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line429">line 429</a>
         </li>
       </ul>
     </dd>
@@ -2652,7 +2697,7 @@ let entropy = wallet.getEntropy()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line275">line 275</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line280">line 280</a>
         </li>
       </ul>
     </dd>
@@ -2796,7 +2841,7 @@ wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line610">line 610</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line615">line 615</a>
         </li>
       </ul>
     </dd>
@@ -3170,7 +3215,7 @@ wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line324">line 324</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line329">line 329</a>
         </li>
       </ul>
     </dd>
@@ -3314,7 +3359,7 @@ wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line390">line 390</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line395">line 395</a>
         </li>
       </ul>
     </dd>
@@ -3448,7 +3493,7 @@ let mnemonic = wallet.getMnemonic()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line558">line 558</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line563">line 563</a>
         </li>
       </ul>
     </dd>
@@ -3556,7 +3601,7 @@ let mnemonic = wallet.getMnemonic()
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line456">line 456</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line461">line 461</a>
         </li>
       </ul>
     </dd>
@@ -3750,7 +3795,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line533">line 533</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line538">line 538</a>
         </li>
       </ul>
     </dd>
@@ -3902,7 +3947,7 @@ emits an update that can be subscribed to with onWebsocketUpdate</p>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line550">line 550</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line555">line 555</a>
         </li>
       </ul>
     </dd>
@@ -4388,7 +4433,7 @@ bitcoin.onWebsocketUpdate((address) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line470">line 470</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line475">line 475</a>
         </li>
       </ul>
     </dd>
@@ -4756,7 +4801,7 @@ bitcoin.onWebsocketUpdate((address) => {
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line595">line 595</a>
+          <a href="Wallet.js.html">Wallet.js</a>, <a href="Wallet.js.html#line600">line 600</a>
         </li>
       </ul>
     </dd>
