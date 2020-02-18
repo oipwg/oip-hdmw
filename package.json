@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "jest": "jest",
+    "jest-handles": "jest --runInBand --detectOpenHandles",
     "test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "prepare": "npm run generate-docs && npm run compile",

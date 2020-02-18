@@ -3,6 +3,8 @@ const bip32 = require('bip32')
 const Address = require('../src').Address
 const Networks = require('../src').Networks
 
+jest.setTimeout(30000)
+
 test('Address is able to check its balance from String', (done) => {
   const address = new Address('F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp', Networks.flo, false)
 
@@ -15,14 +17,22 @@ test('Address is able to check its balance from String', (done) => {
 test('Address is able to check its balance from BIP32 (auto-discovery)', (done) => {
   const node = bip32.fromBase58('Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw', Networks.flo.network)
 
-  const address = new Address(node, Networks.flo)
+  const address = new Address(node, Networks.flo, true)
+
+  let attempts = 0
 
   const checkIfComplete = () => {
+    attempts += 1
     if (address.getTotalReceived() > 0) {
       expect(address.getTotalReceived()).toBeGreaterThan(0)
       done()
     } else {
-      setTimeout(checkIfComplete, 1000)
+      if (attempts > 5) {
+        done.fail(new Error('too many attempts'))
+        done()
+      } else {
+        setTimeout(checkIfComplete, 1000)
+      }
     }
   }
 

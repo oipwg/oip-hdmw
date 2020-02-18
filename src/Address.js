@@ -86,7 +86,8 @@ class Address {
    * ```
    * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
    * @param  {CoinInfo} coin - CoinInfo for the specific Address
-   * @param  {boolean|AddressState} [discover=true] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
+   * @param  {boolean|AddressState} [discover=false] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
+   * @param {boolean} [websocket=false]
    * @return {Address}
    */
   constructor (address, coin, discover) {
@@ -134,12 +135,12 @@ class Address {
     // Setup Websocket Address updates to keep us always up to date
     this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this.ProcessWebsocketUpdate.bind(this))
 
-    if (discover || discover === false) {
-      // Load from serialized JSON
-      this.deserialize(discover)
-    } else {
+    if (discover === true) {
       // Update the state from the explorer
       this.updateState()
+    } else if (discover) {
+      // Load from serialized JSON
+      this.deserialize(discover)
     }
   }
 
