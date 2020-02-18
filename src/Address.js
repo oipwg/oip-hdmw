@@ -90,7 +90,7 @@ class Address {
    * @param {boolean} [websocket=false]
    * @return {Address}
    */
-  constructor (address, coin, discover) {
+  constructor (address, coin, discover, websocket) {
     if (address.network !== undefined) {
       this.fromBIP32 = true
 
@@ -132,15 +132,17 @@ class Address {
     // Setup EventEmitter to notify when we have changed
     this.eventEmitter = new EventEmitter()
 
-    // Setup Websocket Address updates to keep us always up to date
-    this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this.ProcessWebsocketUpdate.bind(this))
-
     if (discover === true) {
       // Update the state from the explorer
       this.updateState()
     } else if (discover) {
       // Load from serialized JSON
       this.deserialize(discover)
+    }
+
+    if (websocket) {
+      // Setup Websocket Address updates to keep us always up to date
+      this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this.ProcessWebsocketUpdate.bind(this))
     }
   }
 
