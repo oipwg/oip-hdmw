@@ -152,8 +152,9 @@ class Wallet {
     // then add the coin.
     if (!this.coins[name] && this.networks[name]) {
       this.coins[name] = new Coin(this.masterNode.derivePath('44\''), this.networks[name], opts)
-      if (opts.websocket && opts.websocket === true)
+      if (opts.websocket && opts.websocket === true) {
         this.coins[name].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
+      }
     }
   }
 
