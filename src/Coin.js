@@ -1,5 +1,4 @@
 import * as bip32 from 'bip32'
-import EventEmitter from 'eventemitter3'
 
 import Account from './Account'
 import TransactionBuilder from './TransactionBuilder'
@@ -16,13 +15,13 @@ class Coin {
    * ##### Examples
    * Create a new Coin using a specified seed.
    *```
-   *import { Coin, Networks } from 'oip-hdmw'
+   *import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    *```
    * Create a new Coin using a specified seed, don't auto discover.
    *```
-   *import { Coin, Networks } from 'oip-hdmw'
+   *import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
    *```
@@ -53,9 +52,6 @@ class Coin {
     this.root = purposeNode.derivePath(bip44Num + "'")
 
     this.accounts = {}
-
-    // Setup EventEmitter to notify when we have changed
-    this.eventEmitter = new EventEmitter()
 
     if (options && options.serializedData) { this.deserialize(options.serializedData) }
 
@@ -102,7 +98,7 @@ class Coin {
    * @param {number|Array.<number>} [options.accounts=All Accounts in Coin] - Get Balance for defined Accounts
    * @param {string|Array.<string>} [options.addresses=All Addresses in each Account in Coin] - Get Balance for defined Addresses
    * @example <caption> Get Balance for entire Coin</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * bitcoin.getBalance().then((balance) => {
@@ -175,12 +171,12 @@ class Coin {
    * This is the Address at index 0 on the External Chain of the Account.
    * @param  {number} [accountNumber=0] - Number of the Account you wish to get
    * @example <caption>Get Main Address for Coin</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let mainAddress = bitcoin.getMainAddress()
    * @example <caption>Get Main Address for Account #1 on Coin</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let mainAddress = bitcoin.getMainAddress(1)
@@ -279,7 +275,7 @@ class Coin {
   /**
    * Get the Extended Private Key for the root path. This is derived at m/44'/coinType'
    * @example <caption>Get the Extended Private Key for the entire Coin</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let extPrivateKey = bitcoin.getExtendedPrivateKey()
@@ -293,7 +289,7 @@ class Coin {
   /**
    * Get the Neutered Extended Public Key for the root path. This is derived at m/44'/coinType'
    * @example <caption>Get the Extended Private Key for the entire Coin</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let extPublicKey = bitcoin.getExtendedPrivateKey()
@@ -308,12 +304,12 @@ class Coin {
    * Get the Account at the specified number
    * @param  {number} [accountNumber=0]
    * @example <caption>Get Default Account</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let account = bitcoin.getAccount()
    * @example <caption>Get Account #1</caption>
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let account = bitcoin.getAccount(1)
@@ -332,7 +328,7 @@ class Coin {
   /**
    * Get all Accounts on the Coin
    * @example
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let accounts = bitcoin.getAccounts()
@@ -352,7 +348,7 @@ class Coin {
    * @param  {number} [accountNumber=0]
    * @param {Boolean} [discover=discover Set in Coin Constructor] - Should the Account start auto-discovery.
    * @example
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let account = bitcoin.addAccount(1)
@@ -372,9 +368,7 @@ class Coin {
 
     if (discover !== undefined) { shouldDiscover = discover } else { shouldDiscover = this.discover }
 
-    const account = new Account(accountMaster, this.coin, { discover: shouldDiscover })
-
-    this.accounts[num] = account
+    this.accounts[num] = new Account(accountMaster, this.coin, { discover: shouldDiscover })
 
     return this.getAccount(num)
   }
@@ -382,7 +376,7 @@ class Coin {
   /**
    * Get the CoinInfo for the Coin
    * @example
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin)
    * let coinInfo = bitcoin.getCoinInfo()
@@ -406,7 +400,7 @@ class Coin {
   /**
    * Discover all Accounts for the Coin
    * @example
-   * import { Coin, Networks } from 'oip-hdmw'
+   * import { Coin, Networks } from '@oipwg/hdmw'
    *
    * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
    * bitcoin.discoverAccounts().then((accounts) => {
@@ -425,7 +419,7 @@ class Coin {
 
     while (this.accounts[this.getHighestAccountNumber()].getUsedAddresses().length > 0) {
       try {
-        await this.getAccount(this.getHighestAccountNumber() + 1, false).discoverChains()
+        await this.getAccount(this.getHighestAccountNumber() + 1).discoverChains()
       } catch (e) { throw new Error('Unable to discover account #' + (this.getHighestAccountNumber() + 1) + '\n' + e) }
     }
 
@@ -435,47 +429,7 @@ class Coin {
       discoveredAccounts.push(this.accounts[accNum])
     }
 
-    this.SubscribeToAccountWebsocketUpdates()
-
     return discoveredAccounts
-  }
-
-  /**
-   * Internal function used to subscribe to WebSocket updates for All Discovered Accounts
-   */
-  SubscribeToAccountWebsocketUpdates () {
-    const accounts = this.getAccounts()
-
-    for (const index in accounts) {
-      if (!Object.prototype.hasOwnProperty.call(accounts, index)) continue
-      accounts[index].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
-    }
-  }
-
-  /**
-   * Internal function used to process Address updates streaming in from Websockets,
-   * emits an update that can be subscribed to with onWebsocketUpdate
-   * @param  {Object} update - Websocket Update Data
-   */
-  HandleWebsocketUpdate (update) {
-    this.eventEmitter.emit('websocketUpdate', update)
-  }
-
-  /**
-   * Subscribe to events that are emitted when an Address update is received via Websocket
-   * @param  {function} subscriberFunction - The function you want called when there is an update
-   *
-   * @example
-   * import { Coin, Networks } from 'oip-hdmw'
-   *
-   * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
-   *
-   * bitcoin.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
-   * })
-   */
-  onWebsocketUpdate (subscriberFunction) {
-    this.eventEmitter.on('websocketUpdate', subscriberFunction)
   }
 }
 

@@ -135,6 +135,22 @@ test('Wallet Serialize and Deserialize', async (done) => {
             }
           }
         }
+      },
+      raven: {
+        accounts: {},
+        name: 'raven',
+        network: {
+          bip32: {
+            private: 76066276,
+            public: 76067358
+          },
+          messagePrefix: '\u0016Raven Signed Message:\n',
+          pubKeyHash: 60,
+          scriptHash: 122,
+          slip44: 2147483823,
+          wif: 128
+        },
+        seed: 'xprv9uvNqaLC9GTaoEELKRZvDSmTP2HFKpJJkm9a1SBe4WhM1JfnK3RyYCJ9XdNN2v6DpimfZgh6pLCfMGtJ4NQTadibva7tUom76JqE6B2AJY1'
       }
     }
   }
@@ -188,6 +204,7 @@ test('Wallet can spawn on only one defined coin', () => {
   expect(w.getCoin('bitcoin')).toBeUndefined()
   expect(w.getCoin('litecoin')).toBeUndefined()
   expect(w.getCoin('flo')).toBeUndefined()
+  expect(w.getCoin('raven')).toBeUndefined()
 })
 
 test('Wallet can spawn on multiple defined coins', () => {
@@ -200,6 +217,7 @@ test('Wallet can spawn on multiple defined coins', () => {
   expect(w.getCoin('flo')).toBeDefined()
   expect(w.getCoin('bitcoin')).toBeUndefined()
   expect(w.getCoin('litecoin')).toBeUndefined()
+  expect(w.getCoin('raven')).toBeUndefined()
 })
 
 test('Wallet can return all coins', () => {
@@ -210,6 +228,7 @@ test('Wallet can return all coins', () => {
   expect(coins.bitcoin).toBeDefined()
   expect(coins.litecoin).toBeDefined()
   expect(coins.flo).toBeDefined()
+  expect(coins.raven).toBeDefined()
   expect(coins.bitcoinTestnet).toBeUndefined()
 })
 
@@ -224,12 +243,14 @@ test('Wallet getCoinBalances & getFiatBalances', async (done) => {
   expect(balances).toHaveProperty('flo')
   expect(balances).toHaveProperty('bitcoin')
   expect(balances).toHaveProperty('litecoin')
+  expect(balances).toHaveProperty('raven')
 
   const fb = await wal.getFiatBalances({ discover: false })
 
   expect(fb).toHaveProperty('flo')
   expect(fb).toHaveProperty('bitcoin')
   expect(fb).toHaveProperty('litecoin')
+  expect(fb).toHaveProperty('raven')
 
   done()
 }, 100000)
@@ -241,6 +262,7 @@ test('Wallet getExchangeRates', async (done) => {
   expect(rates).toHaveProperty('flo')
   expect(rates).toHaveProperty('bitcoin')
   expect(rates).toHaveProperty('litecoin')
+  expect(rates).toHaveProperty('raven')
 
   done()
 }, 100000)
@@ -259,7 +281,8 @@ test('get network api urls', () => {
     {
       bitcoin: 'https://blockexplorer.com/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://insight.litecore.io/api'
+      litecoin: 'https://insight.litecore.io/api',
+      raven: 'https://rvn.bitspill.net/api'
     }
   )
 })
@@ -305,7 +328,9 @@ test('static method call from instance', () => {
     flo: 'https://livenet.flocha.in/api',
     floTestnet: 'https://testnet.flocha.in/api',
     litecoin: 'https://insight.litecore.io/api',
-    litecoinTestnet: 'https://testnet.litecore.io/api'
+    litecoinTestnet: 'https://testnet.litecore.io/api',
+    raven: 'https://rvn.bitspill.net/api',
+    ravenTestnet: 'https://rvntest.bitspill.net/api'
   })
 })
 
@@ -314,19 +339,22 @@ test('reset network api urls', () => {
   wallet.setExplorerUrls({
     flo: 'flow',
     bitcoin: 'bitcoin',
-    litecoin: 'litecoin'
+    litecoin: 'litecoin',
+    raven: 'kaww'
   })
   expect(wallet.getExplorerUrls()).toEqual({
     flo: 'flow',
     bitcoin: 'bitcoin',
-    litecoin: 'litecoin'
+    litecoin: 'litecoin',
+    raven: 'kaww'
   })
   wallet.resetExplorerUrls()
   expect(wallet.getExplorerUrls()).toEqual(
     {
       bitcoin: 'https://blockexplorer.com/api',
       flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://insight.litecore.io/api'
+      litecoin: 'https://insight.litecore.io/api',
+      raven: 'https://rvn.bitspill.net/api'
     }
   )
 })
@@ -341,31 +369,33 @@ test('get network api urls with testnet coins', () => {
       flo: 'https://livenet.flocha.in/api',
       floTestnet: 'https://testnet.flocha.in/api',
       litecoin: 'https://insight.litecore.io/api',
-      litecoinTestnet: 'https://testnet.litecore.io/api'
+      litecoinTestnet: 'https://testnet.litecore.io/api',
+      raven: 'https://rvn.bitspill.net/api',
+      ravenTestnet: 'https://rvntest.bitspill.net/api'
     }
   )
 })
 
 test('add default supported testnet coins', () => {
   const wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven'])
   wallet.addTestnetCoins()
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet', 'ravenTestnet'])
 })
 
 test('remove default supported testnet coins', () => {
   const wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven'])
   wallet.addTestnetCoins()
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet', 'ravenTestnet'])
   wallet.addTestnetCoins(false)
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven'])
 })
 
 test('remove testnet coins in getCoinBalances', () => {
   const wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   wallet.addTestnetCoins()
-  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet'])
+  expect(Object.keys(wallet.getCoins())).toEqual(['bitcoin', 'litecoin', 'flo', 'raven', 'bitcoinTestnet', 'floTestnet', 'litecoinTestnet', 'ravenTestnet'])
 
   const coinnames = Object.keys(wallet.getCoins())
 
@@ -375,7 +405,7 @@ test('remove testnet coins in getCoinBalances', () => {
     }
   }
 
-  expect(coinnames).toEqual(['bitcoin', 'litecoin', 'flo'])
+  expect(coinnames).toEqual(['bitcoin', 'litecoin', 'flo', 'raven'])
 })
 
 // test('Wallet sendPayment', (done) => {

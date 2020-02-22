@@ -1,6 +1,5 @@
 import bitcoin from 'bitcoinjs-lib'
 import bitcoinMessage from 'bitcoinjs-message'
-import EventEmitter from 'eventemitter3'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 
@@ -67,30 +66,29 @@ class Address {
    * Create Address from bip32
    * ```
    * import * as bip32 from 'bip32';
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo);
    * ```
    * Create Address from WIF
    * ```
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
    * ```
    * Create Address from Base58 Public Address
    * ```
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
    * ```
    * @param  {bip32|string} address - The Public Address, Private Key (WIF), or bip32 Node that the Address is for.
    * @param  {CoinInfo} coin - CoinInfo for the specific Address
    * @param  {boolean|AddressState} [discover=false] - Either a `boolean` value for if the Address should auto-discover, or an AddressState object to load the Internal state from.
-   * @param {boolean} [websocket=false]
    * @return {Address}
    */
-  constructor (address, coin, discover, websocket) {
+  constructor (address, coin, discover) {
     if (address.network !== undefined) {
       this.fromBIP32 = true
 
@@ -129,9 +127,6 @@ class Address {
 
     this.spentTransactions = []
 
-    // Setup EventEmitter to notify when we have changed
-    this.eventEmitter = new EventEmitter()
-
     if (discover === true) {
       // Update the state from the explorer
       this.updateState()
@@ -139,17 +134,12 @@ class Address {
       // Load from serialized JSON
       this.deserialize(discover)
     }
-
-    if (websocket) {
-      // Setup Websocket Address updates to keep us always up to date
-      this.coin.explorer.onAddressUpdate(this.getPublicAddress(), this.ProcessWebsocketUpdate.bind(this))
-    }
   }
 
   /**
    * Get the Base58 sharable Public Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("RAtKUeXYMEHEFkhbJuXGMEQZsqgHosnP2BLVaLWMRswWrcCNbZk5", Networks.flo);
    * let pubAddr = address.getPublicAddress();
@@ -172,7 +162,7 @@ class Address {
    * Get the Base58 sharable Private Address (WIF)
    * @example
    * import * as bip32 from 'bip32';
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo);
@@ -191,7 +181,7 @@ class Address {
    * the ECPair will exist.
    * @example
    * import * as bip32 from 'bip32';
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo);
@@ -250,7 +240,7 @@ class Address {
   /**
    * Get the latest State for this address from the Blockchain Explorer
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo);
    * address.updateState().then((addr) => {
@@ -273,7 +263,7 @@ class Address {
    * Hydrate an Address from the serialized JSON, or update the state
    * @param  {AddressState} state
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    *
@@ -323,7 +313,7 @@ class Address {
   /**
    * Get a serialized version of the Address (dried out JSON)
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    *
@@ -355,7 +345,7 @@ class Address {
   /**
    * Get the Balance (in whole coins) for the Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * let balance = address.getBalance();
@@ -369,7 +359,7 @@ class Address {
   /**
    * Get the Total Received balance (in whole coins) for the Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * let totReceived = address.getTotalReceived();
@@ -383,7 +373,7 @@ class Address {
   /**
    * Get the Total Sent balance (in whole coins) for the Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * let totSent = address.getTotalSent();
@@ -397,7 +387,7 @@ class Address {
   /**
    * Get the Unconfirmed Balance (in whole coins) for the Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * let uBal = address.getUnconfirmedBalance();
@@ -411,7 +401,7 @@ class Address {
   /**
    * Get the unspent transaction outputs for the Address
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * address.getUnspent().then((utxos) => {
@@ -429,7 +419,7 @@ class Address {
    * Remove the already spent outputs from the array we are given.
    * @param  {Array.<utxo>} unspentTransactions - An Array containing utxos to sort through
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * address.getUnspent().then((utxos) => {
@@ -465,7 +455,7 @@ class Address {
   /**
    * Add a TXID to the local Spent Transactions of the Address to prevent a specific output from being doublespent.
    * @example
-   * import { Address, Networks } from 'oip-hdmw';
+   * import { Address, Networks } from '@oipwg/hdmw';
    *
    * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
    * address.addSpentTransaction("7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c")
@@ -473,38 +463,6 @@ class Address {
    */
   addSpentTransaction (txid) {
     this.spentTransactions.push(txid)
-  }
-
-  /**
-   * Internal function used to process updates streaming in from Websockets,
-   * emits an update that can be subscribed to with onWebsocketUpdate
-   * @param  {Object} update - Websocket Update Data
-   */
-  ProcessWebsocketUpdate (update) {
-    // If there is no data available, just ignore it
-    if (!update) { return }
-
-    // If there is updated data, go ahead and set ourselves to it
-    if (update.updatedData) {
-      const addr = this.deserialize(update.updatedData)
-      this.eventEmitter.emit('websocketUpdate', addr)
-    }
-  }
-
-  /**
-   * Subscribe to events that are emitted when an Address update is received via Websockets
-   * @param  {function} subscriberFunction - The function you want called when there is an update
-   *
-   * @example
-   * import { Address, Networks } from 'oip-hdmw';
-   *
-   * let address = new Address("F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp", Networks.flo, false);
-   * address.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
-   * })
-   */
-  onWebsocketUpdate (subscriberFunction) {
-    this.eventEmitter.on('websocketUpdate', subscriberFunction)
   }
 }
 

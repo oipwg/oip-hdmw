@@ -1,4 +1,4 @@
-import { Insight } from 'insight-explorer'
+import { Insight } from '@oipwg/insight-explorer'
 import config from './config'
 
 const litecoinFeePerKb = 100000

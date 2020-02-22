@@ -1,8 +1,7 @@
 import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
-import EventEmitter from 'eventemitter3'
-import Exchange from 'oip-exchange-rate'
-import { Insight } from 'insight-explorer'
+import Exchange from '@oipwg/exchange-rate'
+import { Insight } from '@oipwg/insight-explorer'
 
 import Coin from './Coin'
 import networks from './networks'
@@ -10,8 +9,8 @@ import networkConfig from './networks/config'
 
 import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
 
-const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo']
-const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoinTestnet', 'floTestnet', 'litecoinTestnet']
+const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo', 'raven']
+const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoinTestnet', 'floTestnet', 'litecoinTestnet', 'ravenTestnet']
 
 /** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and receiving payments */
 class Wallet {
@@ -43,7 +42,6 @@ class Wallet {
    * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
    * @param  {Object} [options] - Wallet settings
    * @param {boolean} [options.discover=false] - Defines if the Wallet should "auto-discover" Coin Account chains or not
-   * @param {boolean} [options.websocket=false] - Defines if the Wallet should connect to websocket updates
    * @param {Array.<string>} [options.supportedCoins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
    * @param {Array.<CoinInfo>} [options.networks] - An array containing a custom coins network info
    * @param {Object} [options.serializedData] - A previous Wallet state to reload from
@@ -67,9 +65,6 @@ class Wallet {
 
     // Derive the "m" level of the BIP44 wallet
     this.masterNode = bip32.fromSeed(Buffer.from(this.seed, 'hex'))
-
-    // Setup EventEmitter to notify when we have changed
-    this.eventEmitter = new EventEmitter()
 
     // Set the networks to the imported defaults
     this.networks = networks
@@ -102,8 +97,6 @@ class Wallet {
 
     // An optional variable to say if we should auto run address discovery on Account Chains
     if (options && (options.discover || options.discover === false)) { this.discover = options.discover } else { this.discover = true }
-    // An optional variable to say if we should connect for websocket monitoring
-    if (options && (options.websocket || options.websocket === false)) { this.websocket = options.websocket } else { this.websocket = false }
 
     // Attempt to deserialize if we were passed serialized data
     if (options && options.serializedData) { this.deserialize(options.serializedData) }
@@ -146,15 +139,11 @@ class Wallet {
     const opts = options || {}
 
     if (!opts.discover) { opts.discover = this.discover }
-    if (!opts.websocket) { opts.websocket = this.websocket }
 
     // If the coin isn't already added AND we have access to a valid network,
     // then add the coin.
     if (!this.coins[name] && this.networks[name]) {
       this.coins[name] = new Coin(this.masterNode.derivePath('44\''), this.networks[name], opts)
-      if (opts.websocket && opts.websocket === true) {
-        this.coins[name].onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this))
-      }
     }
   }
 
@@ -298,8 +287,7 @@ class Wallet {
 
     for (const coinname in promiseArray) {
       try {
-        const rate = await promiseArray[coinname]
-        rates[coinname] = rate
+        rates[coinname] = await promiseArray[coinname]
       } catch (err) {
         rates[coinname] = 'error fetching rate'
       }
@@ -529,32 +517,6 @@ class Wallet {
         throw new Error('Not all to addresses match any Coin network! Please check your outputs.')
       }
     }
-  }
-
-  /**
-   * Internal function used to process Address updates streaming in from Websockets,
-   * emits an update that can be subscribed to with onWebsocketUpdate
-   * @param  {Object} update - Websocket Update Data
-   */
-  HandleWebsocketUpdate (update) {
-    this.eventEmitter.emit('websocketUpdate', update)
-  }
-
-  /**
-   * Subscribe to events that are emitted when an Address update is received via Websocket
-   * @param  {function} subscriberFunction - The function you want called when there is an update
-   *
-   * @example
-   * import { Coin, Networks } from 'oip-hdmw'
-   *
-   * let bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
-   *
-   * bitcoin.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
-   * })
-   */
-  onWebsocketUpdate (subscriberFunction) {
-    this.eventEmitter.on('websocketUpdate', subscriberFunction)
   }
 
   /**

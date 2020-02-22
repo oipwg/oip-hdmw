@@ -4,6 +4,8 @@ import flo from './flo'
 import floTestnet from './floTestnet'
 import litecoin from './litecoin'
 import litecoinTestnet from './litecoinTestnet'
+import raven from './raven'
+import ravenTestnet from './ravenTestnet'
 
 module.exports = {
   bitcoin: bitcoin,
@@ -11,5 +13,7 @@ module.exports = {
   flo: flo,
   floTestnet: floTestnet,
   litecoin: litecoin,
-  litecoinTestnet: litecoinTestnet
+  litecoinTestnet: litecoinTestnet,
+  raven: raven,
+  ravenTestnet: ravenTestnet
 }

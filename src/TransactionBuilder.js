@@ -61,7 +61,7 @@ class TransactionBuilder {
    * ##### Example
    * ```
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo, false)
@@ -98,7 +98,7 @@ class TransactionBuilder {
    * Add an Address to send from
    * @example
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo, false)
@@ -121,7 +121,7 @@ class TransactionBuilder {
    * Add an Address and Amount to send to
    * @example
    * import * as bip32 from 'bip32'
-   * import { TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let builder = new TransactionBuilder(Networks.flo)
    * builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);
@@ -146,7 +146,7 @@ class TransactionBuilder {
    * @param  {string} [options.floData=""] - The FloData to be added to the Transaction
    * @example
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo, false)
@@ -198,7 +198,7 @@ class TransactionBuilder {
    * Get the Unspent Transaction Outputs for all the From addresses specified.
    * @example
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
    * let address = new Address(node, Networks.flo, false)
@@ -232,7 +232,7 @@ class TransactionBuilder {
    * @param {Array.<utxo>} [manualUtxos] - Pass in utxos for the function to use. If not passed, it will call the function getUnspents()
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Account, Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
    * let account = new Account(accountMaster, networks.flo, false);
@@ -304,7 +304,7 @@ class TransactionBuilder {
    * Discover the used change addresses if we were passed an Account to discover from.
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Account, Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
    * let account = new Account(accountMaster, networks.flo, false);
@@ -338,7 +338,7 @@ class TransactionBuilder {
    * @param {SelectedInputOutput} [manualSelected] - Inputs and Outputs to use. If not passed, the function buildInputsAndOutputs() is run.
    * @example
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
    * let account = new Account(accountMaster, networks.flo, false);
@@ -450,7 +450,7 @@ class TransactionBuilder {
    * @param {String} [manualHex] - The hex you wish to send the tx for. If not used, the hex is grabbed from buildTX().
    * @example
    * import * as bip32 from 'bip32'
-   * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
    * let account = new Account(accountMaster, networks.flo, false);

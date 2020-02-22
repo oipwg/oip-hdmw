@@ -1,5 +1,4 @@
 import bip32utils from '@oipwg/bip32-utils'
-import EventEmitter from 'eventemitter3'
 
 import Address from './Address'
 import TransactionBuilder from './TransactionBuilder'
@@ -21,7 +20,7 @@ const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
  * let bip32Node = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
  * @example <caption>Spawn a Flo bip32 Node</caption>
  * import * as bip32 from 'bip32';
- * import { Networks } from 'oip-hdmw';
+ * import { Networks } from '@oipwg/hdmw';
  *
  * let bip32Node = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
  */
@@ -47,7 +46,7 @@ class Account {
    * ##### Examples
    * Create a Bitcoin Account
    * ```
-   * import { Account, Networks } from 'oip-hdmw';
+   * import { Account, Networks } from '@oipwg/hdmw';
    *
    * let accountMaster = bip32.fromBase58("xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb")
    *
@@ -55,7 +54,7 @@ class Account {
    * ```
    * Create a Flo Account
    * ```
-   * import { Account, Networks } from 'oip-hdmw';
+   * import { Account, Networks } from '@oipwg/hdmw';
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -92,9 +91,6 @@ class Account {
         lastUpdate: 0
       }
     }
-
-    // Setup EventEmitter to notify when we have changed
-    this.eventEmitter = new EventEmitter()
 
     this.discover = true
 
@@ -149,7 +145,7 @@ class Account {
    * @param  {number} [mainAddressNumber=0] - Index of the Main Address on the specified chain
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -168,7 +164,7 @@ class Account {
    * @param  {number} [addressNumber=0] - Index of the Address on the specified chain
    * @example <caption>Get the address on Chain `0` at Index `10`</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -193,7 +189,7 @@ class Account {
    * @param  {number}    [chainNumber] - Number of the specific chain you want to get the Addresses from
    * @example <caption>Get all Addresses on the Account</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -202,7 +198,7 @@ class Account {
    * // addresses = [Address, Address, Address]
    * @example <caption>Get the addresses on Chain `0`</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -240,7 +236,7 @@ class Account {
    * @param  {number}    [chainNumber] - Number of the specific chain you want to get the Addresses from
    * @example <caption>Get all Used Addresses on the Account</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -249,7 +245,7 @@ class Account {
    * // addresses = [Address, Address, Address]
    * @example <caption>Get the addresses on Chain `0`</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -273,7 +269,7 @@ class Account {
    * Get the Balance for the entire Account
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -336,7 +332,7 @@ class Account {
    * @param  {number} [chainNumber=0] - The specific chain that you want to get the next address from
    * @example <caption>Get the next Chain Address on Chain #1</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -352,7 +348,7 @@ class Account {
    * Get the Next Change Address from the "Internal" chain
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -435,7 +431,7 @@ class Account {
    * Get the Extended Private Key for the Account
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -452,7 +448,7 @@ class Account {
    * Get the Extended Public Key for the Account
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -470,13 +466,13 @@ class Account {
    * @param {number} chainNumber - The number of the chain you are requesting
    * @example <caption>Get Chain 0</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
    * let account = new Account(accountMaster, Networks.flo, false);
    * let chain = account.getChain(0)
-   * @return {bip32utilschain}
+   * @return {bip32utils.Chain}
    */
   getChain (chainNumber) {
     return this.account.getChain(chainNumber)
@@ -537,11 +533,7 @@ class Account {
     }
 
     for (const address of promiseResponses) {
-      if (address.getTotalReceived() > 0) {
-        results[address.getPublicAddress()] = true
-      } else {
-        results[address.getPublicAddress()] = false
-      }
+      results[address.getPublicAddress()] = address.getTotalReceived() > 0
 
       // Store all addresses
       allAddresses.push(address)
@@ -555,7 +547,7 @@ class Account {
    * @param  {number} chainNumber - The number of the chain you wish to discover
    * @example <caption>Discover Chain 0</caption>
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -581,7 +573,7 @@ class Account {
    * Discover all Chains
    * @example
    * import * as bip32 from 'bip32'
-   * import { Account, Networks } from 'oip-hdmw'
+   * import { Account, Networks } from '@oipwg/hdmw'
    *
    * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
    *
@@ -606,46 +598,7 @@ class Account {
       }
     }
 
-    this.SubscribeToAddressWebsocketUpdates()
-
     return account
-  }
-
-  /**
-   * Internal function used to subscribe to WebSocket updates for All Discovered Addresses
-   */
-  SubscribeToAddressWebsocketUpdates () {
-    const allAddresses = this.getAddresses()
-
-    for (const address of allAddresses) { address.onWebsocketUpdate(this.HandleWebsocketUpdate.bind(this)) }
-  }
-
-  /**
-   * Internal function used to process Address updates streaming in from Websockets,
-   * emits an update that can be subscribed to with onWebsocketUpdate
-   * @param  {Object} update - Websocket Update Data
-   */
-  HandleWebsocketUpdate (update) {
-    this.eventEmitter.emit('websocketUpdate', update)
-  }
-
-  /**
-   * Subscribe to events that are emitted when an Address update is received via Websocket
-   * @param  {function} subscriberFunction - The function you want called when there is an update
-   *
-   * @example
-   * import { Account, Networks } from 'oip-hdmw'
-   *
-   * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", Networks.flo.network)
-   *
-   * let account = new Account(accountMaster, Networks.flo, false);
-   *
-   * account.onWebsocketUpdate((address) => {
-   *     console.log(address.getPublicAddress() + " Received a Websocket Update!")
-   * })
-   */
-  onWebsocketUpdate (subscriberFunction) {
-    this.eventEmitter.on('websocketUpdate', subscriberFunction)
   }
 }
 
