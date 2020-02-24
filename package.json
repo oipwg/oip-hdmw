@@ -1,12 +1,13 @@
 {
   "name": "@oipwg/hdmw",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
     "jest": "jest",
     "jest-handles": "jest --runInBand --detectOpenHandles",
-    "test": "standard && jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test": "standard && jest --coverage",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "prepublishOnly": "npm run generate-docs && npm run compile",
     "generate-docs": "node_modules/.bin/jsdoc --readme ./README.md -c jsdoc.json",
@@ -74,6 +75,6 @@
     ]
   },
   "files": [
-    "lib/*.js"
+    "lib"
   ]
 }
