@@ -1,5 +1,5 @@
 import bitcoin from 'bitcoinjs-lib'
-import bitcoinMessage from 'bitcoinjs-message'
+import bitcoinMessage from '@oipwg/bitcoinjs-message'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 
