@@ -1,6 +1,6 @@
 {
   "name": "@oipwg/hdmw",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
@@ -43,10 +43,10 @@
     "@oipwg/bitcoinjs-message": "^2.2.0-beta.0",
     "@oipwg/exchange-rate": "^2.0.0-beta.0",
     "@oipwg/insight-explorer": "^2.0.0-beta.0",
+    "@oipwg/bitcoinjs-lib": "^5.2.0-beta.0",
     "bip32": "2.0.5",
     "bip39": "^3.0.2",
     "bip44-constants": "^7.1.0",
-    "bitcoinjs-lib": "git+https://github.com/oipwg/bitcoinjs-lib.git#export-classify",
     "coininfo": "^5.1.0",
     "coinselect": "git+https://github.com/oipwg/coinselect.git",
     "eventemitter3": "^4.0.0",

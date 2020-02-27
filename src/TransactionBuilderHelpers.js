@@ -1,4 +1,4 @@
-import bitcoin from 'bitcoinjs-lib'
+import bitcoin from '@oipwg/bitcoinjs-lib'
 
 const Transaction = bitcoin.Transaction
 const bcrypto = bitcoin.crypto

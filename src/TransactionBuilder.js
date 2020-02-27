@@ -1,4 +1,4 @@
-import bitcoin from 'bitcoinjs-lib'
+import bitcoin from '@oipwg/bitcoinjs-lib'
 import coinselect from 'coinselect'
 
 import Address from './Address'

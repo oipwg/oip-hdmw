@@ -1,5 +1,5 @@
 import { Insight } from '@oipwg/insight-explorer'
-import { networks } from 'bitcoinjs-lib'
+import { networks } from '@oipwg/bitcoinjs-lib'
 
 import config from './config'
 
