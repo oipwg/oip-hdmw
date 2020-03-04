@@ -18,8 +18,6 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.litecoinTestnet),
 
-  getExtraBytes: function (options) { },
-
   network: {
     messagePrefix: '\u0018Litecoin Signed Message:\n',
     bip32: {

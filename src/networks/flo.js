@@ -18,8 +18,7 @@ const floFeePerKb = 100000
  * @property {number} dust - Amount in Satoshis of the minimum value allowed to be sent around the network
  * @property {number} txVersion - The current TX version number for the coin
  * @property {Insight} explorer - An Insight explorer for the current coin so that data can be retrieved from the network
- * @property {function} getExtraBytes - A function that is passed options from TransactionBuilder when a transaction is being built/sent. You can use this to add custom logic/tx hex building.
- * @property {CoinNetwork} network - The specific coin network variables, same as used in bitcoinjs-lib
+ * @property {CoinNetwork} network - The specific coin network variables, same as used in @oipwg/bitcoinjs-lib
  *
  * @example
  * {
@@ -36,11 +35,6 @@ const floFeePerKb = 100000
   txVersion: 2,
 
   explorer: new Insight('https://livenet.flocha.in/api'),
-
-  getExtraBytes: function(options){
-    let fData = options.floData || ""
-    return varIntBuffer(fData.length).toString("hex") + Buffer.from(fData).toString("hex")
-  },
 
   network: CoinNetwork
 }
@@ -87,16 +81,7 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.flo),
 
-  getExtraBytes: function (options) {
-    const fData = options.floData || ''
-
-    const stringBuffer = Buffer.from(fData, 'utf8')
-    const lengthBuffer = varIntBuffer(stringBuffer.length)
-
-    const builtString = lengthBuffer.toString('hex') + stringBuffer.toString('hex')
-
-    return builtString
-  },
+  hasFloData: true,
 
   network: {
     bip32: {

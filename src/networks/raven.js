@@ -22,7 +22,6 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.raven, false),
 
-  getExtraBytes: function (options) {},
 
   network: {
     bip32: {

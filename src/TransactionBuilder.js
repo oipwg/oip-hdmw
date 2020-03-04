@@ -1,9 +1,10 @@
-import bitcoin from '@oipwg/bitcoinjs-lib'
+import * as bitcoin from '@oipwg/bitcoinjs-lib'
 import coinselect from 'coinselect'
 
 import Address from './Address'
-import { sign } from './TransactionBuilderHelpers'
 import { isValidPublicAddress } from './util'
+
+import { FloPsbt } from './FloTransaction'
 
 /**
  * An Output for a Transaction
@@ -284,20 +285,27 @@ class TransactionBuilder {
     })
 
     let extraBytesLength = 0
-    const extraBytes = this.coin.getExtraBytes(this.passedOptions)
 
-    if (extraBytes) { extraBytesLength = extraBytes.length }
+    if (this.coin.network.hasFloData) { extraBytesLength = this.passedOptions.floData ? this.passedOptions.floData.length : 0}
 
     const utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
 
-    const selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+    let selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
 
     // Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
     if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee) {
-      return selected
+      // return selected
     } else { // else, build with the regular ones
-      return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+      selected = coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
     }
+
+    if (selected.inputs) {
+      for (let i = 0; i < selected.inputs.length; i++) {
+        let raw = await this.coin.explorer.getRawTransaction(selected.inputs[i].txId)
+        selected.inputs[i].rawtx = raw.rawtx
+      }
+    }
+    return selected
   }
 
   /**
@@ -379,11 +387,23 @@ class TransactionBuilder {
       throw new Error('No Inputs or Outputs selected! Fail!')
     }
 
-    const txb = new bitcoin.TransactionBuilder(this.coin.network)
+    let txb
+    if (this.coin.hasFloData === true) {
+      const floData = Buffer.from(this.passedOptions.floData || '')
+      txb = new FloPsbt({ network: this.coin.network })
+      txb.setFloData(floData)
+    } else {
+      txb = new bitcoin.Psbt({ network: this.coin.network })
+    }
 
     txb.setVersion(this.coin.txVersion)
 
-    inputs.forEach(input => txb.addInput(input.txId, input.vout))
+    inputs.forEach(input =>
+      txb.addInput({
+        hash: input.txId,
+        index: input.vout,
+        nonWitnessUtxo: Buffer.from(input.rawtx, 'hex'),
+      }))
 
     // Check if we are paying to ourself, if so, merge the outputs to just a single output.
     // Check if we only have one from address, and two outputs (i.e. pay to and change)
@@ -412,35 +432,27 @@ class TransactionBuilder {
         }
       }
 
-      txb.addOutput(output.address, output.value)
+      txb.addOutput({ address: output.address, value: output.value })
     })
 
-    for (const i in inputs) {
-      if (!Object.prototype.hasOwnProperty.call(inputs, i)) continue
-      for (const addr of this.from) {
-        if (addr.getPublicAddress() === inputs[i].address) {
-          const extraBytes = this.coin.getExtraBytes(this.passedOptions)
-
-          if (extraBytes) {
-            sign(txb, extraBytes, parseInt(i), addr.getECPair())
-          } else {
-            txb.sign(parseInt(i), addr.getECPair())
-          }
-        }
-      }
+    for (const addr of this.from) {
+      txb.signAllInputs(addr.getECPair())
     }
+
+    if (!txb.validateSignaturesOfAllInputs()) {
+      throw new Error('Transaction input signatures do not validate')
+    }
+
+    txb.finalizeAllInputs()
 
     let builtHex
 
     try {
-      builtHex = txb.build().toHex()
+      let tx = txb.extractTransaction()
+      builtHex = tx.toHex()
     } catch (e) {
       throw new Error('Unable to build Transaction Hex! \n' + e)
     }
-
-    const extraBytes = this.coin.getExtraBytes(this.passedOptions)
-
-    if (extraBytes) { builtHex += extraBytes }
 
     return builtHex
   }

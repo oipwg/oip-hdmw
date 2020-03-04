@@ -1,4 +1,4 @@
-import bitcoin from '@oipwg/bitcoinjs-lib'
+import * as bitcoin from '@oipwg/bitcoinjs-lib'
 import bitcoinMessage from '@oipwg/bitcoinjs-message'
 
 import { toBase58, isValidPublicAddress, isValidWIF } from './util'
@@ -6,7 +6,7 @@ import { toBase58, isValidPublicAddress, isValidWIF } from './util'
 const ECPair = bitcoin.ECPair
 
 /**
- * [bitcoinjs-lib ECPair](https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/src/ecpair.js#L16)
+ * [@oipwg/bitcoinjs-lib ECPair](https://github.com/bitcoinjs/@oipwg/bitcoinjs-lib/blob/master/src/ecpair.js#L16)
  * @typedef {Object} ECPair
  */
 

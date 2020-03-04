@@ -1,4 +1,4 @@
-import bitcoin from '@oipwg/bitcoinjs-lib'
+import * as bitcoin from '@oipwg/bitcoinjs-lib'
 import { Buffer } from 'safe-buffer'
 import createHash from 'create-hash'
 import bs58check from 'bs58check'

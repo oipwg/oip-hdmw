@@ -279,7 +279,7 @@ test('get network api urls', () => {
   const testWallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(testWallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://blockexplorer.com/api',
+      bitcoin: 'https://insight.bitpay.com/api',
       flo: 'https://livenet.flocha.in/api',
       litecoin: 'https://insight.litecore.io/api',
       raven: 'https://rvn.bitspill.net/api'
@@ -323,8 +323,8 @@ test('set network apis', () => {
 test('static method call from instance', () => {
   const wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(wallet.constructor.getDefaultExplorerUrls()).toEqual({
-    bitcoin: 'https://blockexplorer.com/api',
-    bitcoinTestnet: 'https://testnet.blockexplorer.com/api',
+    bitcoin: 'https://insight.bitpay.com/api',
+    bitcoinTestnet: '',
     flo: 'https://livenet.flocha.in/api',
     floTestnet: 'https://testnet.flocha.in/api',
     litecoin: 'https://insight.litecore.io/api',
@@ -351,7 +351,7 @@ test('reset network api urls', () => {
   wallet.resetExplorerUrls()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://blockexplorer.com/api',
+      bitcoin: 'https://insight.bitpay.com/api',
       flo: 'https://livenet.flocha.in/api',
       litecoin: 'https://insight.litecore.io/api',
       raven: 'https://rvn.bitspill.net/api'
@@ -364,8 +364,8 @@ test('get network api urls with testnet coins', () => {
   wallet.addTestnetCoins()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://blockexplorer.com/api',
-      bitcoinTestnet: 'https://testnet.blockexplorer.com/api',
+      bitcoin: 'https://insight.bitpay.com/api',
+      bitcoinTestnet: '',
       flo: 'https://livenet.flocha.in/api',
       floTestnet: 'https://testnet.flocha.in/api',
       litecoin: 'https://insight.litecore.io/api',

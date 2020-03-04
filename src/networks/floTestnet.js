@@ -19,16 +19,7 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.floTestnet),
 
-  getExtraBytes: function (options) {
-    const fData = options.floData || ''
-
-    const stringBuffer = Buffer.from(fData, 'utf8')
-    const lengthBuffer = varIntBuffer(stringBuffer.length)
-
-    const builtString = lengthBuffer.toString('hex') + stringBuffer.toString('hex')
-
-    return builtString
-  },
+  hasFloData: true,
 
   network: {
     bip32: {

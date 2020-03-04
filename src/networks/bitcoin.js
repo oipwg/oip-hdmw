@@ -24,7 +24,5 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.bitcoin),
 
-  getExtraBytes: function (options) { },
-
   network: n
 }
