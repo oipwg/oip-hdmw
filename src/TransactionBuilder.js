@@ -286,7 +286,7 @@ class TransactionBuilder {
 
     let extraBytesLength = 0
 
-    if (this.coin.network.hasFloData) { extraBytesLength = this.passedOptions.floData ? this.passedOptions.floData.length : 0}
+    if (this.coin.network.hasFloData) { extraBytesLength = this.passedOptions.floData ? this.passedOptions.floData.length : 0 }
 
     const utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
 
@@ -301,7 +301,7 @@ class TransactionBuilder {
 
     if (selected.inputs) {
       for (let i = 0; i < selected.inputs.length; i++) {
-        let raw = await this.coin.explorer.getRawTransaction(selected.inputs[i].txId)
+        const raw = await this.coin.explorer.getRawTransaction(selected.inputs[i].txId)
         selected.inputs[i].rawtx = raw.rawtx
       }
     }
@@ -402,7 +402,7 @@ class TransactionBuilder {
       txb.addInput({
         hash: input.txId,
         index: input.vout,
-        nonWitnessUtxo: Buffer.from(input.rawtx, 'hex'),
+        nonWitnessUtxo: Buffer.from(input.rawtx, 'hex')
       }))
 
     // Check if we are paying to ourself, if so, merge the outputs to just a single output.
@@ -448,7 +448,7 @@ class TransactionBuilder {
     let builtHex
 
     try {
-      let tx = txb.extractTransaction()
+      const tx = txb.extractTransaction()
       builtHex = tx.toHex()
     } catch (e) {
       throw new Error('Unable to build Transaction Hex! \n' + e)

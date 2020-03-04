@@ -1,4 +1,97 @@
-'use strict'
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      FloTransaction.js - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.3.0/highlightjs-line-numbers.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <link type="text/css" rel="stylesheet" href="styles/monokai-sublime.css">
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li >
+        <a href="index.html">
+          
+            <svg fill="#6D6D6D" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      OIP HDMW
+    </h3>
+
+    <h3>Classes</h3><ul><li id="Account-nav"><a href="Account.html">Account</a><ul class='methods'><li data-type="method" id="Account-discoverChain-nav"><a href="Account.html#discoverChain">discoverChain</a></li><li data-type="method" id="Account-discoverChains-nav"><a href="Account.html#discoverChains">discoverChains</a></li><li data-type="method" id="Account-getAddress-nav"><a href="Account.html#getAddress">getAddress</a></li><li data-type="method" id="Account-getAddresses-nav"><a href="Account.html#getAddresses">getAddresses</a></li><li data-type="method" id="Account-getBalance-nav"><a href="Account.html#getBalance">getBalance</a></li><li data-type="method" id="Account-getChain-nav"><a href="Account.html#getChain">getChain</a></li><li data-type="method" id="Account-getExtendedPrivateKey-nav"><a href="Account.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Account-getExtendedPublicKey-nav"><a href="Account.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Account-getMainAddress-nav"><a href="Account.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Account-getNextChainAddress-nav"><a href="Account.html#getNextChainAddress">getNextChainAddress</a></li><li data-type="method" id="Account-getNextChangeAddress-nav"><a href="Account.html#getNextChangeAddress">getNextChangeAddress</a></li><li data-type="method" id="Account-getUsedAddresses-nav"><a href="Account.html#getUsedAddresses">getUsedAddresses</a></li><li data-type="method" id="Account-sendPayment-nav"><a href="Account.html#sendPayment">sendPayment</a></li></ul></li><li id="Address-nav"><a href="Address.html">Address</a><ul class='methods'><li data-type="method" id="Address-addSpentTransaction-nav"><a href="Address.html#addSpentTransaction">addSpentTransaction</a></li><li data-type="method" id="Address-deserialize-nav"><a href="Address.html#deserialize">deserialize</a></li><li data-type="method" id="Address-getBalance-nav"><a href="Address.html#getBalance">getBalance</a></li><li data-type="method" id="Address-getECPair-nav"><a href="Address.html#getECPair">getECPair</a></li><li data-type="method" id="Address-getPrivateAddress-nav"><a href="Address.html#getPrivateAddress">getPrivateAddress</a></li><li data-type="method" id="Address-getPublicAddress-nav"><a href="Address.html#getPublicAddress">getPublicAddress</a></li><li data-type="method" id="Address-getTotalReceived-nav"><a href="Address.html#getTotalReceived">getTotalReceived</a></li><li data-type="method" id="Address-getTotalSent-nav"><a href="Address.html#getTotalSent">getTotalSent</a></li><li data-type="method" id="Address-getUnconfirmedBalance-nav"><a href="Address.html#getUnconfirmedBalance">getUnconfirmedBalance</a></li><li data-type="method" id="Address-getUnspent-nav"><a href="Address.html#getUnspent">getUnspent</a></li><li data-type="method" id="Address-removeSpent-nav"><a href="Address.html#removeSpent">removeSpent</a></li><li data-type="method" id="Address-serialize-nav"><a href="Address.html#serialize">serialize</a></li><li data-type="method" id="Address-signMessage-nav"><a href="Address.html#signMessage">signMessage</a></li><li data-type="method" id="Address-updateState-nav"><a href="Address.html#updateState">updateState</a></li><li data-type="method" id="Address-verifySignature-nav"><a href="Address.html#verifySignature">verifySignature</a></li></ul></li><li id="Coin-nav"><a href="Coin.html">Coin</a><ul class='methods'><li data-type="method" id="Coin-addAccount-nav"><a href="Coin.html#addAccount">addAccount</a></li><li data-type="method" id="Coin-discoverAccounts-nav"><a href="Coin.html#discoverAccounts">discoverAccounts</a></li><li data-type="method" id="Coin-getAccount-nav"><a href="Coin.html#getAccount">getAccount</a></li><li data-type="method" id="Coin-getAccounts-nav"><a href="Coin.html#getAccounts">getAccounts</a></li><li data-type="method" id="Coin-getAddress-nav"><a href="Coin.html#getAddress">getAddress</a></li><li data-type="method" id="Coin-getBalance-nav"><a href="Coin.html#getBalance">getBalance</a></li><li data-type="method" id="Coin-getCoinInfo-nav"><a href="Coin.html#getCoinInfo">getCoinInfo</a></li><li data-type="method" id="Coin-getExtendedPrivateKey-nav"><a href="Coin.html#getExtendedPrivateKey">getExtendedPrivateKey</a></li><li data-type="method" id="Coin-getExtendedPublicKey-nav"><a href="Coin.html#getExtendedPublicKey">getExtendedPublicKey</a></li><li data-type="method" id="Coin-getMainAddress-nav"><a href="Coin.html#getMainAddress">getMainAddress</a></li><li data-type="method" id="Coin-sendPayment-nav"><a href="Coin.html#sendPayment">sendPayment</a></li></ul></li><li id="FloPsbt-nav"><a href="FloPsbt.html">FloPsbt</a></li><li id="FloPsbtTransaction-nav"><a href="FloPsbtTransaction.html">FloPsbtTransaction</a></li><li id="TransactionBuilder-nav"><a href="TransactionBuilder.html">TransactionBuilder</a><ul class='methods'><li data-type="method" id="TransactionBuilder-addFrom-nav"><a href="TransactionBuilder.html#addFrom">addFrom</a></li><li data-type="method" id="TransactionBuilder-addTo-nav"><a href="TransactionBuilder.html#addTo">addTo</a></li><li data-type="method" id="TransactionBuilder-buildInputsAndOutputs-nav"><a href="TransactionBuilder.html#buildInputsAndOutputs">buildInputsAndOutputs</a></li><li data-type="method" id="TransactionBuilder-buildTX-nav"><a href="TransactionBuilder.html#buildTX">buildTX</a></li><li data-type="method" id="TransactionBuilder-discoverChange-nav"><a href="TransactionBuilder.html#discoverChange">discoverChange</a></li><li data-type="method" id="TransactionBuilder-getUnspents-nav"><a href="TransactionBuilder.html#getUnspents">getUnspents</a></li><li data-type="method" id="TransactionBuilder-parseOptions-nav"><a href="TransactionBuilder.html#parseOptions">parseOptions</a></li><li data-type="method" id="TransactionBuilder-sendTX-nav"><a href="TransactionBuilder.html#sendTX">sendTX</a></li></ul></li><li id="Wallet-nav"><a href="Wallet.html">Wallet</a><ul class='methods'><li data-type="method" id="Wallet-addCoin-nav"><a href="Wallet.html#addCoin">addCoin</a></li><li data-type="method" id="Wallet-addTestnetCoins-nav"><a href="Wallet.html#addTestnetCoins">addTestnetCoins</a></li><li data-type="method" id="Wallet-fromEntropy-nav"><a href="Wallet.html#fromEntropy">fromEntropy</a></li><li data-type="method" id="Wallet-fromMnemonic-nav"><a href="Wallet.html#fromMnemonic">fromMnemonic</a></li><li data-type="method" id="Wallet-fromSeed-nav"><a href="Wallet.html#fromSeed">fromSeed</a></li><li data-type="method" id="Wallet-getCoin-nav"><a href="Wallet.html#getCoin">getCoin</a></li><li data-type="method" id="Wallet-getCoinBalances-nav"><a href="Wallet.html#getCoinBalances">getCoinBalances</a></li><li data-type="method" id="Wallet-getCoins-nav"><a href="Wallet.html#getCoins">getCoins</a></li><li data-type="method" id="Wallet-getEntropy-nav"><a href="Wallet.html#getEntropy">getEntropy</a></li><li data-type="method" id="Wallet-getExchangeRates-nav"><a href="Wallet.html#getExchangeRates">getExchangeRates</a></li><li data-type="method" id="Wallet-getExplorerUrls-nav"><a href="Wallet.html#getExplorerUrls">getExplorerUrls</a></li><li data-type="method" id="Wallet-getFiatBalances-nav"><a href="Wallet.html#getFiatBalances">getFiatBalances</a></li><li data-type="method" id="Wallet-getMnemonic-nav"><a href="Wallet.html#getMnemonic">getMnemonic</a></li><li data-type="method" id="Wallet-getNetworks-nav"><a href="Wallet.html#getNetworks">getNetworks</a></li><li data-type="method" id="Wallet-getSeed-nav"><a href="Wallet.html#getSeed">getSeed</a></li><li data-type="method" id="Wallet-sendPayment-nav"><a href="Wallet.html#sendPayment">sendPayment</a></li><li data-type="method" id="Wallet-setExplorerUrls-nav"><a href="Wallet.html#setExplorerUrls">setExplorerUrls</a></li></ul></li></ul><h3>Modules</h3><ul><li id="util-nav"><a href="module-util.html">util</a><ul class='methods'><li data-type="method" id="util-isEntropy-nav"><a href="module-util.html#~isEntropy">isEntropy</a></li><li data-type="method" id="util-isMnemonic-nav"><a href="module-util.html#~isMnemonic">isMnemonic</a></li><li data-type="method" id="util-isValidPublicAddress-nav"><a href="module-util.html#~isValidPublicAddress">isValidPublicAddress</a></li><li data-type="method" id="util-isValidWIF-nav"><a href="module-util.html#~isValidWIF">isValidWIF</a></li><li data-type="method" id="util-toBase58-nav"><a href="module-util.html#~toBase58">toBase58</a></li></ul></li></ul><h3 id="global-nav">Global</h3><ul><li><a href="global.html#DEFAULT_OPTS">DEFAULT_OPTS</a></li><li><a href="global.html#transactionFromBuffer">transactionFromBuffer</a></li></ul>
+  </nav>
+
+  <div id="main">
+    
+      <h1 class="page-title">
+        FloTransaction.js
+      </h1>
+    
+
+    
+      
+
+<section>
+  <article>
+    <pre class="prettyprint source linenums"><code>'use strict'
 Object.defineProperty(exports, '__esModule', { value: true })
 const bufferutils = require('@oipwg/bitcoinjs-lib/src/bufferutils')
 const bcrypto = require('@oipwg/bitcoinjs-lib/src/crypto')
@@ -68,7 +161,7 @@ class FloTransaction {
     const flag = bufferReader.readUInt8()
     let hasWitnesses = false
     if (
-      marker === FloTransaction.ADVANCED_TRANSACTION_MARKER &&
+      marker === FloTransaction.ADVANCED_TRANSACTION_MARKER &amp;&amp;
       flag === FloTransaction.ADVANCED_TRANSACTION_FLAG
     ) {
       hasWitnesses = true
@@ -76,7 +169,7 @@ class FloTransaction {
       bufferReader.offset -= 2
     }
     const vinLen = bufferReader.readVarInt()
-    for (let i = 0; i < vinLen; ++i) {
+    for (let i = 0; i &lt; vinLen; ++i) {
       tx.ins.push({
         hash: bufferReader.readSlice(32),
         index: bufferReader.readUInt32(),
@@ -86,14 +179,14 @@ class FloTransaction {
       })
     }
     const voutLen = bufferReader.readVarInt()
-    for (let i = 0; i < voutLen; ++i) {
+    for (let i = 0; i &lt; voutLen; ++i) {
       tx.outs.push({
         value: bufferReader.readUInt64(),
         script: bufferReader.readVarSlice()
       })
     }
     if (hasWitnesses) {
-      for (let i = 0; i < vinLen; ++i) {
+      for (let i = 0; i &lt; vinLen; ++i) {
         tx.ins[i].witness = bufferReader.readVector()
       }
       // was this pointless?
@@ -112,7 +205,7 @@ class FloTransaction {
 
   static isCoinbaseHash (buffer) {
     typeforce(types.Hash256bit, buffer)
-    for (let i = 0; i < 32; ++i) {
+    for (let i = 0; i &lt; 32; ++i) {
       if (buffer[i] !== 0) return false
     }
     return true
@@ -120,7 +213,7 @@ class FloTransaction {
 
   isCoinbase () {
     return (
-      this.ins.length === 1 && FloTransaction.isCoinbaseHash(this.ins[0].hash)
+      this.ins.length === 1 &amp;&amp; FloTransaction.isCoinbaseHash(this.ins[0].hash)
     )
   }
 
@@ -177,7 +270,7 @@ class FloTransaction {
   }
 
   byteLength (_ALLOW_WITNESS = true) {
-    const hasWitnesses = _ALLOW_WITNESS && this.hasWitnesses()
+    const hasWitnesses = _ALLOW_WITNESS &amp;&amp; this.hasWitnesses()
     return (
       (hasWitnesses ? 10 : 8) +
       (this.version >= 2 ? varSliceSize(this.floData) : 0) +
@@ -243,7 +336,7 @@ class FloTransaction {
     )
     const txTmp = this.clone()
     // SIGHASH_NONE: ignore all outputs? (wildcard payee)
-    if ((hashType & 0x1f) === FloTransaction.SIGHASH_NONE) {
+    if ((hashType &amp; 0x1f) === FloTransaction.SIGHASH_NONE) {
       txTmp.outs = []
       // ignore sequence numbers (except at inIndex)
       txTmp.ins.forEach((input, i) => {
@@ -251,13 +344,13 @@ class FloTransaction {
         input.sequence = 0
       })
       // SIGHASH_SINGLE: ignore all outputs, except at the same index?
-    } else if ((hashType & 0x1f) === FloTransaction.SIGHASH_SINGLE) {
+    } else if ((hashType &amp; 0x1f) === FloTransaction.SIGHASH_SINGLE) {
       // https://github.com/bitcoin/bitcoin/blob/master/src/test/sighash_tests.cpp#L60
       if (inIndex >= this.outs.length) return ONE
       // truncate outputs after
       txTmp.outs.length = inIndex + 1
       // "blank" outputs before
-      for (let i = 0; i < inIndex; i++) {
+      for (let i = 0; i &lt; inIndex; i++) {
         txTmp.outs[i] = BLANK_OUTPUT
       }
       // ignore sequence numbers (except at inIndex)
@@ -267,7 +360,7 @@ class FloTransaction {
       })
     }
     // SIGHASH_ANYONECANPAY: ignore inputs entirely?
-    if (hashType & FloTransaction.SIGHASH_ANYONECANPAY) {
+    if (hashType &amp; FloTransaction.SIGHASH_ANYONECANPAY) {
       txTmp.ins = [txTmp.ins[inIndex]]
       txTmp.ins[0].script = ourScript
       // SIGHASH_ALL: only ignore input scripts
@@ -295,7 +388,7 @@ class FloTransaction {
     let hashOutputs = ZERO
     let hashPrevouts = ZERO
     let hashSequence = ZERO
-    if (!(hashType & FloTransaction.SIGHASH_ANYONECANPAY)) {
+    if (!(hashType &amp; FloTransaction.SIGHASH_ANYONECANPAY)) {
       tbuffer = Buffer.allocUnsafe(36 * this.ins.length)
       bufferWriter = new bufferutils.BufferWriter(tbuffer, 0)
       this.ins.forEach(txIn => {
@@ -305,9 +398,9 @@ class FloTransaction {
       hashPrevouts = bcrypto.hash256(tbuffer)
     }
     if (
-      !(hashType & FloTransaction.SIGHASH_ANYONECANPAY) &&
-      (hashType & 0x1f) !== FloTransaction.SIGHASH_SINGLE &&
-      (hashType & 0x1f) !== FloTransaction.SIGHASH_NONE
+      !(hashType &amp; FloTransaction.SIGHASH_ANYONECANPAY) &amp;&amp;
+      (hashType &amp; 0x1f) !== FloTransaction.SIGHASH_SINGLE &amp;&amp;
+      (hashType &amp; 0x1f) !== FloTransaction.SIGHASH_NONE
     ) {
       tbuffer = Buffer.allocUnsafe(4 * this.ins.length)
       bufferWriter = new bufferutils.BufferWriter(tbuffer, 0)
@@ -317,8 +410,8 @@ class FloTransaction {
       hashSequence = bcrypto.hash256(tbuffer)
     }
     if (
-      (hashType & 0x1f) !== FloTransaction.SIGHASH_SINGLE &&
-      (hashType & 0x1f) !== FloTransaction.SIGHASH_NONE
+      (hashType &amp; 0x1f) !== FloTransaction.SIGHASH_SINGLE &amp;&amp;
+      (hashType &amp; 0x1f) !== FloTransaction.SIGHASH_NONE
     ) {
       const txOutsSize = this.outs.reduce((sum, output) => {
         return sum + 8 + varSliceSize(output.script)
@@ -331,8 +424,8 @@ class FloTransaction {
       })
       hashOutputs = bcrypto.hash256(tbuffer)
     } else if (
-      (hashType & 0x1f) === FloTransaction.SIGHASH_SINGLE &&
-      inIndex < this.outs.length
+      (hashType &amp; 0x1f) === FloTransaction.SIGHASH_SINGLE &amp;&amp;
+      inIndex &lt; this.outs.length
     ) {
       const output = this.outs[inIndex]
       tbuffer = Buffer.allocUnsafe(8 + varSliceSize(output.script))
@@ -361,7 +454,7 @@ class FloTransaction {
 
   getHash (forWitness) {
     // wtxid for coinbase is always 32 bytes of 0x00
-    if (forWitness && this.isCoinbase()) return Buffer.alloc(32, 0)
+    if (forWitness &amp;&amp; this.isCoinbase()) return Buffer.alloc(32, 0)
     return bcrypto.hash256(this.__toBuffer(undefined, undefined, forWitness))
   }
 
@@ -395,7 +488,7 @@ class FloTransaction {
       initialOffset || 0
     )
     bufferWriter.writeInt32(this.version)
-    const hasWitnesses = _ALLOW_WITNESS && this.hasWitnesses()
+    const hasWitnesses = _ALLOW_WITNESS &amp;&amp; this.hasWitnesses()
     if (hasWitnesses) {
       bufferWriter.writeUInt8(FloTransaction.ADVANCED_TRANSACTION_MARKER)
       bufferWriter.writeUInt8(FloTransaction.ADVANCED_TRANSACTION_FLAG)
@@ -577,7 +670,7 @@ class FloPsbt {
     check32Bit(sequence)
     checkInputsForPartialSig(this.data.inputs, 'setInputSequence')
     const c = this.__CACHE
-    if (c.__TX.ins.length <= inputIndex) {
+    if (c.__TX.ins.length &lt;= inputIndex) {
       throw new Error('Input index too high')
     }
     c.__TX.ins[inputIndex].sequence = sequence
@@ -628,7 +721,7 @@ class FloPsbt {
       arguments.length > 1 ||
       !outputData ||
       outputData.value === undefined ||
-      (outputData.address === undefined && outputData.script === undefined)
+      (outputData.address === undefined &amp;&amp; outputData.script === undefined)
     ) {
       throw new Error(
         'Invalid arguments for Psbt.addOutput. ' +
@@ -700,7 +793,7 @@ class FloPsbt {
     )
     if (finalScriptSig) this.data.updateInput(inputIndex, { finalScriptSig })
     if (finalScriptWitness) { this.data.updateInput(inputIndex, { finalScriptWitness }) }
-    if (!finalScriptSig && !finalScriptWitness) { throw new Error(`Unknown error finalizing input #${inputIndex}`) }
+    if (!finalScriptSig &amp;&amp; !finalScriptWitness) { throw new Error(`Unknown error finalizing input #${inputIndex}`) }
     this.data.clearFinalizedInput(inputIndex)
     return this
   }
@@ -710,17 +803,17 @@ class FloPsbt {
     const results = range(this.data.inputs.length).map(idx =>
       this.validateSignaturesOfInput(idx)
     )
-    return results.reduce((final, res) => res === true && final, true)
+    return results.reduce((final, res) => res === true &amp;&amp; final, true)
   }
 
   validateSignaturesOfInput (inputIndex, pubkey) {
     const input = this.data.inputs[inputIndex]
     const partialSig = (input || {}).partialSig
-    if (!input || !partialSig || partialSig.length < 1) { throw new Error('No signatures to validate') }
+    if (!input || !partialSig || partialSig.length &lt; 1) { throw new Error('No signatures to validate') }
     const mySigs = pubkey
       ? partialSig.filter(sig => sig.pubkey.equals(pubkey))
       : partialSig
-    if (mySigs.length < 1) throw new Error('No signatures for this pubkey')
+    if (mySigs.length &lt; 1) throw new Error('No signatures for this pubkey')
     const results = []
     let hashCache
     let scriptCache
@@ -1025,7 +1118,7 @@ class FloPsbtTransaction {
     if (
       input.hash === undefined ||
       input.index === undefined ||
-      (!Buffer.isBuffer(input.hash) && typeof input.hash !== 'string') ||
+      (!Buffer.isBuffer(input.hash) &amp;&amp; typeof input.hash !== 'string') ||
       typeof input.index !== 'number'
     ) {
       throw new Error('Error adding input.')
@@ -1113,7 +1206,7 @@ function check32Bit (num) {
     typeof num !== 'number' ||
     num !== Math.floor(num) ||
     num > 0xffffffff ||
-    num < 0
+    num &lt; 0
   ) {
     throw new Error('Invalid 32 bit integer')
   }
@@ -1139,7 +1232,7 @@ function checkInputsForPartialSig (inputs, action) {
     let throws = false
     let pSigs = []
     if ((input.partialSig || []).length === 0) {
-      if (!input.finalScriptSig && !input.finalScriptWitness) return
+      if (!input.finalScriptSig &amp;&amp; !input.finalScriptWitness) return
       pSigs = getPsigsFromInputFinalScripts(input)
     } else {
       pSigs = input.partialSig
@@ -1148,9 +1241,9 @@ function checkInputsForPartialSig (inputs, action) {
       const { hashType } = bscript.signature.decode(pSig.signature)
       const whitelist = []
       const isAnyoneCanPay =
-        hashType & FloTransaction.SIGHASH_ANYONECANPAY
+        hashType &amp; FloTransaction.SIGHASH_ANYONECANPAY
       if (isAnyoneCanPay) whitelist.push('addInput')
-      const hashMod = hashType & 0x1f
+      const hashMod = hashType &amp; 0x1f
       switch (hashMod) {
         case FloTransaction.SIGHASH_ALL:
           break
@@ -1199,9 +1292,9 @@ function checkScriptForPubkey (pubkey, script, action) {
 function checkTxEmpty (tx) {
   const isEmpty = tx.ins.every(
     input =>
-      input.script &&
-      input.script.length === 0 &&
-      input.witness &&
+      input.script &amp;&amp;
+      input.script.length === 0 &amp;&amp;
+      input.witness &amp;&amp;
       input.witness.length === 0
   )
   if (!isEmpty) {
@@ -1245,8 +1338,8 @@ const checkWitnessScript = scriptCheckerFactory(
 
 function getTxCacheValue (key, name, inputs, c) {
   if (!inputs.every(isFinalized)) { throw new Error(`PSBT must be finalized to calculate ${name}`) }
-  if (key === '__FEE_RATE' && c.__FEE_RATE) return c.__FEE_RATE
-  if (key === '__FEE' && c.__FEE) return c.__FEE
+  if (key === '__FEE_RATE' &amp;&amp; c.__FEE_RATE) return c.__FEE_RATE
+  if (key === '__FEE' &amp;&amp; c.__FEE) return c.__FEE
   let tx
   let mustFinalize = true
   if (c.__EXTRACTED_TX) {
@@ -1334,7 +1427,7 @@ function getHashForSig (inputIndex, input, cache, sighashTypes) {
   const unsignedTx = cache.__TX
   const sighashType =
     input.sighashType || FloTransaction.SIGHASH_ALL
-  if (sighashTypes && sighashTypes.indexOf(sighashType) < 0) {
+  if (sighashTypes &amp;&amp; sighashTypes.indexOf(sighashType) &lt; 0) {
     const str = sighashTypeToString(sighashType)
     throw new Error(
       'Sighash type is not allowed. Retry the sign method passing the ' +
@@ -1483,7 +1576,7 @@ function getPsigsFromInputFinalScripts (input) {
   return scriptItems
     .concat(witnessItems)
     .filter(item => {
-      return Buffer.isBuffer(item) && bscript.isCanonicalScriptSignature(item)
+      return Buffer.isBuffer(item) &amp;&amp; bscript.isCanonicalScriptSignature(item)
     })
     .map(sig => ({ signature: sig }))
 }
@@ -1588,7 +1681,7 @@ function scriptWitnessToWitnessStack (buffer) {
   function readVector () {
     const count = readVarInt()
     const vector = []
-    for (let i = 0; i < count; i++) vector.push(readVarSlice())
+    for (let i = 0; i &lt; count; i++) vector.push(readVarSlice())
     return vector
   }
 
@@ -1597,10 +1690,10 @@ function scriptWitnessToWitnessStack (buffer) {
 
 function sighashTypeToString (sighashType) {
   let text =
-    sighashType & FloTransaction.SIGHASH_ANYONECANPAY
+    sighashType &amp; FloTransaction.SIGHASH_ANYONECANPAY
       ? 'SIGHASH_ANYONECANPAY | '
       : ''
-  const sigMod = sighashType & 0x1f
+  const sigMod = sighashType &amp; 0x1f
   switch (sigMod) {
     case FloTransaction.SIGHASH_ALL:
       text += 'SIGHASH_ALL'
@@ -1672,8 +1765,8 @@ function addNonWitnessTxCache (cache, input, inputIndex) {
 function inputFinalizeGetAmts (inputs, tx, cache, mustFinalize) {
   let inputAmount = 0
   inputs.forEach((input, idx) => {
-    if (mustFinalize && input.finalScriptSig) { tx.ins[idx].script = input.finalScriptSig }
-    if (mustFinalize && input.finalScriptWitness) {
+    if (mustFinalize &amp;&amp; input.finalScriptSig) { tx.ins[idx].script = input.finalScriptSig }
+    if (mustFinalize &amp;&amp; input.finalScriptWitness) {
       tx.ins[idx].witness = scriptWitnessToWitnessStack(
         input.finalScriptWitness
       )
@@ -1689,7 +1782,7 @@ function inputFinalizeGetAmts (inputs, tx, cache, mustFinalize) {
   })
   const outputAmount = tx.outs.reduce((total, o) => total + o.value, 0)
   const fee = inputAmount - outputAmount
-  if (fee < 0) {
+  if (fee &lt; 0) {
     throw new Error('Outputs are spending more than Inputs')
   }
   const bytes = tx.virtualSize()
@@ -1721,3 +1814,25 @@ function range (n) {
 exports.FloPsbt = FloPsbt
 exports.FloTransaction = FloTransaction
 exports.FloPsbtTransaction = FloPsbtTransaction
+</code></pre>
+  </article>
+</section>
+
+    
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+  
+</body>
+</html>

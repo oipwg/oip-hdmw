@@ -22,7 +22,6 @@ module.exports = {
 
   explorer: new Insight(config.defaultApiUrls.raven, false),
 
-
   network: {
     bip32: {
       public: n.bip32.public,
