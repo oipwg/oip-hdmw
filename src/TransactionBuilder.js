@@ -290,13 +290,13 @@ class TransactionBuilder {
 
     const utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
 
-    let selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+    let selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), this.coin.minFee, extraBytesLength)
 
     // Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
     if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee) {
       // return selected
     } else { // else, build with the regular ones
-      selected = coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+      selected = coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), this.coin.minFee, extraBytesLength)
     }
 
     if (selected.inputs) {
@@ -436,7 +436,11 @@ class TransactionBuilder {
     })
 
     for (const addr of this.from) {
-      txb.signAllInputs(addr.getECPair())
+      try {
+        txb.signAllInputs(addr.getECPair())
+      } catch {
+        // sign throws if there is no input to be signed by addr
+      }
     }
 
     if (!txb.validateSignaturesOfAllInputs()) {

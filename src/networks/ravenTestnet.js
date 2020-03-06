@@ -15,7 +15,7 @@ module.exports = {
   feePerKb: ravenFeePerKb,
   feePerByte: ravenFeePerKb / 1024,
   maxFeePerByte: 100,
-  minFee: ravenFeePerKb,
+  minFee: 1e6,
   dust: 54600,
 
   txVersion: 1,
