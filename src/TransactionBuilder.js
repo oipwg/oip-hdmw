@@ -1,5 +1,5 @@
 import * as bitcoin from '@oipwg/bitcoinjs-lib'
-import coinselect from 'coinselect'
+import coinselect from '@oipwg/coinselect'
 
 import Address from './Address'
 import { isValidPublicAddress } from './util'

@@ -3,7 +3,7 @@ import * as coinInfo from 'coininfo'
 import * as bip44constants from 'bip44-constants'
 import config from './config'
 
-const ravenFeePerKb = 100000
+const ravenFeePerKb = 1e6
 
 const n = coinInfo.ravencoin.main.toBitcoinJS()
 
@@ -15,7 +15,7 @@ module.exports = {
   feePerKb: ravenFeePerKb,
   feePerByte: ravenFeePerKb / 1024,
   maxFeePerByte: 100,
-  minFee: 1e6,
+  minFee: 1e5,
   dust: 54600,
 
   txVersion: 1,
