@@ -49,10 +49,10 @@
     "bip32": "2.0.5",
     "bip39": "^3.0.2",
     "bip44-constants": "^7.1.0",
+    "bs58check": "^2.1.2",
     "coininfo": "^5.1.0",
-    "eventemitter3": "^4.0.0",
+    "create-hash": "^1.2.0",
     "safe-buffer": "^5.2.0",
-    "standard": "^14.3.1",
     "typeforce": "^1.18.0",
     "varuint-bitcoin": "^1.1.2",
     "wif": "^2.0.6"
@@ -61,12 +61,11 @@
     "@babel/core": "^7.8.7",
     "@babel/cli": "^7.8.4",
     "@babel/preset-env": "^7.8.7",
-    "@babel/runtime": "^7.8.7",
-    "@babel/plugin-transform-runtime": "^7.8.3",
     "coveralls": "^3.0.9",
     "jest": "^25.1.0",
     "jsdoc": "^3.6.3",
-    "jsdoc-template": "git+https://github.com/oipwg/jsdoc-template.git"
+    "jsdoc-template": "git+https://github.com/oipwg/jsdoc-template.git",
+    "standard": "^14.3.1"
   },
   "jest": {
     "testEnvironment": "node"
