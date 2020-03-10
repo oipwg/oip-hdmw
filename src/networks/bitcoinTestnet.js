@@ -17,7 +17,7 @@ module.exports = {
   feePerKb: bitcoinFeePerKb,
   feePerByte: bitcoinFeePerKb / 1024,
   maxFeePerByte: 100,
-  minFee: bitcoinFeePerKb,
+  minFee: 0,
   dust: 546,
 
   txVersion: 1,

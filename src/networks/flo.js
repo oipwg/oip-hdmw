@@ -73,7 +73,7 @@ module.exports = {
   feePerKb: floFeePerKb,
   feePerByte: floFeePerKb / 1024,
   maxFeePerByte: 100,
-  minFee: floFeePerKb,
+  minFee: 0,
   dust: 100000,
 
   txVersion: 2,

@@ -15,7 +15,7 @@ module.exports = {
   feePerKb: litecoinFeePerKb,
   feePerByte: litecoinFeePerKb / 1024,
   maxFeePerByte: 100,
-  minFee: litecoinFeePerKb,
+  minFee: 0,
   dust: 54600,
 
   txVersion: 1,
