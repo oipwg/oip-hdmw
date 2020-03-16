@@ -15,7 +15,7 @@ module.exports = {
   ticker: 'BTC',
   satPerCoin: 1e8,
   feePerKb: bitcoinFeePerKb,
-  feePerByte: bitcoinFeePerKb / 1024,
+  feePerByte: bitcoinFeePerKb / 1000,
   maxFeePerByte: 100,
   minFee: 0,
   dust: 546,

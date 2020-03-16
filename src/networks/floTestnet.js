@@ -9,7 +9,7 @@ module.exports = {
   ticker: 'tFLO',
   satPerCoin: 1e8,
   feePerKb: floFeePerKb,
-  feePerByte: floFeePerKb / 1024,
+  feePerByte: floFeePerKb / 1000,
   maxFeePerByte: 100,
   minFee: 0,
   dust: 100000,

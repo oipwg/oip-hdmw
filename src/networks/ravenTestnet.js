@@ -13,7 +13,7 @@ module.exports = {
   ticker: 'tRVN',
   satPerCoin: 1e8,
   feePerKb: ravenFeePerKb,
-  feePerByte: ravenFeePerKb / 1024,
+  feePerByte: ravenFeePerKb / 1000,
   maxFeePerByte: 100,
   minFee: 0,
   dust: 54600,

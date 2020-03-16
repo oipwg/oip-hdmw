@@ -9,7 +9,7 @@ module.exports = {
   ticker: 'tLTC',
   satPerCoin: 1e8,
   feePerKb: litecoinFeePerKb,
-  feePerByte: litecoinFeePerKb / 1024,
+  feePerByte: litecoinFeePerKb / 1000,
   maxFeePerByte: 100,
   minFee: 0,
   dust: 54600,

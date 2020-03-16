@@ -299,7 +299,7 @@ class Address {
 
     const privateKeyBuffer = privatekeyEcpair.privateKey
 
-    const compressed = privatekeyEcpair.compressed || true
+    const compressed = privatekeyEcpair.compressed !== undefined ? privatekeyEcpair.compressed : true
     const messagePrefix = this.coin.network.messagePrefix
 
     let signatureBuffer
