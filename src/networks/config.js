@@ -1,10 +1,12 @@
 module.exports = {
   defaultApiUrls: {
-    bitcoin: 'https://bitsight.failover.alexandria.io/api',
-    bitcoin_testnet: 'https://bitsight.mk1.alexandria.io/api',
+    bitcoin: 'https://insight.bitpay.com/api',
+    bitcoinTestnet: '',
     flo: 'https://livenet.flocha.in/api',
-    flo_testnet: 'https://testnet.explorer.mediciland.com/api',
-    litecoin: 'https://litesight.failover.alexandria.io/api',
-    litecoin_testnet: 'https://litesight.mk1.alexandria.io/api'
+    floTestnet: 'https://testnet.flocha.in/api',
+    litecoin: 'https://insight.litecore.io/api',
+    litecoinTestnet: 'https://testnet.litecore.io/api',
+    raven: 'https://rvn.bitspill.net/api',
+    ravenTestnet: 'https://rvntest.bitspill.net/api'
   }
 }

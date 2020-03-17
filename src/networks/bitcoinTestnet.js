@@ -1,18 +1,18 @@
 import { Insight } from '@oipwg/insight-explorer'
 import { networks } from '@oipwg/bitcoinjs-lib'
-import bip44constants from 'bip44-constants'
+
 import config from './config'
 
 const bitcoinFeePerKb = 100000
 
-const n = networks.bitcoin
+const n = networks.testnet
 
-n.slip44 = bip44constants.BTC
+n.slip44 = 1
 
 module.exports = {
-  name: 'bitcoin',
-  displayName: 'Bitcoin',
-  ticker: 'BTC',
+  name: 'bitcoinTestnet',
+  displayName: 'Bitcoin Testnet',
+  ticker: 'tBTC',
   satPerCoin: 1e8,
   feePerKb: bitcoinFeePerKb,
   feePerByte: bitcoinFeePerKb / 1000,
@@ -22,7 +22,7 @@ module.exports = {
 
   txVersion: 1,
 
-  explorer: new Insight(config.defaultApiUrls.bitcoin),
+  explorer: new Insight(config.defaultApiUrls.bitcoinTestnet),
 
   network: n
 }

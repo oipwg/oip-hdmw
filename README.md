@@ -26,12 +26,12 @@ $ npm install --save oip-hdmw
 ```
 ## Getting Started
 ### Creating your first Wallet
-Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no paramaters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples
+Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no parameters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples
 ```javascript
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet();
+const myWallet = new Wallet()
 
 console.log("My Mnemonic: '" + myWallet.getMnemonic() + "'")
 // My Mnemonic: 'carbon panda replace drum guess heart inside useless random bulb hint industry'
@@ -42,7 +42,7 @@ Now that you have a Mnemonic for your wallet, lets go ahead and create the Walle
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 console.log("My Wallets Coins: ", myWallet.getCoins())
 // My Wallets Coins: {
@@ -58,11 +58,11 @@ Now that we have created a new Wallet and accessed the Coins on the wallet, lets
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
-var bitcoin = myWallet.getCoin('bitcoin');
+const bitcoin = myWallet.getCoin('bitcoin')
 
-var myMainAddress = bitcoin.getMainAddress();
+const myMainAddress = bitcoin.getMainAddress()
 
 console.log("My Wallets Bitcoin Main Address: ", myMainAddress.getPublicAddress());
 // My Wallets Bitcoin Main Address: 13BW4eTvNFXBLeTjJQRgVxuiuStAFp1HfL
@@ -74,7 +74,7 @@ In order to send a transaction, we will need to have a balance on our Wallet fir
 const HDMW = require('oip-hdmw')
 const Wallet = HDMW.Wallet;
 
-var myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry');
+const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
 
 myWallet.sendPayment({
 	to: { "12nP3k9tFKgQPJNkDDyNWqgjtm2bt3qq1b": 0.001 }
@@ -85,9 +85,9 @@ myWallet.sendPayment({
 })
 ```
 
-When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should recieve its initial confirmation, and you would be ok to send another transaction.
+When we send the transaction, it broadcasts it out to the Coin p2p network. After a few minutes your transaction should receive its initial confirmation, and you would be ok to send another transaction.
 
-If you wanted to send second transaction, before the first recieves its initial confirmation, you can do so by calling the same `Wallet` instance that you ran `sendPayment` on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction recieves a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to "restart" between sending transactions, it is suggested that you read the next section called "Saving and Reloading the Wallet"
+If you wanted to send second transaction, before the first receives its initial confirmation, you can do so by calling the same `Wallet` instance that you ran `sendPayment` on. OIP HDMW keeps track of the transactions it is using to spend from when it sends a payment, so if your application stops running, then restarts BEFORE the first transaction receives a confirmation, it would not see the payment that it spent, and thus try to spend the same value as the first transaction. If your application is going to "restart" between sending transactions, it is suggested that you read the next section called "Saving and Reloading the Wallet"
 
 ### Saving and Reloading the Wallet
 After you have loaded a wallet, you might want to save its current "state" so that on the next load, it can immediately know its balance and be ready to spend without having to "re-discover" the wallet addresses/state.

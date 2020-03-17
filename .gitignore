@@ -61,5 +61,4 @@ typings/
 lib/
 .idea/*
 .idea/vcs.xml
-.idea/vcs.xml
 *.xml

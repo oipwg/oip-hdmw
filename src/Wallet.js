@@ -1,58 +1,56 @@
-import bip32 from 'bip32'
-import bip39 from 'bip39'
-import EventEmitter from 'eventemitter3'
-import Exchange from 'oip-exchange-rate'
-import { Insight } from 'insight-explorer'
+import * as bip32 from 'bip32'
+import * as bip39 from 'bip39'
+import Exchange from '@oipwg/exchange-rate'
+import { Insight } from '@oipwg/insight-explorer'
 
 import Coin from './Coin'
 import networks from './networks'
 import networkConfig from './networks/config'
 
-import TransactionBuilder from './TransactionBuilder'
 import { isEntropy, isMnemonic, isValidPublicAddress } from './util'
 
-const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'flo']
-const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoin_testnet', 'flo_testnet']
+const DEFAULT_SUPPORTED_COINS = ['bitcoin', 'litecoin', 'flo', 'raven']
+const DEFAULT_SUPPORTED_TESTNET_COINS = ['bitcoinTestnet', 'floTestnet', 'litecoinTestnet', 'ravenTestnet']
 
-/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and recieving payments */
+/** Full Service [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Multi-Coin Wallet supporting both sending and receiving payments */
 class Wallet {
   /**
-	 * Create a new [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) wallet with the supplied settings
-	 *
-	 * ##### Examples
-	 * Create wallet with Random Mnemonic
-	 * ```
-	 * var wallet = new Wallet()
-	 * ```
-	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic
-	 * ```
-	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
-	 * ```
-	 * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy
-	 * ```
-	 * var wallet = new Wallet('00000000000000000000000000000000')
-	 * ```
-	 * Create wallet from Seed Hex
-	 * ```
-	 * var wallet = new Wallet("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4")
-	 * ```
-	 * Create wallet from Seed Buffer
-	 * ```
-	 * var wallet = new Wallet(new Buffer("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4", "hex"))
-	 * ```
-	 *
-	 * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
-	 * @param  {Object} [options] - Wallet settings
-	 * @param {boolean} [options.discover=true] - Defines if the Wallet should "auto-discover" Coin Account chains or not
-	 * @param {Array.<string>} [options.supported_coins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
-	 * @param {Array.<CoinInfo>} [options.networks] - An array containing a custom coins network info
-	 * @param {Object} [options.serialized_data] - A previous Wallet state to reload from
-	 *
-	 * @example <caption>Create wallet using Mnemonic</caption>
-	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
-	 *
-	 * @return {Wallet}
-	 */
+   * Create a new [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) wallet with the supplied settings
+   *
+   * ##### Examples
+   * Create wallet with Random Mnemonic
+   * ```
+   * let wallet = new Wallet()
+   * ```
+   * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic
+   * ```
+   * let wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+   * ```
+   * Create wallet from [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy
+   * ```
+   * let wallet = new Wallet('00000000000000000000000000000000')
+   * ```
+   * Create wallet from Seed Hex
+   * ```
+   * let wallet = new Wallet("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4")
+   * ```
+   * Create wallet from Seed Buffer
+   * ```
+   * let wallet = new Wallet(Buffer.from("5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4", "hex"))
+   * ```
+   *
+   * @param  {string|Buffer} [seed] - [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Entropy, or Seed Hex/Buffer
+   * @param  {Object} [options] - Wallet settings
+   * @param {boolean} [options.discover=false] - Defines if the Wallet should "auto-discover" Coin Account chains or not
+   * @param {Array.<string>} [options.supportedCoins=['bitcoin', 'litecoin', 'flo']] - An Array of coins that the Wallet should support
+   * @param {Array.<CoinInfo>} [options.networks] - An array containing a custom coins network info
+   * @param {Object} [options.serializedData] - A previous Wallet state to reload from
+   *
+   * @example <caption>Create wallet using Mnemonic</caption>
+   * let wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+   *
+   * @return {Wallet}
+   */
   constructor (seed, options) {
     // Check if seed is a string or buffer, if not, create a new BIP39 Mnemonic
     if (isMnemonic(seed)) {
@@ -66,10 +64,7 @@ class Wallet {
     }
 
     // Derive the "m" level of the BIP44 wallet
-    this.master_node = bip32.fromSeed(new Buffer(this.seed, 'hex'))
-
-    // Setup EventEmitter to notify when we have changed
-    this.event_emitter = new EventEmitter()
+    this.masterNode = bip32.fromSeed(Buffer.from(this.seed, 'hex'))
 
     // Set the networks to the imported defaults
     this.networks = networks
@@ -77,24 +72,25 @@ class Wallet {
     // Check for custom coins/networks
     if (options && typeof options === 'object') {
       // Check if the user has defined their own supported coins for the wallet
-      if (options.supported_coins) {
-        if (typeof options.supported_coins === 'string') {
-          this.supported_coins = [options.supported_coins]
-        } else if (Array.isArray(options.supported_coins)) {
-          this.supported_coins = options.supported_coins
+      if (options.supportedCoins) {
+        if (typeof options.supportedCoins === 'string') {
+          this.supportedCoins = [options.supportedCoins]
+        } else if (Array.isArray(options.supportedCoins)) {
+          this.supportedCoins = options.supportedCoins
         }
       }
       // Check if the user has defined any custom networks that should be imported
       if (options.networks && typeof options.networks === 'object') {
         // Attach each passed in network, overwrite if needed
-        for (var node in options.networks) {
+        for (const node in options.networks) {
+          if (!Object.prototype.hasOwnProperty.call(options.networks, node)) continue
           this.networks[node] = options.networks[node]
         }
       }
     }
 
-    // If we were not passed in a supported coin array by the options, then set it to the defailt options.
-    if (!this.supported_coins || !Array.isArray(this.supported_coins)) { this.supported_coins = DEFAULT_SUPPORTED_COINS }
+    // If we were not passed in a supported coin array by the options, then set it to the default options.
+    if (!this.supportedCoins || !Array.isArray(this.supportedCoins)) { this.supportedCoins = DEFAULT_SUPPORTED_COINS }
 
     // The array to hold the live coin objects
     this.coins = {}
@@ -103,79 +99,85 @@ class Wallet {
     if (options && (options.discover || options.discover === false)) { this.discover = options.discover } else { this.discover = true }
 
     // Attempt to deserialize if we were passed serialized data
-    if (options && options.serialized_data) { this.deserialize(options.serialized_data) }
+    if (options && options.serializedData) { this.deserialize(options.serializedData) }
 
     // Add all coins
-    for (var coin_name of this.supported_coins) { this.addCoin(coin_name) }
+    for (const coinName of this.supportedCoins) { this.addCoin(coinName) }
   }
-  serialize () {
-    let serialized_coins = {}
 
-    for (let name in this.coins) {
-      serialized_coins[name] = this.coins[name].serialize()
+  serialize () {
+    const serializedCoins = {}
+
+    for (const name in this.coins) {
+      serializedCoins[name] = this.coins[name].serialize()
     }
 
     return {
-      master_node: this.master_node.toBase58(),
+      masterNode: this.masterNode.toBase58(),
       seed: this.getMnemonic() ? this.getMnemonic() : this.seed,
-      coins: serialized_coins
+      coins: serializedCoins
     }
   }
-  deserialize (serialized_data) {
-    if (serialized_data) {
-      if (serialized_data.coins) {
-        for (let name in serialized_data.coins) {
-          this.addCoin(name, { serialized_data: serialized_data.coins[name] })
+
+  deserialize (serializedData) {
+    if (serializedData) {
+      if (serializedData.coins) {
+        for (const name in serializedData.coins) {
+          if (!Object.prototype.hasOwnProperty.call(serializedData.coins, name)) continue
+          this.addCoin(name, { serializedData: serializedData.coins[name] })
         }
       }
     }
   }
+
   /**
-	 * Add a Coin to the Wallet
-	 * @param {String} name    - The coin "name" as defined in CoinInfo.name
-	 * @param {Object} [options] - Options you want passed to the coin being added
-	 */
+   * Add a Coin to the Wallet
+   * @param {String} name    - The coin "name" as defined in CoinInfo.name
+   * @param {Object} [options] - Options you want passed to the coin being added
+   */
   addCoin (name, options) {
-    let opts = options || {}
+    const opts = options || {}
 
     if (!opts.discover) { opts.discover = this.discover }
 
     // If the coin isn't already added AND we have access to a valid network,
     // then add the coin.
     if (!this.coins[name] && this.networks[name]) {
-      this.coins[name] = new Coin(this.master_node.derivePath("44'"), this.networks[name], opts)
-      this.coins[name].onWebsocketUpdate(this._handleWebsocketUpdate.bind(this))
+      this.coins[name] = new Coin(this.masterNode.derivePath('44\''), this.networks[name], opts)
     }
   }
+
   /**
-	 * Get a specific Coin
-	 * @param  {string} coin - The coin "name" as defined in CoinInfo.name
-	 * @example
-	 * var wallet = new Wallet();
-	 * var coin = wallet.getCoin("bitcoin")
-	 * @return {Coin} Returns the requested Coin
-	 */
+   * Get a specific Coin
+   * @param  {string} coin - The coin "name" as defined in CoinInfo.name
+   * @example
+   * let wallet = new Wallet();
+   * let coin = wallet.getCoin("bitcoin")
+   * @return {Coin} Returns the requested Coin
+   */
   getCoin (coin) {
-    for (var c in this.coins) {
+    for (const c in this.coins) {
       if (c === coin) { return this.coins[c] }
     }
   }
+
   /**
-	 * Get all Coins running inside the Wallet
-	 * @example
-	 * var wallet = new Wallet();
-	 * var coins = wallet.getCoins();
-	 * // coins = {
-	 * //	"bitcoin": Coin,
-	 * //	"litecoin": Coin,
-	 * //	"flo": Coin
-	 * // }
-	 * @return {...Coin} Object containing all coins
-	 */
+   * Get all Coins running inside the Wallet
+   * @example
+   * let wallet = new Wallet();
+   * let coins = wallet.getCoins();
+   * // coins = {
+   * //  "bitcoin": Coin,
+   * //  "litecoin": Coin,
+   * //  "flo": Coin
+   * // }
+   * @return {Object.<number, Coin>} Object containing all coins
+   */
   getCoins () {
     return this.coins
   }
-  async _getCoinBalance (coin, options) {
+
+  async GetCoinBalance (coin, options) {
     // This is a helper function to catch errors thrown by coin.getBalance() and return them
     let balance
 
@@ -191,100 +193,101 @@ class Wallet {
       balance
     }
   }
+
   /**
-     * Get Coin Balances
-     * @param {Object} [options] - The options for searching the Balance of coins
-     * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
-     * @param {Boolean} [options.testnet=true] - Should we attempt to get balances for testnet coins as well (coins ending with '_testnet')
-     *
-     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
-     *
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
-     *
-     * //example return
-     * {
-     *      "flo": 2.16216,
-     *      "bitcoin": "error fetching balance",
-     *      "litecoin": 3.32211
-     * }
-     */
+   * Get Coin Balances
+   * @param {Object} [options] - The options for searching the Balance of coins
+   * @param  {Array} [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+   * @param {Boolean} [options.testnet=true] - Should we attempt to get balances for testnet coins as well (coins ending with 'Testnet')
+   *
+   * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins balance, along with errors if there are any
+   *
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getCoinBalances(["bitcoin", "litecoin", "flo"])
+   *
+   * //example return
+   * {
+   *      "flo": 2.16216,
+   *      "bitcoin": "error fetching balance",
+   *      "litecoin": 3.32211
+   * }
+   */
   async getCoinBalances (options = { discover: true, testnet: true }) {
-    let coinnames = options.coins || Object.keys(this.getCoins())
+    const coinnames = options.coins || Object.keys(this.getCoins())
 
     // when passing in custom options object, it's easy to forget to set the defaults, so just in case
     if (options.discover === undefined) {
-        	options.discover = true
+      options.discover = true
     }
 
-    // checlking if false so that if undefined, it will proceed normally
+    // checking if false so that if undefined, it will proceed normally
     if (options.testnet === false) {
-	        for (let i = coinnames.length - 1; i >= 0; i--) {
-        if (coinnames[i].includes('_testnet')) {
+      for (let i = coinnames.length - 1; i >= 0; i--) {
+        if (coinnames[i].includes('Testnet')) {
           coinnames.splice(i, 1)
         }
-	        }
+      }
     }
 
-    let coinPromises = {}
+    const coinPromises = {}
 
-    for (let name of coinnames) {
-      coinPromises[name] = this._getCoinBalance(this.getCoin(name), options)
+    for (const name of coinnames) {
+      coinPromises[name] = this.GetCoinBalance(this.getCoin(name), options)
     }
 
-    let coin_balances = {}
+    const coinBalances = {}
 
-    for (let coin in coinPromises) {
-      let response = await coinPromises[coin]
+    for (const coin in coinPromises) {
+      const response = await coinPromises[coin]
 
-      if (typeof response.balance === 'number') { coin_balances[coin] = response.balance } else { coin_balances[coin] = `error fetching balance: ${JSON.stringify(response)}` }
+      if (typeof response.balance === 'number') { coinBalances[coin] = response.balance } else { coinBalances[coin] = `error fetching balance: ${JSON.stringify(response)}` }
     }
 
-    return coin_balances
+    return coinBalances
   }
+
   /**
-     * Calculate Exchange Rates for supported coins
-     * @param {Object} [options] - The options for getting the exchange rates
-     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
-     *
-     * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins exchange rate, along with errors if there are any
-     *
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
-     *
-     * //returns
-     * {
-     *      "flo": expect.any(Number) || "error",
-     *      "bitcoin": expect.any(Number) || "error",
-     *      "litecoin": expect.any(Number) || "error"
-     * }
-     */
+   * Calculate Exchange Rates for supported coins
+   * @param {Object} [options] - The options for getting the exchange rates
+   * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+   *
+   * @return {Promise<Object>} Returns a Promise that will resolve to an Object containing info about each coins exchange rate, along with errors if there are any
+   *
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getExchangeRates(["flo", "bitcoin", "litecoin"], "usd")
+   *
+   * //returns
+   * {
+   *      "flo": expect.any(Number) || "error",
+   *      "bitcoin": expect.any(Number) || "error",
+   *      "litecoin": expect.any(Number) || "error"
+   * }
+   */
   async getExchangeRates (options = { fiat: 'usd' }) {
-    let coins = options.coins || Object.keys(this.getCoins())
+    const coins = options.coins || Object.keys(this.getCoins())
 
     if (!coins) throw new Error('No coins found to fetch exchange rates')
     if (!options.fiat) { options.fiat = 'usd' }
 
     // Initialize an Exchange object
-    if (!this._exchange) { this._exchange = new Exchange() }
+    if (!this.Exchange) { this.Exchange = new Exchange() }
 
-    let promiseArray = {}
+    const promiseArray = {}
 
-    for (let coinname of coins) {
-        	if (coinname.includes('_testnet')) { break }
-      promiseArray[coinname] = this._exchange.getExchangeRate(coinname, options.fiat)
+    for (const coinname of coins) {
+      if (coinname.includes('Testnet')) { break }
+      promiseArray[coinname] = this.Exchange.getExchangeRate(coinname, options.fiat)
     }
 
-    let rates = {}
+    const rates = {}
 
-    for (let coinname in promiseArray) {
+    for (const coinname in promiseArray) {
       try {
-        let rate = await promiseArray[coinname]
-        rates[coinname] = rate
+        rates[coinname] = await promiseArray[coinname]
       } catch (err) {
         rates[coinname] = 'error fetching rate'
       }
@@ -292,44 +295,47 @@ class Wallet {
 
     return rates
   }
+
   /**
-     * Calculate Balance of coins after exchange rate conversion
-     * @param {Object} [options] - The options for getting the exchange rates
-     * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
-     * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
-     * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
-     * @param {Boolean} [options.testnet=true] - should we include testnet coins?
-     * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
-     * @example
-     * let wallet = new Wallet(...)
-     * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
-     *
-     * //returns
-     * {
-     *      "flo": expect.any(Number) || "error",
-     *      "bitcoin": expect.any(Number) || "error",
-     *      "litecoin": expect.any(Number) || "error"
-     * }
-     */
+   * Calculate Balance of coins after exchange rate conversion
+   * @param {Object} [options] - The options for getting the exchange rates
+   * @param {Array}  [options.coins=["bitcoin", "litecoin", "flo"]] - An array of coin names you want to get the balances for. If no coins are given, an array of all available coins will be used.
+   * @param {String} [options.fiat="usd"] - The fiat type for which you wish to get the exchange rate for
+   * @param {Boolean} [options.discover=true] - Should we attempt a new discovery, or just grab the available balances
+   * @param {Boolean} [options.testnet=true] - should we include testnet coins?
+   * @return {Promise<Object>} Returns a Promise that will resolve to the fiat balances for each coin
+   * @example
+   * let wallet = new Wallet(...)
+   * wallet.getFiatBalances(["flo", "bitcoin", "litecoin"], "usd")
+   *
+   * //returns
+   * {
+   *      "flo": expect.any(Number) || "error",
+   *      "bitcoin": expect.any(Number) || "error",
+   *      "litecoin": expect.any(Number) || "error"
+   * }
+   */
   async getFiatBalances (options) {
-    let fiatBalances = {}; let balances = {}; let xrates = {}
+    const fiatBalances = {}
+    let balances = {}
+    let xrates = {}
 
     try {
-	        balances = await this.getCoinBalances(options)
+      balances = await this.getCoinBalances(options)
     } catch (err) {
-        	throw new Error(`Failled to get coin balances: ${JSON.stringify(err)}`)
+      throw new Error(`Failed to get coin balances: ${JSON.stringify(err)}`)
     }
 
     try {
-	        xrates = await this.getExchangeRates(options)
+      xrates = await this.getExchangeRates(options)
     } catch (err) {
-	        throw new Error(`Failled to get exchange rates: ${JSON.stringify(err)}`)
+      throw new Error(`Failed to get exchange rates: ${JSON.stringify(err)}`)
     }
 
-    for (let coinB in balances) {
-      for (let coinX in xrates) {
+    for (const coinB in balances) {
+      for (const coinX in xrates) {
         if (coinB === coinX) {
-                	// Both have been grabbed with no errors
+          // Both have been grabbed with no errors
           if (!isNaN(balances[coinB]) && !isNaN(xrates[coinX])) {
             fiatBalances[coinB] = balances[coinB] * xrates[coinX]
           }
@@ -338,52 +344,55 @@ class Wallet {
     }
 
     // Set the error state for coins not properly returned
-    for (var coin_name of this.supported_coins) {
-        	if (!fiatBalances[coin_name]) {
-        		fiatBalances[coin_name] = 'error'
-        	}
+    for (const coinName of this.supportedCoins) {
+      if (!fiatBalances[coinName]) {
+        fiatBalances[coinName] = 'error'
+      }
     }
 
     return fiatBalances
   }
+
   /**
-	 * Init Wallet from BIP39 Mnemonic
-	 * @param  {string} mnemonic - A BIP39 Mnemonic String
-	 * @example
-	 * var wallet = new Wallet();
-	 * wallet.fromMnemonic("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
-	 * @return {Boolean} Returns if the operation was successful
-	 */
+   * Init Wallet from BIP39 Mnemonic
+   * @param  {string} mnemonic - A BIP39 Mnemonic String
+   * @example
+   * let wallet = new Wallet();
+   * wallet.fromMnemonic("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
+   * @return {Boolean} Returns if the operation was successful
+   */
   fromMnemonic (mnemonic) {
     if (isMnemonic(mnemonic)) {
       this.mnemonic = mnemonic
       this.entropy = bip39.mnemonicToEntropy(this.mnemonic)
-      this.seed = bip39.mnemonicToSeedHex(this.mnemonic)
+      this.seed = bip39.mnemonicToSeedSync(this.mnemonic).toString('hex')
 
       return true
     }
 
     return false
   }
+
   /**
-	 * Get the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, if defined
-	 * @example
-	 * var wallet = new Wallet('00000000000000000000000000000000');
-	 * var mnemonic = wallet.getMnemonic()
-	 * // mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
-	 * @return {string}
-	 */
+   * Get the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic, if defined
+   * @example
+   * let wallet = new Wallet('00000000000000000000000000000000');
+   * let mnemonic = wallet.getMnemonic()
+   * // mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+   * @return {string}
+   */
   getMnemonic () {
     return this.mnemonic
   }
+
   /**
-	 * Init Wallet from BIP39 Entropy
-	 * @param  {string} entropy - A BIP39 Entropy String
-	 * @example
-	 * var wallet = new Wallet();
-	 * wallet.fromEntropy('00000000000000000000000000000000')
-	 * @return {Boolean} Returns if the operation was successful
-	 */
+   * Init Wallet from BIP39 Entropy
+   * @param  {string} entropy - A BIP39 Entropy String
+   * @example
+   * let wallet = new Wallet();
+   * wallet.fromEntropy('00000000000000000000000000000000')
+   * @return {Boolean} Returns if the operation was successful
+   */
   fromEntropy (entropy) {
     if (isEntropy(entropy)) {
       this.entropy = entropy
@@ -394,28 +403,30 @@ class Wallet {
 
     return false
   }
+
   /**
-	 * Get the Entropy value used to generate the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic.
-	 * Note that the Entropy will only be defined if we are creating
-	 * a wallet from Entropy or a Mnemonic, not off of just the Seed Hex
-	 *
-	 * @example
-	 * var wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about");
-	 * var entropy = wallet.getEntropy()
-	 * // entropy = '00000000000000000000000000000000'
-	 * @return {string}
-	 */
+   * Get the Entropy value used to generate the [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) Mnemonic.
+   * Note that the Entropy will only be defined if we are creating
+   * a wallet from Entropy or a Mnemonic, not off of just the Seed Hex
+   *
+   * @example
+   * let wallet = new Wallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about");
+   * let entropy = wallet.getEntropy()
+   * // entropy = '00000000000000000000000000000000'
+   * @return {string}
+   */
   getEntropy () {
     return this.entropy
   }
+
   /**
-	 * Init Wallet from a Seed
-	 * @param  {string|Buffer} seed
-	 * @example
-	 * var wallet = new Wallet();
-	 * wallet.fromSeed("example-seed");
-	 * @return {Boolean} Returns if the operation was successful
-	 */
+   * Init Wallet from a Seed
+   * @param  {string|Buffer} seed
+   * @example
+   * let wallet = new Wallet();
+   * wallet.fromSeed("example-seed");
+   * @return {Boolean} Returns if the operation was successful
+   */
   fromSeed (seed) {
     if (seed instanceof Buffer) {
       this.seed = seed.toString('hex')
@@ -427,27 +438,29 @@ class Wallet {
 
     return false
   }
+
   /**
-	 * Get the Encoded Seed hex string
-	 * @example
-	 * var wallet = new Wallet('00000000000000000000000000000000');
-	 * var seedHex = wallet.getSeed()
-	 * // seedHex = '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4'
-	 * @return {string} The hex string of the seed buffer
-	 */
+   * Get the Encoded Seed hex string
+   * @example
+   * let wallet = new Wallet('00000000000000000000000000000000');
+   * let seedHex = wallet.getSeed()
+   * // seedHex = '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4'
+   * @return {string} The hex string of the seed buffer
+   */
   getSeed () {
     return this.seed
   }
+
   /**
-	 * @param  {Object} options - Options about the payment you wish to send
-	 * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
-	 * @param {string|Array.<string>} [options.coin] - Define which coin you would like to send from
-	 * @param {string|Array.<string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
-	 * @param {number|Array.<number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
-	 * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
-	 * @param {string} [options.floData=""] - Flo data to attach to the transaction
-	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
-	 */
+   * @param  {Object} options - Options about the payment you wish to send
+   * @param {OutputAddress|Array.<OutputAddress>} options.to - Define outputs for the Payment
+   * @param {string|Array.<string>} [options.coin] - Define which coin you would like to send from
+   * @param {string|Array.<string>} [options.from=All Addresses in Coin] - Define what public address(es) you wish to send from
+   * @param {number|Array.<number>} [options.fromAccounts=All Accounts in Coin] - Define what Accounts on the Coin you wish to send from
+   * @param {Boolean} [options.discover=true] - Should discovery happen before sending payment
+   * @param {string} [options.floData=""] - Flo data to attach to the transaction
+   * @return {Promise<string>} Returns a promise that will resolve to the success TXID
+   */
   async sendPayment (options) {
     if (!options) { throw new Error('You must define payment options!') }
 
@@ -458,21 +471,21 @@ class Wallet {
       if (typeof options.coin !== 'string') { throw new Error('Send From Coin option must be the string name of the Coin!') }
 
       if (this.getCoin(options.coin)) {
-			    try {
+        try {
           return this.getCoin(options.coin).sendPayment(options)
         } catch (err) { throw new Error(err) }
       }
     } else {
       // If coin name is not passed, attempt to match addresses to a Coin!
-      var coinMatch = ''
-      var singleMatch = false
+      let coinMatch = ''
 
       if (Array.isArray(options.to)) {
-        for (var coin in this.networks) {
-          var allMatchCoin = true
+        for (const coin in this.networks) {
+          let allMatchCoin = true
 
-          for (var toAdr of options.to) {
-            for (var adr in toAdr) {
+          for (const toAdr of options.to) {
+            for (const adr in toAdr) {
+              if (!Object.prototype.hasOwnProperty.call(toAdr, adr)) continue
               if (isValidPublicAddress(adr, this.networks[coin].network)) {
                 coinMatch = this.networks[coin].name
               } else {
@@ -485,18 +498,18 @@ class Wallet {
           if (!allMatchCoin && coinMatch === this.networks[coin].name) { coinMatch = '' }
         }
       } else {
-        for (var coin in this.networks) {
-          for (var adr in options.to) {
+        for (const coin in this.networks) {
+          for (const adr in options.to) {
+            if (!Object.prototype.hasOwnProperty.call(options.to, adr)) continue
             if (isValidPublicAddress(adr, this.networks[coin].network)) {
               coinMatch = this.networks[coin].name
-              singleMatch = true
             }
           }
         }
       }
       if (coinMatch !== '') {
         if (this.getCoin(coinMatch)) {
-				    try {
+          try {
             return this.getCoin(coinMatch).sendPayment(options)
           } catch (err) { throw new Error(err) }
         } else { throw new Error('Cannot get Coin for matched network! ' + coinMatch) }
@@ -505,35 +518,11 @@ class Wallet {
       }
     }
   }
-  /**
-	 * Internal function used to process Address updates streaming in from Websockets,
-	 * emits an update that can be subscribed to with onWebsocketUpdate
-	 * @param  {Object} update - Websocket Update Data
-	 */
-  _handleWebsocketUpdate (address) {
-    this.event_emitter.emit('websocket_update', address)
-  }
-  /**
-	 * Subscribe to events that are emitted when an Address update is recieved via Websocket
-	 * @param  {function} subscriber_function - The function you want called when there is an update
-	 *
-	 * @example
-	 * import { Coin, Networks } from 'oip-hdmw'
-	 *
-	 * var bitcoin = new Coin('00000000000000000000000000000000', Networks.bitcoin, false)
-	 *
-	 * bitcoin.onWebsocketUpdate((address) => {
-	 * 		console.log(address.getPublicAddress() + " Recieved a Websocket Update!")
-	 * })
-	 */
-  onWebsocketUpdate (subscriber_function) {
-    this.event_emitter.on('websocket_update', subscriber_function)
-  }
 
   /**
-	 * Returns the network information for the coins available
-	 * @return Array.<CoinInfo>
-	 */
+   * Returns the network information for the coins available
+   * @return Array.<CoinInfo>
+   */
   getNetworks () {
     return this.networks
   }
@@ -543,39 +532,39 @@ class Wallet {
   }
 
   /**
-	 * Add default SUPPORTED testnet coins to wallet
-	 * @param {Boolean} [bool=true] - if true, add testnet coins, is false, remove them
-	 */
+   * Add default SUPPORTED testnet coins to wallet
+   * @param {Boolean} [bool=true] - if true, add testnet coins, is false, remove them
+   */
   addTestnetCoins (bool = true) {
     if (bool) {
-      for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS) { this.addCoin(coin_name) }
+      for (const coinName of DEFAULT_SUPPORTED_TESTNET_COINS) { this.addCoin(coinName) }
     } else {
-      for (let coin_name of DEFAULT_SUPPORTED_TESTNET_COINS) { delete this.coins[coin_name] }
+      for (const coinName of DEFAULT_SUPPORTED_TESTNET_COINS) { delete this.coins[coinName] }
     }
   }
 
   /**
-	 * Set the urls for the insight api explorers
-	 * @param options
-	 * @param {string} options.flo - flo api
-	 * @param {string} options.flo_testnet - flo_testnet api
-	 * @param {string} options.bitcoin - bitcoin api
-	 * @param {string} options.bitcoin_testnet - bitcoin_testnet api
-	 * @param {string} options.litecoin - litecoin api
-	 * @param {string} options.litecoin_testnet - litecoin_testnet api
-	 * @example
-	 * let options = {
-	 *     flo: 'myFloSiteApi.com/yadayada,
-	 *     bitcoin: 'myBitcoinApi.superApi/AyePeeEye',
-	 *     litecoin: 'superLightCoin.hero'
-	 * }
-	 * new Wallet(mnemonic, {discover: false}).setNetworkApi(options)
-	 */
+   * Set the urls for the insight api explorers
+   * @param options
+   * @param {string} options.flo - flo api
+   * @param {string} options.floTestnet - floTestnet api
+   * @param {string} options.bitcoin - bitcoin api
+   * @param {string} options.bitcoinTestnet - bitcoinTestnet api
+   * @param {string} options.litecoin - litecoin api
+   * @param {string} options.litecoinTestnet - litecoinTestnet api
+   * @example
+   * let options = {
+   *     flo: 'myFloSiteApi.com/yadayada,
+   *     bitcoin: 'myBitcoinApi.superApi/AyePeeEye',
+   *     litecoin: 'superLightCoin.hero'
+   * }
+   * new Wallet(mnemonic, {discover: false}).setNetworkApi(options)
+   */
   setExplorerUrls (options) {
-    let networks = this.getNetworks()
-    for (let network_coin in networks) {
-      for (let coin in options) {
-        if (network_coin === coin) {
+    const networks = this.getNetworks()
+    for (const networkCoin in networks) {
+      for (const coin in options) {
+        if (networkCoin === coin) {
           networks[coin].explorer = new Insight(options[coin])
         }
       }
@@ -584,14 +573,14 @@ class Wallet {
   }
 
   /**
-	 * Get back the network explorer apis for supported coins
-	 */
+   * Get back the network explorer apis for supported coins
+   */
   getExplorerUrls () {
-    let networks = this.getNetworks()
+    const networks = this.getNetworks()
 
-    let networkObject = {}
-    for (let walletCoin of Object.keys(this.getCoins())) {
-      for (let networkCoin in networks) {
+    const networkObject = {}
+    for (const walletCoin of Object.keys(this.getCoins())) {
+      for (const networkCoin in networks) {
         if (walletCoin === networkCoin) {
           networkObject[walletCoin] = networks[walletCoin].explorer.url
         }

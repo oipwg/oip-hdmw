@@ -1,11 +1,11 @@
-import { Insight } from 'insight-explorer'
+import { Insight } from '@oipwg/insight-explorer'
 import coininfo from 'coininfo'
 import bip44constants from 'bip44-constants'
 import config from './config'
 
-var litecoinFeePerKb = 100000
+const litecoinFeePerKb = 100000
 
-var n = coininfo.litecoin.main.toBitcoinJS()
+const n = coininfo.litecoin.main.toBitcoinJS()
 
 module.exports = {
   name: 'litecoin',
@@ -13,16 +13,14 @@ module.exports = {
   ticker: 'LTC',
   satPerCoin: 1e8,
   feePerKb: litecoinFeePerKb,
-  feePerByte: litecoinFeePerKb / 1024,
+  feePerByte: litecoinFeePerKb / 1000,
   maxFeePerByte: 100,
-  minFee: litecoinFeePerKb,
+  minFee: 0,
   dust: 54600,
 
   txVersion: 1,
 
   explorer: new Insight(config.defaultApiUrls.litecoin),
-
-  getExtraBytes: function (options) { },
 
   network: {
     bip32: {

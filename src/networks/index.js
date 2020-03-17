@@ -1,15 +1,19 @@
 import bitcoin from './bitcoin'
-import bitcoin_testnet from './bitcoin_testnet'
+import bitcoinTestnet from './bitcoinTestnet'
 import flo from './flo'
-import flo_testnet from './flo_testnet'
+import floTestnet from './floTestnet'
 import litecoin from './litecoin'
-import litecoin_testnet from './litecoin_testnet'
+import litecoinTestnet from './litecoinTestnet'
+import raven from './raven'
+import ravenTestnet from './ravenTestnet'
 
 module.exports = {
-	bitcoin: bitcoin,
-	bitcoin_testnet: bitcoin_testnet,
-	flo: flo,
-	flo_testnet: flo_testnet,
-	litecoin: litecoin,
-	litecoin_testnet: litecoin_testnet
+  bitcoin: bitcoin,
+  bitcoinTestnet: bitcoinTestnet,
+  flo: flo,
+  floTestnet: floTestnet,
+  litecoin: litecoin,
+  litecoinTestnet: litecoinTestnet,
+  raven: raven,
+  ravenTestnet: ravenTestnet
 }

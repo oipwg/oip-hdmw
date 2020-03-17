@@ -1,11 +1,10 @@
-import bitcoin from 'bitcoinjs-lib'
-import bip32 from 'bip32'
-import bip32utils from 'bip32-utils'
-import coinselect from 'coinselect'
+import * as bitcoin from '@oipwg/bitcoinjs-lib'
+import coinselect from '@oipwg/coinselect'
 
 import Address from './Address'
-import { sign } from './TransactionBuilderHelpers'
 import { isValidPublicAddress } from './util'
+
+import { FloPsbt } from './FloTransaction'
 
 /**
  * An Output for a Transaction
@@ -34,11 +33,11 @@ import { isValidPublicAddress } from './util'
  * @property {number} value - Balance of the input in Satoshis
  * @example
  * {
- * 	address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
- * 	txId: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
- * 	vout: 1,
- * 	scriptPubKey: '76a9141bfcff1731caf3a16225d3e78735ddc229e4fc6c88ac',
- * 	value: 100000
+ *   address: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp',
+ *   txId: '7687e361f00998f96b29938bf5b7d9003a15ec182c13b6ddbd5adc0f993cbf9c',
+ *   vout: 1,
+ *   scriptPubKey: '76a9141bfcff1731caf3a16225d3e78735ddc229e4fc6c88ac',
+ *   value: 100000
  * }
  */
 
@@ -49,8 +48,8 @@ import { isValidPublicAddress } from './util'
  * @property {number} value - Amount to send Satoshis
  * @example
  * {
- * 	address: 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu',
- * 	value: 1000
+ *   address: 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu',
+ *   value: 1000
  * }
  */
 
@@ -59,29 +58,29 @@ import { isValidPublicAddress } from './util'
  */
 class TransactionBuilder {
   /**
-	 * Create a new TransactionBuilder
-	 * ##### Example
-	 * ```
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
-	 * 	floData: "Testing oip-hdmw!"
-	 * })
-	 * ```
-	 * @param  {CoinInfo} coin - CoinInfo for this specific Network you want to send the Transaction on.
-	 * @param  {Object} [options]
-	 * @param  {Address|Array.<Address>} options.from - The Address(es) to send from.
-	 * @param  {OutputAddress|Array.<OutputAddress>} options.to - The amounts & Address(es) to send to.
-	 * @param  {string} [options.floData=""] - The FloData to be added to the Transaction
-	 * @param  {Account} [account] - An Account to get a Change Address from if needed, if undefined, change will be sent to first `from` Address.
-	 * @return {TransactionBuilder}
-	 */
+   * Create a new TransactionBuilder
+   * ##### Example
+   * ```
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+   *   floData: "Testing oip-hdmw!"
+   * })
+   * ```
+   * @param  {CoinInfo} coin - CoinInfo for this specific Network you want to send the Transaction on.
+   * @param  {Object} [options]
+   * @param  {Address|Array.<Address>} options.from - The Address(es) to send from.
+   * @param  {OutputAddress|Array.<OutputAddress>} options.to - The amounts & Address(es) to send to.
+   * @param  {string} [options.floData=""] - The FloData to be added to the Transaction
+   * @param  {Account} [account] - An Account to get a Change Address from if needed, if undefined, change will be sent to first `from` Address.
+   * @return {TransactionBuilder}
+   */
   constructor (coin, options, account) {
     this.coin = coin
     this.account = account
@@ -95,19 +94,20 @@ class TransactionBuilder {
 
     this.parseOptions(options)
   }
+
   /**
-	 * Add an Address to send from
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo)
-	 * builder.addFrom(address);
-	 * @param {Address} address - Address to add to the From Addresses
-	 */
+   * Add an Address to send from
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo)
+   * builder.addFrom(address);
+   * @param {Address} address - Address to add to the From Addresses
+   */
   addFrom (address) {
     if (address instanceof Address) {
       if (isValidPublicAddress(address.getPublicAddress(), this.coin.network)) {
@@ -117,54 +117,56 @@ class TransactionBuilder {
       throw new Error('From Address MUST BE InstanceOf Address')
     }
   }
+
   /**
-	 * Add an Address and Amount to send to
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo)
-	 * builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);
-	 * @param {string} address - Base58 Public Address to send To
-	 * @param {number} amount - Amount to Send (in whole coin)
-	 */
+   * Add an Address and Amount to send to
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let builder = new TransactionBuilder(Networks.flo)
+   * builder.addTo("FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu", 0.001);
+   * @param {string} address - Base58 Public Address to send To
+   * @param {number} amount - Amount to Send (in whole coin)
+   */
   addTo (address, amount) {
     if (isValidPublicAddress(address, this.coin.network) && !isNaN(amount)) {
-      var tmpTo = {
+      const tmpTo = {
         address: address,
         value: amount
       }
       this.to.push(tmpTo)
     }
   }
+
   /**
-	 * Load From & To addresses
-	 * @param  {Object} options
-	 * @param  {Address|Array.<Address>} options.from - The Address(es) to send from.
-	 * @param  {OutputAddress|Array.<OutputAddress>} options.to - The amounts & Address(es) to send to.
-	 * @param  {string} [options.floData=""] - The FloData to be added to the Transaction
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo)
-	 *
-	 * builder.parseOptions({
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
-	 * 	floData: "Testing oip-hdmw!"
-	 * })
-	 */
+   * Load From & To addresses
+   * @param  {Object} options
+   * @param  {Address|Array.<Address>} options.from - The Address(es) to send from.
+   * @param  {OutputAddress|Array.<OutputAddress>} options.to - The amounts & Address(es) to send to.
+   * @param  {string} [options.floData=""] - The FloData to be added to the Transaction
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo)
+   *
+   * builder.parseOptions({
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+   *   floData: "Testing oip-hdmw!"
+   * })
+   */
   parseOptions (options) {
     if (!options) { return }
 
     // Grab the From Addresses, it can be an array or regular.
     if (options.from) {
       if (Array.isArray(options.from)) {
-        for (var addr of options.from) {
+        for (const addr of options.from) {
           this.addFrom(addr)
         }
       } else {
@@ -174,15 +176,17 @@ class TransactionBuilder {
 
     // Load who we are sending to
     if (options.to) {
-      // Check if we are providing an address string and amount seperately
+      // Check if we are providing an address string and amount separately
       if (Array.isArray(options.to)) {
-        for (var payTo of options.to) {
-          for (var address in payTo) {
+        for (const payTo of options.to) {
+          for (const address in payTo) {
+            if (!Object.prototype.hasOwnProperty.call(payTo, address)) continue
             this.addTo(address, payTo[address])
           }
         }
       } else {
-        for (var address in options.to) {
+        for (const address in options.to) {
+          if (!Object.prototype.hasOwnProperty.call(options.to, address)) continue
           this.addTo(address, options.to[address])
         }
       }
@@ -190,69 +194,71 @@ class TransactionBuilder {
 
     this.passedOptions = options
   }
+
   /**
-	 * Get the Unspent Transaction Outputs for all the From addresses specified.
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
-	 * })
-	 *
-	 * builder.getUnspents().then((utxos) => {
-	 * 	console.log(utxos)
-	 * })
-	 * @return {Promise<Array.<utxo>>} Returns a Promise that will resolve to an Array of unspent utxos
-	 */
+   * Get the Unspent Transaction Outputs for all the From addresses specified.
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+   * })
+   *
+   * builder.getUnspents().then((utxos) => {
+   *   console.log(utxos)
+   * })
+   * @return {Promise<Array.<utxo>>} Returns a Promise that will resolve to an Array of unspent utxos
+   */
   async getUnspents () {
-    let utxos = []
+    const utxos = []
 
-    for (let addr of this.from) {
+    for (const addr of this.from) {
       try {
-        let tmp_utxos = await addr.getUnspent()
+        const tmpUtxos = await addr.getUnspent()
 
-        for (let utxo of tmp_utxos) { utxos.push(utxo) }
+        for (const utxo of tmpUtxos) { utxos.push(utxo) }
       } catch (e) { throw new Error('Unable to get Unspents \n' + e) }
     }
 
     return utxos
   }
+
   /**
-	 * Get calculated Inputs and Outputs (and Fee) for From and To Addresses
-	 * @param {Array.<utxo>} [manual_utxos] - Pass in utxos for the function to use. If not passed, it will call the function getUnspents()
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
-	 * var account = new Account(accountMaster, networks.flo, false);
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
-	 * }, account)
-	 *
-	 * builder.buildInputsAndOutputs().then((calculated) => {
-	 * 	console.log(calculated.inputs)
-	 * 	console.log(calculated.outputs)
-	 * 	console.log(calculated.fee)
-	 * })
-	 * @return {SelectedInputOutput}
-	 */
-  async buildInputsAndOutputs (manual_utxos) {
+   * Get calculated Inputs and Outputs (and Fee) for From and To Addresses
+   * @param {Array.<utxo>} [manualUtxos] - Pass in utxos for the function to use. If not passed, it will call the function getUnspents()
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Account, Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+   * let account = new Account(accountMaster, networks.flo, false);
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+   * }, account)
+   *
+   * builder.buildInputsAndOutputs().then((calculated) => {
+   *   console.log(calculated.inputs)
+   *   console.log(calculated.outputs)
+   *   console.log(calculated.fee)
+   * })
+   * @return {SelectedInputOutput}
+   */
+  async buildInputsAndOutputs (manualUtxos) {
     try {
       await this.discoverChange()
     } catch (e) { throw new Error('Unable to Discover Change Addresses \n' + e) }
 
-    let utxos = manual_utxos
+    let utxos = manualUtxos
 
     if (!utxos) {
       try {
@@ -260,7 +266,7 @@ class TransactionBuilder {
       } catch (e) { throw new Error('Unable to get Unspents for Addresses \n' + e) }
     }
 
-    var formattedUtxos = utxos.map((utxo) => {
+    const formattedUtxos = utxos.map((utxo) => {
       return {
         address: utxo.address,
         txId: utxo.txid,
@@ -271,48 +277,59 @@ class TransactionBuilder {
       }
     })
 
-    var targets = this.to.map((toObj) => {
+    const targets = this.to.map((toObj) => {
       return {
         address: toObj.address,
         value: Math.floor(toObj.value * this.coin.satPerCoin)
       }
     })
 
-    var extraBytesLength = 0
-    var extraBytes = this.coin.getExtraBytes(this.passedOptions)
+    let extraBytesLength = 0
 
-    if (extraBytes) { extraBytesLength = extraBytes.length }
+    if (this.coin.network.hasFloData) { extraBytesLength = this.passedOptions.floData ? this.passedOptions.floData.length : 0 }
 
-    var utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
+    const utxosNoUnconfirmed = formattedUtxos.filter(utx => utx.confirmations > 0)
 
-    var selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), extraBytesLength)
+    let selected = coinselect(utxosNoUnconfirmed, targets, Math.ceil(this.coin.feePerByte), this.coin.minFee, extraBytesLength)
 
     // Check if we are able to build inputs/outputs off only unconfirmed transactions with confirmations > 0
-    if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee) { return selected } else // else, build with the regular ones
-    { return coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), extraBytesLength) }
+    if (selected.inputs && selected.inputs.length > 0 && selected.outputs && selected.outputs.length > 0 && selected.fee) {
+      // return selected
+    } else { // else, build with the regular ones
+      selected = coinselect(formattedUtxos, targets, Math.ceil(this.coin.feePerByte), this.coin.minFee, extraBytesLength)
+    }
+
+    if (selected.inputs) {
+      for (let i = 0; i < selected.inputs.length; i++) {
+        const raw = await this.coin.explorer.getRawTransaction(selected.inputs[i].txId)
+        selected.inputs[i].rawtx = raw.rawtx
+      }
+    }
+    return selected
   }
+
   /**
-	 * Discover the used change addresses if we were passed an Account to discover from.
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Account, Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
-	 * var account = new Account(accountMaster, networks.flo, false);
-	 *
-	 * var node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
-	 * var address = new Address(node, Networks.flo, false)
-	 *
-	 * var builder = new TransactionBuilder(Networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
-	 * }, account)
-	 *
-	 * builder.discoverChange().then(() => {
-	 * 	console.log("Done Discovering Change!")
-	 * })
-	 * @return {Promise}
-	 */
+   * Discover the used change addresses if we were passed an Account to discover from.
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Account, Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+   * let account = new Account(accountMaster, networks.flo, false);
+   *
+   * let node = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", Networks.flo.network)
+   * let address = new Address(node, Networks.flo, false)
+   *
+   * let builder = new TransactionBuilder(Networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001}
+   * }, account)
+   *
+   * builder.discoverChange().then(() => {
+   *   console.log("Done Discovering Change!")
+   * })
+   * @return {Promise}
+   */
   async discoverChange () {
     if (this.account) {
       try {
@@ -323,33 +340,34 @@ class TransactionBuilder {
 
     }
   }
+
   /**
-	 * Build the Transaction hex for the From and To addresses
-	 * @param {SelectedInputOutput} [manual_selected] - Inputs and Outputs to use. If not passed, the function buildInputsAndOutputs() is run.
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
-	 * var account = new Account(accountMaster, networks.flo, false);
-	 *
-	 * // F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
-	 * var addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
-	 * var address = new Address(addressNode, networks.flo, false);
-	 *
-	 * var builder = new TransactionBuilder(networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
-	 * 	floData: "Testing oip-hdmw!"
-	 * }, account)
-	 *
-	 * builder.buildTX().then((hex) => {
-	 * 	console.log(hex)
-	 * })
-	 * @return {Promise<string>} Returns a Promise that resolves to the calculated Transaction Hex
-	 */
-  async buildTX (manual_selected) {
-    let selected = manual_selected
+   * Build the Transaction hex for the From and To addresses
+   * @param {SelectedInputOutput} [manualSelected] - Inputs and Outputs to use. If not passed, the function buildInputsAndOutputs() is run.
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+   * let account = new Account(accountMaster, networks.flo, false);
+   *
+   * // F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+   * let addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+   * let address = new Address(addressNode, networks.flo, false);
+   *
+   * let builder = new TransactionBuilder(networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+   *   floData: "Testing oip-hdmw!"
+   * }, account)
+   *
+   * builder.buildTX().then((hex) => {
+   *   console.log(hex)
+   * })
+   * @return {Promise<string>} Returns a Promise that resolves to the calculated Transaction Hex
+   */
+  async buildTX (manualSelected) {
+    let selected = manualSelected
 
     if (!selected) {
       try {
@@ -361,20 +379,31 @@ class TransactionBuilder {
 
     this.selected = selected
 
-    let inputs = selected.inputs
+    const inputs = selected.inputs
     let outputs = selected.outputs
-    let fee = selected.fee
 
     // inputs and outputs will be undefined if no solution was found
     if (!inputs || !outputs) {
       throw new Error('No Inputs or Outputs selected! Fail!')
     }
 
-    let txb = new bitcoin.TransactionBuilder(this.coin.network)
+    let txb
+    if (this.coin.hasFloData === true) {
+      const floData = Buffer.from(this.passedOptions.floData || '')
+      txb = new FloPsbt({ network: this.coin.network })
+      txb.setFloData(floData)
+    } else {
+      txb = new bitcoin.Psbt({ network: this.coin.network })
+    }
 
     txb.setVersion(this.coin.txVersion)
 
-    inputs.forEach(input => txb.addInput(input.txId, input.vout))
+    inputs.forEach(input =>
+      txb.addInput({
+        hash: input.txId,
+        index: input.vout,
+        nonWitnessUtxo: Buffer.from(input.rawtx, 'hex')
+      }))
 
     // Check if we are paying to ourself, if so, merge the outputs to just a single output.
     // Check if we only have one from address, and two outputs (i.e. pay to and change)
@@ -382,7 +411,7 @@ class TransactionBuilder {
       // If the first input is sending to the from address, and there is a change output,
       // then merge the outputs.
       if (outputs[0].address === this.from[0].getPublicAddress() && !outputs[1].address) {
-        let totalToSend = outputs[0].value + outputs[1].value
+        const totalToSend = outputs[0].value + outputs[1].value
         outputs = [{
           address: this.from[0].getPublicAddress(),
           value: totalToSend
@@ -403,64 +432,62 @@ class TransactionBuilder {
         }
       }
 
-      txb.addOutput(output.address, output.value)
+      txb.addOutput({ address: output.address, value: output.value })
     })
 
-    for (let i in inputs) {
-      for (let addr of this.from) {
-        if (addr.getPublicAddress() === inputs[i].address) {
-          let extraBytes = this.coin.getExtraBytes(this.passedOptions)
-
-          if (extraBytes) {
-            sign(txb, extraBytes, parseInt(i), addr.getECPair())
-          } else {
-            txb.sign(parseInt(i), addr.getECPair())
-          }
-        }
+    for (const addr of this.from) {
+      try {
+        txb.signAllInputs(addr.getECPair())
+      } catch {
+        // sign throws if there is no input to be signed by addr
       }
     }
+
+    if (!txb.validateSignaturesOfAllInputs()) {
+      throw new Error('Transaction input signatures do not validate')
+    }
+
+    txb.finalizeAllInputs()
 
     let builtHex
 
     try {
-      builtHex = txb.build().toHex()
+      const tx = txb.extractTransaction()
+      builtHex = tx.toHex()
     } catch (e) {
-		    throw new Error('Unable to build Transaction Hex! \n' + e)
+      throw new Error('Unable to build Transaction Hex! \n' + e)
     }
-
-    let extraBytes = this.coin.getExtraBytes(this.passedOptions)
-
-    if (extraBytes) { builtHex += extraBytes }
 
     return builtHex
   }
+
   /**
-	 * Build & Send the Transaction that we have been forming
-	 * @param {String} [manual_hex] - The hex you wish to send the tx for. If not used, the hex is grabbed from buildTX().
-	 * @example
-	 * import bip32 from 'bip32'
-	 * import { Address, TransactionBuilder, Networks } from 'oip-hdmw'
-	 *
-	 * var accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
-	 * var account = new Account(accountMaster, networks.flo, false);
-	 *
-	 * // F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
-	 * var addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
-	 * var address = new Address(addressNode, networks.flo, false);
-	 *
-	 * var builder = new TransactionBuilder(networks.flo, {
-	 * 	from: address,
-	 * 	to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
-	 * 	floData: "Testing oip-hdmw!"
-	 * }, account)
-	 *
-	 * builder.sendTX().then((txid) => {
-	 * 	console.log(txid)
-	 * })
-	 * @return {Promise<string>} Returns a promise that will resolve to the success TXID
-	 */
-  async sendTX (manual_hex) {
-    let hex = manual_hex
+   * Build & Send the Transaction that we have been forming
+   * @param {String} [manualHex] - The hex you wish to send the tx for. If not used, the hex is grabbed from buildTX().
+   * @example
+   * import * as bip32 from 'bip32'
+   * import { Address, TransactionBuilder, Networks } from '@oipwg/hdmw'
+   *
+   * let accountMaster = bip32.fromBase58("Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC", networks.flo.network)
+   * let account = new Account(accountMaster, networks.flo, false);
+   *
+   * // F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp
+   * let addressNode = bip32.fromBase58("Fprv52CvMcVNkt3jU7MjybjTNie1Bqm7T66KBueSVFW74hXH43sXMAUdmk73TENACSHhHbwm7ZnHiaW3DxtkwhsbtpNjsh4EpnFVjZVJS7oxNqw", networks.flo.network)
+   * let address = new Address(addressNode, networks.flo, false);
+   *
+   * let builder = new TransactionBuilder(networks.flo, {
+   *   from: address,
+   *   to: {"FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu": 0.00001},
+   *   floData: "Testing oip-hdmw!"
+   * }, account)
+   *
+   * builder.sendTX().then((txid) => {
+   *   console.log(txid)
+   * })
+   * @return {Promise<string>} Returns a promise that will resolve to the success TXID
+   */
+  async sendTX (manualHex) {
+    let hex = manualHex
 
     if (!hex) {
       try {
@@ -476,40 +503,40 @@ class TransactionBuilder {
         response = await this.coin.explorer.broadcastRawTransaction(hex)
       } catch (e) { throw new Error('Unable to Broadcast Transaction hex! \n' + e) }
 
-      var txid
+      let txid
 
       // Handle { txid: "txid" }
       if (response && typeof response.txid === 'string') { txid = response.txid }
 
       /**
-			 * Handle
-			 * {
-			 *    txid: {
-			 *        result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
-			 *        error: null,
-			 *        id: 47070
-			 *     }
-			 * }
-			 */
+       * Handle
+       * {
+       *    txid: {
+       *        result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
+       *        error: null,
+       *        id: 47070
+       *     }
+       * }
+       */
       if (response && response.txid && response.txid.result) {
         txid = response.txid.result
       }
 
       /**
-			 * Handle
-			 * {
-			 *     result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
-			 *     error: null,
-			 *     id: 47070
-			 * }
-			 */
+       * Handle
+       * {
+       *     result: '05d2dd88d69cc32717d315152bfb474b0b1b561ae9a477aae091714c4ab216ac',
+       *     error: null,
+       *     id: 47070
+       * }
+       */
       if (response && response.result) {
         txid = response.result
       }
 
       // Add txid to spentTransactions for each spent input
-      for (let inp of this.selected.inputs) {
-        for (var addr of this.from) {
+      for (const inp of this.selected.inputs) {
+        for (const addr of this.from) {
           if (addr.getPublicAddress() === inp.address) {
             addr.addSpentTransaction(inp.txId)
           }

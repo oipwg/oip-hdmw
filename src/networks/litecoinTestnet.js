@@ -1,24 +1,22 @@
-import { Insight } from 'insight-explorer'
+import { Insight } from '@oipwg/insight-explorer'
 import config from './config'
 
-var litecoinFeePerKb = 100000
+const litecoinFeePerKb = 100000
 
 module.exports = {
-  name: 'litecoin_testnet',
+  name: 'litecoinTestnet',
   displayName: 'Litecoin Testnet',
   ticker: 'tLTC',
   satPerCoin: 1e8,
   feePerKb: litecoinFeePerKb,
-  feePerByte: litecoinFeePerKb / 1024,
+  feePerByte: litecoinFeePerKb / 1000,
   maxFeePerByte: 100,
-  minFee: litecoinFeePerKb,
+  minFee: 0,
   dust: 54600,
 
   txVersion: 1,
 
-  explorer: new Insight(config.defaultApiUrls.litecoin_testnet),
-
-  getExtraBytes: function (options) { },
+  explorer: new Insight(config.defaultApiUrls.litecoinTestnet),
 
   network: {
     messagePrefix: '\u0018Litecoin Signed Message:\n',
