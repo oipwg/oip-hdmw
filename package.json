@@ -49,6 +49,8 @@
     "bip32": "2.0.5",
     "bip39": "^3.0.2",
     "bip44-constants": "^7.1.0",
+    "blockchain-explorer": "git+https://github.com/iameddieyayaya/blockchain-explorer.git",
+    "blockchain.info": "^2.12.1",
     "bs58check": "^2.1.2",
     "coininfo": "^5.1.0",
     "create-hash": "^1.2.0",
