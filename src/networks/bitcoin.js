@@ -1,4 +1,4 @@
-import { Insight } from 'blockchain-explorer'
+import { Insight } from '@oipwg/insight-explorer'
 import { networks } from '@oipwg/bitcoinjs-lib'
 import bip44constants from 'bip44-constants'
 import config from './config'
