@@ -2,6 +2,7 @@ import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
 import Exchange from '@oipwg/exchange-rate'
 import { Insight } from '@oipwg/insight-explorer'
+import axios from 'axios'
 
 import Coin from './Coin'
 import networks from './networks'
@@ -81,6 +82,7 @@ class Wallet {
       }
       // Check if the user has defined any custom networks that should be imported
       if (options.networks && typeof options.networks === 'object') {
+
         // Attach each passed in network, overwrite if needed
         for (const node in options.networks) {
           if (!Object.prototype.hasOwnProperty.call(options.networks, node)) continue
@@ -595,6 +597,67 @@ class Wallet {
 
   static getDefaultExplorerUrls () {
     return networkConfig.defaultApiUrls
+  }
+
+  async purchaseRecord ({txid, terms}) {
+    try {
+      
+   
+    //lookup a record at txid & terms
+    const response = await axios.get(`https://api.oip.io/oip/o5/location/request?id=${txid}&terms=${terms}`)
+
+    const { valid_until, pre_image, } = response.data
+
+    const res = await axios.get(`https://api.oip.io/oip/o5/record/get/${txid}`)
+
+    //!ask Bits about hard coding template.
+    const { amount, destination } = res.data.results[0].record.details.tmpl_DE84D583
+
+    const account = this.getCoin('flo').getAccount()
+    const mainAddress = account.getMainAddress() //address with a balance
+    const publicAddress = mainAddress.getPublicAddress()
+
+
+    //send desired amount to to address
+
+    let payment_txid = await account.sendPayment({
+      to: { [destination]: amount },
+      from: publicAddress
+    })
+
+
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    
+    await sleep(10000)
+
+
+    // proof constructed by sining the request pre_image with address (that sent FLO)
+
+    let signature = mainAddress.signMessage(pre_image)
+
+    const body = {
+        valid_until,
+        id: txid,
+        term: terms,
+        pre_image,
+        signature,
+        payment_txid,
+        signing_address: publicAddress
+    }
+
+
+    //location/request needs to be submitted
+    const res2 = await axios.post(`https://api.oip.io/oip/o5/location/proof?id=${txid}&terms=${terms}`, body)    
+
+    return res2.data
+
+  } catch (error) {
+      console.log(error)
+  }
   }
 }
 
