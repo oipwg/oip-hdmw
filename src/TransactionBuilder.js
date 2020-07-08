@@ -438,8 +438,9 @@ class TransactionBuilder {
     for (const addr of this.from) {
       try {
         txb.signAllInputs(addr.getECPair())
-      } catch {
+      } catch (e) {
         // sign throws if there is no input to be signed by addr
+        throw new Error('No input to be signed by addr! \n' + e)
       }
     }
 
