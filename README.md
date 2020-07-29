@@ -126,7 +126,7 @@ let send_a_payment = async () => {
 }
 
 // Run the payment send
-send_a_payment().catch(() => { 
+send_a_payment().catch((error) => { 
 	console.error("Unable to send Transaction!", error) 
 })
 ```
