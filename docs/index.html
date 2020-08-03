@@ -121,12 +121,12 @@
 </ul>
 <h2>Installation Instructions</h2>
 <p>You can install the latest version by running the following <code>npm install</code> command.</p>
-<pre class="prettyprint source"><code>$ npm install --save oip-hdmw
+<pre class="prettyprint source"><code>$ npm install @oipwg/hdmw@2.0.0-beta.9
 </code></pre>
 <h2>Getting Started</h2>
 <h3>Creating your first Wallet</h3>
 <p>Creating a wallet is extremely simple! To create a new wallet with a random new Mnemonic, all we need to do is create a Wallet with no parameters. After the wallet is created, we log the Mnemonic so that we can use it in our other examples</p>
-<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('@oipwg/hdmw')
 const Wallet = HDMW.Wallet;
 
 const myWallet = new Wallet()
@@ -136,7 +136,7 @@ console.log(&quot;My Mnemonic: '&quot; + myWallet.getMnemonic() + &quot;'&quot;)
 </code></pre>
 <h3>Getting the Coins from your Wallet</h3>
 <p>Now that you have a Mnemonic for your wallet, lets go ahead and create the Wallet again, but this time, we will give it the Mnemonic to start from.</p>
-<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('@oipwg/hdmw')
 const Wallet = HDMW.Wallet;
 
 const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
@@ -151,7 +151,7 @@ console.log(&quot;My Wallets Coins: &quot;, myWallet.getCoins())
 <p>As you can see, we get back a JSON object containing each <code>Coin</code> along with an <code>identifier</code> that is the Coin name.</p>
 <h3>Getting your first Address</h3>
 <p>Now that we have created a new Wallet and accessed the Coins on the wallet, lets go ahead and get the Main Address for one of the coins. To do this, we will first need to get a <code>Coin</code> from the <code>Wallet</code>. To do this, we use the <code>getCoin</code> function and pass it the Coin name that we wish to get the Coin for. After we have grabbed the <code>Coin</code>, we run the <code>getMainAddress</code> function in order to get the main address for the <code>Coin</code>. After we have stored the <code>Address</code> returned to us by the <code>Coin</code>, we need to get the human readable Public key of the Address.</p>
-<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('@oipwg/hdmw')
 const Wallet = HDMW.Wallet;
 
 const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
@@ -165,7 +165,7 @@ console.log(&quot;My Wallets Bitcoin Main Address: &quot;, myMainAddress.getPubl
 </code></pre>
 <h3>Sending your first Transaction</h3>
 <p>In order to send a transaction, we will need to have a balance on our Wallet first. Send some funds to the Address that you got in the last step. After you have sent some money to the Wallet, we can send our first transaction. To send the Transaction, use the <code>sendPayment</code> method.</p>
-<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('@oipwg/hdmw')
 const Wallet = HDMW.Wallet;
 
 const myWallet = new Wallet('carbon panda replace drum guess heart inside useless random bulb hint industry')
@@ -184,7 +184,7 @@ myWallet.sendPayment({
 <p>After you have loaded a wallet, you might want to save its current &quot;state&quot; so that on the next load, it can immediately know its balance and be ready to spend without having to &quot;re-discover&quot; the wallet addresses/state.</p>
 <p>Here is an example that, after sending a transaction, saves the current wallet state to a local file. Since I am using Node.js in this example, we are going to use the NPM module <a href="https://www.npmjs.com/package/node-localstorage">node-localstorage</a> in order to store the wallet state easily and effortlessly. If you are using a Browser however, you can use the Native &quot;LocalStorage&quot; using the same code.</p>
 <p>You can run this example again right after it finishes as well. Since it saves its &quot;Spent Transaction&quot; state, it doesn't need to wait for a confirmation on the Blockchain to send the next transaction.</p>
-<pre class="prettyprint source lang-javascript"><code>const HDMW = require('oip-hdmw')
+<pre class="prettyprint source lang-javascript"><code>const HDMW = require('@oipwg/hdmw')
 const Wallet = HDMW.Wallet;
 
 if (typeof localStorage === &quot;undefined&quot; || localStorage === null) {
@@ -213,7 +213,7 @@ let send_a_payment = async () => {
 }
 
 // Run the payment send
-send_a_payment().catch(() => { 
+send_a_payment().catch((error) => { 
 	console.error(&quot;Unable to send Transaction!&quot;, error) 
 })
 </code></pre>
@@ -262,7 +262,7 @@ SOFTWARE.</p>
   <br class="clear">
 
   <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
   </footer>
 
   <script src="scripts/linenumber.js"></script>
