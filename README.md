@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/oipwg/oip-hdmw.svg?branch=master)](https://travis-ci.org/oipwg/oip-hdmw)
-[![](https://img.shields.io/npm/v/oip-hdmw.svg)](https://www.npmjs.com/package/oip-hdmw)
+[![](https://img.shields.io/npm/v/@oipwg/hdmw.svg)](https://www.npmjs.com/package/@oipwg/hdmw)
 [![Coverage Status](https://coveralls.io/repos/github/oipwg/oip-hdmw/badge.svg?branch=master)](https://coveralls.io/github/oipwg/oip-hdmw?branch=master)
 # OIP HD-MultiWallet
 `oip-hdmw` is a [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) Javascript Lite Wallet. You can spawn and recover the entire wallet for each coin using just a single [BIP-39 Mnemonic](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki). We use an [`insight-api`](https://github.com/bitpay/insight-api) server as the source of truth for Wallet balances and unspent outputs instead of syncing Block Headers like most SPV wallets do. 
@@ -22,7 +22,7 @@
 ## Installation Instructions
 You can install the latest version by running the following `npm install` command.
 ```
-$ npm install @oipwg/hdmw@2.0.0-beta.9
+$ npm install @oipwg/hdmw
 ```
 ## Getting Started
 ### Creating your first Wallet
@@ -137,11 +137,11 @@ send_a_payment().catch((error) => {
 ## API Documentation
 Learn more about how each Class works, or take a look at all functions available to you.
 * [Documentation Home](https://oipwg.github.io/oip-hdmw/)
-	* [Wallet](https://oipwg.github.io/oip-hdmw/1.0.1/Wallet.html)
-	* [Coin](https://oipwg.github.io/oip-hdmw/1.0.1/Coin.html)
-	* [Account](https://oipwg.github.io/oip-hdmw/1.0.1/Account.html)
-	* [Address](https://oipwg.github.io/oip-hdmw/1.0.1/Address.html)
-	* [TransactionBuilder](https://oipwg.github.io/oip-hdmw/1.0.1/TransactionBuilder.html)
+	* [Wallet](https://oipwg.github.io/oip-hdmw/Wallet.html)
+	* [Coin](https://oipwg.github.io/oip-hdmw/Coin.html)
+	* [Account](https://oipwg.github.io/oip-hdmw/Account.html)
+	* [Address](https://oipwg.github.io/oip-hdmw/Address.html)
+	* [TransactionBuilder](https://oipwg.github.io/oip-hdmw/TransactionBuilder.html)
 
 ## License
 MIT License
