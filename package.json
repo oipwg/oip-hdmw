@@ -1,6 +1,6 @@
 {
   "name": "@oipwg/hdmw",
-  "version": "2.0.0-beta.9",
+  "version": "2.0.0",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
@@ -50,25 +50,23 @@
     "bip32": "2.0.5",
     "bip39": "^3.0.2",
     "bip44-constants": "^7.1.0",
-    "blockchain-explorer": "git+https://github.com/iameddieyayaya/blockchain-explorer.git",
-    "blockchain.info": "^2.12.1",
     "bs58check": "^2.1.2",
     "coininfo": "^5.1.0",
     "create-hash": "^1.2.0",
-    "safe-buffer": "^5.2.0",
+    "safe-buffer": "^5.2.1",
     "typeforce": "^1.18.0",
     "varuint-bitcoin": "^1.1.2",
     "wif": "^2.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@babel/cli": "^7.8.4",
-    "@babel/preset-env": "^7.8.7",
-    "coveralls": "^3.0.9",
-    "jest": "^25.1.0",
-    "jsdoc": "^3.6.3",
+    "@babel/core": "^7.11.0",
+    "@babel/cli": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "coveralls": "^3.1.0",
+    "jest": "^26.2.2",
+    "jsdoc": "^3.6.5",
     "jsdoc-template": "git+https://github.com/oipwg/jsdoc-template.git",
-    "standard": "^14.3.1"
+    "standard": "^14.3.4"
   },
   "jest": {
     "testEnvironment": "node"
