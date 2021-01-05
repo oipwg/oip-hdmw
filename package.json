@@ -45,7 +45,7 @@
     "@oipwg/coinselect": "^3.2.0",
     "@oipwg/exchange-rate": "^2.0.0-beta.1",
     "@oipwg/insight-explorer": "^2.0.0-beta.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bip174": "^1.0.1",
     "bip32": "2.0.5",
     "bip39": "^3.0.2",
