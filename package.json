@@ -1,6 +1,6 @@
 {
   "name": "@oipwg/hdmw",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "BIP44 Javascript Wallet",
   "main": "lib/index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "prepublishOnly": "npm run generate-docs && npm run compile",
     "generate-docs": "./node_modules/.bin/jsdoc --readme ./README.md -c jsdoc.json",
+    "standard": "standard",
     "standard-fix": "standard --fix"
   },
   "repository": {
