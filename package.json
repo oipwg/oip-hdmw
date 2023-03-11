@@ -67,7 +67,8 @@
     "jest": "^29.4.3",
     "jsdoc": "^4.0.2",
     "jsdoc-template": "git+https://github.com/oipwg/jsdoc-template.git",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "taffydb": "^2.7.3"
   },
   "jest": {
     "testEnvironment": "node"
