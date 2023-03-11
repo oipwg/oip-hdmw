@@ -8,12 +8,12 @@ import raven from './raven'
 import ravenTestnet from './ravenTestnet'
 
 module.exports = {
-  bitcoin: bitcoin,
-  bitcoinTestnet: bitcoinTestnet,
-  flo: flo,
-  floTestnet: floTestnet,
-  litecoin: litecoin,
-  litecoinTestnet: litecoinTestnet,
-  raven: raven,
-  ravenTestnet: ravenTestnet
+  bitcoin,
+  bitcoinTestnet,
+  flo,
+  floTestnet,
+  litecoin,
+  litecoinTestnet,
+  raven,
+  ravenTestnet
 }

@@ -124,7 +124,7 @@ async function discovery (chain, gapLimit, queryPromise, i, coin) {
     if (gap >= gapLimit) {
       const used = checked - gap
 
-      return { used: used, checked: checked, chainIndex: i, addresses: allAddresses }
+      return { used, checked, chainIndex: i, addresses: allAddresses }
     } else {
       chain.next()
     }

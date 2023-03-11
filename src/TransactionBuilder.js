@@ -132,7 +132,7 @@ class TransactionBuilder {
   addTo (address, amount) {
     if (isValidPublicAddress(address, this.coin.network) && !isNaN(amount)) {
       const tmpTo = {
-        address: address,
+        address,
         value: amount
       }
       this.to.push(tmpTo)
@@ -336,8 +336,6 @@ class TransactionBuilder {
         await this.account.discoverChain(1)
         return
       } catch (e) { throw new Error('Unable to Discover Chain \n' + e) }
-    } else {
-
     }
   }
 

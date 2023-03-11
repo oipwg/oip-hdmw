@@ -143,7 +143,7 @@ class FloTransaction {
         hash,
         index,
         script: scriptSig || EMPTY_SCRIPT,
-        sequence: sequence,
+        sequence,
         witness: EMPTY_WITNESS
       }) - 1
     )
@@ -1531,7 +1531,7 @@ function getSignersFromHD (inputIndex, inputs, hdKeyPair) {
       if (bipDv.masterFingerprint.equals(hdKeyPair.fingerprint)) {
         return bipDv
       } else {
-
+        return undefined
       }
     })
     .filter(v => !!v)

@@ -8,7 +8,7 @@ import { discovery } from './util'
 const GAP_LIMIT = 20
 
 const CUSTOM_ADDRESS_FUNCTION = (node, network) => {
-  return { address: node, network: network }
+  return { address: node, network }
 }
 
 /**
@@ -539,7 +539,7 @@ class Account {
       allAddresses.push(address)
     }
 
-    return { results: results, addresses: allAddresses }
+    return { results, addresses: allAddresses }
   }
 
   /**
