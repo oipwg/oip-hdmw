@@ -9,7 +9,7 @@ test('Wallet can be created from nothing', () => {
   expect(w.getEntropy()).toBeDefined()
 })
 
-test('Wallet Serialize and Deserialize', async (done) => {
+test('Wallet Serialize and Deserialize', async () => {
   const serialized = {
     masterNode: 'xprv9s21ZrQH143K3HYAgqXMBtsXJbsSY1wcVBoGHjXh8rh5PsL9mfCNuiqL8mesxGyLo55neZf9sNLEfMMKozkXmgtoy139YaTks7bMpmUUGcX',
     seed: 'siren comic spy donkey unknown license asset lens proud bus exhaust section',
@@ -166,8 +166,6 @@ test('Wallet Serialize and Deserialize', async (done) => {
   expect(floBalance).toBe(9.85686398)
 
   expect(w.serialize()).toEqual(serialized)
-
-  done()
 })
 
 test('Wallet can be defined from Mnemonic', () => {
@@ -232,7 +230,7 @@ test('Wallet can return all coins', () => {
   expect(coins.bitcoinTestnet).toBeUndefined()
 })
 
-test('Wallet getCoinBalances & getFiatBalances', async (done) => {
+test('Wallet getCoinBalances & getFiatBalances', async () => {
   const wal = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   const balances = await wal.getCoinBalances()
   // for (let coin in balances) {
@@ -251,11 +249,9 @@ test('Wallet getCoinBalances & getFiatBalances', async (done) => {
   expect(fb).toHaveProperty('bitcoin')
   expect(fb).toHaveProperty('litecoin')
   expect(fb).toHaveProperty('raven')
-
-  done()
 }, 100000)
 
-test('Wallet getExchangeRates', async (done) => {
+test('Wallet getExchangeRates', async () => {
   const walb = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   const rates = await walb.getExchangeRates()
   // console.log(rates)
@@ -263,26 +259,23 @@ test('Wallet getExchangeRates', async (done) => {
   expect(rates).toHaveProperty('bitcoin')
   expect(rates).toHaveProperty('litecoin')
   expect(rates).toHaveProperty('raven')
-
-  done()
 }, 100000)
 
-test('Wallet getExchangeRates with coin options', async (done) => {
+test('Wallet getExchangeRates with coin options', async () => {
   const walb = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   const rates = await walb.getExchangeRates({ coins: ['flo'] })
   expect(rates.flo).toBeDefined()
   expect(typeof rates.flo === 'number')
-  done()
 }, 100000)
 
 test('get network api urls', () => {
   const testWallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(testWallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://insight.bitpay.com/api',
-      flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://insight.litecore.io/api',
-      raven: 'https://rvn.bitspill.net/api'
+      bitcoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      flo: 'https://livenet.flo.oip.fun/api',
+      litecoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      raven: 'https://api.ravencoin.org/api'
     }
   )
 })
@@ -323,14 +316,14 @@ test('set network apis', () => {
 test('static method call from instance', () => {
   const wallet = new Wallet('siren comic spy donkey unknown license asset lens proud bus exhaust section', { discover: false })
   expect(wallet.constructor.getDefaultExplorerUrls()).toEqual({
-    bitcoin: 'https://insight.bitpay.com/api',
-    bitcoinTestnet: '',
-    flo: 'https://livenet.flocha.in/api',
+    bitcoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+    bitcoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+    flo: 'https://livenet.flo.oip.fun/api',
     floTestnet: 'https://testnet.flocha.in/api',
-    litecoin: 'https://insight.litecore.io/api',
-    litecoinTestnet: 'https://testnet.litecore.io/api',
-    raven: 'https://rvn.bitspill.net/api',
-    ravenTestnet: 'https://rvntest.bitspill.net/api'
+    litecoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+    litecoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+    raven: 'https://api.ravencoin.org/api',
+    ravenTestnet: 'https://testnet.ravencoin.network/api'
   })
 })
 
@@ -351,10 +344,10 @@ test('reset network api urls', () => {
   wallet.resetExplorerUrls()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://insight.bitpay.com/api',
-      flo: 'https://livenet.flocha.in/api',
-      litecoin: 'https://insight.litecore.io/api',
-      raven: 'https://rvn.bitspill.net/api'
+      bitcoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      flo: 'https://livenet.flo.oip.fun/api',
+      litecoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      raven: 'https://api.ravencoin.org/api'
     }
   )
 })
@@ -364,14 +357,14 @@ test('get network api urls with testnet coins', () => {
   wallet.addTestnetCoins()
   expect(wallet.getExplorerUrls()).toEqual(
     {
-      bitcoin: 'https://insight.bitpay.com/api',
-      bitcoinTestnet: '',
-      flo: 'https://livenet.flocha.in/api',
+      bitcoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      bitcoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+      flo: 'https://livenet.flo.oip.fun/api',
       floTestnet: 'https://testnet.flocha.in/api',
-      litecoin: 'https://insight.litecore.io/api',
-      litecoinTestnet: 'https://testnet.litecore.io/api',
-      raven: 'https://rvn.bitspill.net/api',
-      ravenTestnet: 'https://rvntest.bitspill.net/api'
+      litecoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+      litecoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+      raven: 'https://api.ravencoin.org/api',
+      ravenTestnet: 'https://testnet.ravencoin.network/api'
     }
   )
 })

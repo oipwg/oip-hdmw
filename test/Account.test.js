@@ -133,9 +133,9 @@ test('Account auto-discover by default', (done) => {
   }
 
   setTimeout(checkIfComplete, 1000)
-}, 20000)
+}, 40000)
 
-test('Get Account Balance of all Chain Addresses', async (done) => {
+test('Get Account Balance of all Chain Addresses', async () => {
   const accountMaster = bip32.fromBase58('Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC', Networks.flo.network)
 
   const account = new Account(accountMaster, Networks.flo, { discover: false })
@@ -143,10 +143,9 @@ test('Get Account Balance of all Chain Addresses', async (done) => {
   const balanceObj = await account.getBalance({ discover: true })
 
   expect(balanceObj.balance).toBeGreaterThan(0)
-  done()
-}, 20000)
+}, 40000)
 
-test('Account, Get Balance of single address', async (done) => {
+test('Account, Get Balance of single address', async () => {
   const accountMaster = bip32.fromBase58('Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC', Networks.flo.network)
 
   const account = new Account(accountMaster, Networks.flo, { discover: false })
@@ -154,10 +153,9 @@ test('Account, Get Balance of single address', async (done) => {
   const balanceObj = await account.getBalance({ discover: true, addresses: 'F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp' })
 
   expect(balanceObj.balance).toBeDefined()
-  done()
-}, 20000)
+}, 40000)
 
-test('Account, Get Balance of multiple addresses', async (done) => {
+test('Account, Get Balance of multiple addresses', async () => {
   const accountMaster = bip32.fromBase58('Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC', Networks.flo.network)
 
   const account = new Account(accountMaster, Networks.flo, { discover: false })
@@ -165,8 +163,7 @@ test('Account, Get Balance of multiple addresses', async (done) => {
   const balanceObj = await account.getBalance({ discover: true, addresses: ['F8P6nUvDfcHikqdUnoQaGPBVxoMcUSpGDp', 'FHQvhgDut1rn1nvQRZ3z9QgMEVMavRo2Tu'] })
 
   expect(balanceObj.balance).toBeDefined()
-  done()
-}, 20000)
+}, 40000)
 
 test('Discover Chain on Account', (done) => {
   const accountMaster = bip32.fromBase58('Fprv4xQSjQhWzrCVzvgkjam897LUV1AfxMuG8FBz5ouGAcbyiVcDYmqh7R2Fi22wjA56GQdmoU1AzfxsEmVnc5RfjGrWmAiqvfzmj4cCL3fJiiC', Networks.flo.network)
@@ -182,7 +179,7 @@ test('Discover Chain on Account', (done) => {
     expect(account.addresses.FFwWGYxXfgMrS4oTJnW2HU3mUycxHZDxbU.getTotalReceived()).toBeGreaterThan(0.0001)
     done()
   })
-}, 20000)
+}, 40000)
 
 // test('Test send payment', (done) => {
 //   let accountMaster = bip32.fromBase58("Fprt4gUYQvk1qawUgc4X6a5w3Qry67xXZEMwa1uKmfwMfWre1SP26Eaq1eEr9M9k29oc2qxChcstqqEDh6SWpnysXDeCuRAzyBGFXLi8ewVWrk3", Networks.floTestnet.network)

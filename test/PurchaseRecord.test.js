@@ -20,3 +20,5 @@ test.skip('Wallet PurchaseRecord', async (done) => {
 
   })
 }, 1000000)
+
+test('empty', async () => {})

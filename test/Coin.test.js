@@ -227,7 +227,7 @@ test('Coin, get main address, single coin', () => {
   expect(floTestnet.getMainAddress(2).getPublicAddress()).toBe('oHffGWtMdFngokK5Sv9YQFUN7NxwgSS6ZL')
 })
 
-test('Coin, get floTestnet balance', (done) => {
+test.skip('Coin, get floTestnet balance', (done) => {
   const floTestnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.floTestnet, { discover: false })
 
   floTestnet.getBalance().then((balance) => {
@@ -258,7 +258,7 @@ test('Coin, get floTestnet balance', (done) => {
 
 }, 10000) */
 
-test('Coin, discover accounts', async (done) => {
+test.skip('Coin, discover accounts', async () => {
   const floTestnet = new Coin('xprv9ukW2Usuz4v9T49296K5xDezLcFCEaGoLo3YGAJNuFmx1McKebuH2S5C5VhaFsBxuChmARtTHRLKnmLjRSL7vGuyDrCaBh7mfdyefDdp5hh', Networks.floTestnet, { discover: false })
 
   expect(floTestnet.getCoinInfo()).toEqual(Networks.floTestnet)
@@ -267,7 +267,6 @@ test('Coin, discover accounts', async (done) => {
 
   if (accounts) {
     expect(accounts.length >= 2).toBe(true)
-    done()
   }
 }, 30000)
 

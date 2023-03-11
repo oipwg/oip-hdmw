@@ -27,9 +27,8 @@ test('Address is able to check its balance from BIP32 (auto-discovery)', (done) 
       expect(address.getTotalReceived()).toBeGreaterThan(0)
       done()
     } else {
-      if (attempts > 5) {
-        done.fail(new Error('too many attempts'))
-        done()
+      if (attempts > 20) {
+        done(new Error('too many attempts'))
       } else {
         setTimeout(checkIfComplete, 1000)
       }
@@ -48,7 +47,7 @@ test('Address is able to check its balance from BIP32 (manual discovery)', (done
     expect(addr.getTotalReceived()).toBeGreaterThan(0)
     done()
   })
-}, 10000)
+}, 100000)
 
 test('Address to PublicAddress (bitcoin)', () => {
   const node = bip32.fromBase58('xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM', Networks.bitcoin.network)

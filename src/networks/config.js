@@ -1,12 +1,12 @@
 module.exports = {
   defaultApiUrls: {
-    bitcoin: 'https://insight.bitpay.com/api',
-    bitcoinTestnet: '',
-    flo: 'https://livenet.flocha.in/api',
+    bitcoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+    bitcoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+    flo: 'https://livenet.flo.oip.fun/api',
     floTestnet: 'https://testnet.flocha.in/api',
-    litecoin: 'https://insight.litecore.io/api',
-    litecoinTestnet: 'https://testnet.litecore.io/api',
-    raven: 'https://rvn.bitspill.net/api',
-    ravenTestnet: 'https://rvntest.bitspill.net/api'
+    litecoin: 'https://api.bitcore.io/api/LTC/mainnet/',
+    litecoinTestnet: 'https://api.bitcore.io/api/LTC/mainnet/',
+    raven: 'https://api.ravencoin.org/api',
+    ravenTestnet: 'https://testnet.ravencoin.network/api'
   }
 }
